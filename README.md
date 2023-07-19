@@ -24,10 +24,10 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 
 | Nombre          | Rol                   |
 |-----------------|-----------------------|
-| Laura Ortega    | Asesora de Frontend   |
+| [Laura Ortega](https://github.com/Pancratzia "Profile")    | Asesora de Frontend   |
 | Nicolás España  | Asesor de Backend     |
-| Jacobo Bravo    | Asesor de Base de Datos |
-| Juan Torrealba  | Asesor de APIs        |
+| [Jacobo Bravo](https://github.com/jacobobravo30 "Profile")     | Asesor de Base de Datos |
+| [Juan Torrealba](https://github.com/JuanTorrealba "Profile")   | Asesor de APIs        |
 
 ## Desarrolladores Frontend
 
@@ -39,13 +39,13 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 
 | Nombre          | Rol                   |
 |-----------------|-----------------------|
-| Juan Villegas    | Líder de Backend   |
+| [Juan Villegas](https://github.com/juan436 "Profile")     | Líder de Backend   |
 
 ## Instalación y Uso
 
 1. Abre tu terminal
 2. Clona el repositorio: `git clone https://github.com/tu-usuario/rocketnet.git`
-3. Dirijete a tu carpeta destino con `cd api/` o `cd cliente/` 
+3. Dirijete a tu carpeta destino con `cd frontend/` o `cd backend/` 
 4. Instala las dependencias: `npm install`
 5. Inicia el servidor: `npm run dev`
 
