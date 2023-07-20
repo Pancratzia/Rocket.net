@@ -44,7 +44,7 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 ## Instalación y Uso
 
 1. Abre tu terminal
-2. Clona el repositorio: `git clone https://github.com/tu-usuario/rocketnet.git`
+2. Clona el repositorio: `git clone https://github.com/Pancratzia/Rocket.net.git`
 3. Dirijete a tu carpeta destino con `cd frontend/` o `cd backend/` 
 4. Instala las dependencias: `npm install`
 5. Inicia el servidor: `npm run dev`
