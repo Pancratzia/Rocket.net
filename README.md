@@ -25,7 +25,7 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 | Nombre          | Rol                   |
 |-----------------|-----------------------|
 | [Laura Ortega](https://github.com/Pancratzia "Profile")    | Asesora de Frontend   |
-| Nicolás España  | Asesor de Backend     |
+| [Nicolás España](https://github.com/NicolasEspana "Profile")  | Asesor de Backend     |
 | [Jacobo Bravo](https://github.com/jacobobravo30 "Profile")     | Asesor de Base de Datos |
 | [Juan Torrealba](https://github.com/JuanTorrealba "Profile")   | Asesor de APIs        |
 
