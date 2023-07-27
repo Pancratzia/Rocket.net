@@ -3,6 +3,7 @@
 | Node v20.3.0 (32 Bits)                |   Entorno de Ejecución    | [Link](https://nodejs.org/dist/v20.3.0/node-v20.3.0-x86.msi) |
 | Node v20.3.0 (64 Bits)                |   Entorno de Ejecución    | [Link](https://nodejs.org/dist/v20.3.0/node-v20.3.0-x64.msi) |
 | Postman                              | Plataforma     | [Link](https://www.postman.com/downloads/)  |
+| Codeium                              | Pair Programming     | [Link](https://codeium.com/)  |
 | Curso de Git                              | Curso en Línea     | [Link](https://www.youtube.com/watch?v=mBYSUUnMt9M)  |
 | Curso de JS                             | Curso en Línea     | [Link](https://www.youtube.com/watch?v=ivdTnPl1ND0)  |
 | Curso de JS                             | Curso en Línea     | [Link](https://www.youtube.com/watch?v=N8Xt5rP_DUo)  |

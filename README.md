@@ -18,7 +18,7 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 
 | Nombre          | Rol                   |
 |-----------------|-----------------------|
-| Jorge Silva   | Docente Universitario Instructor de Ambas Materias   |
+| [Jorge Silva](https://github.com/jsilvaalvarez "Profile")   | Docente Universitario Instructor de Ambas Materias   |
 
 ## Líderes del Proyecto
 
@@ -33,13 +33,22 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 
 | Nombre          | Rol                   |
 |-----------------|-----------------------|
-| María Castillo  | Líder de Frontend   |
+| [María Castillo](https://github.com/marfcastillo "Profile")  | Líder de Frontend   |
+| [Moisés Villarroel](https://github.com/MoisesV2605 "Profile")  | Developer   |
+| [Rosibel Cordero ](https://github.com/none "Profile")  | Developer  |
+| [Víctor Pérez](https://github.com/Victorgpm97 "Profile")  | Developer   |
+| [Luis Pernalete](https://github.com/Alejandro19977 "Profile")  | Developer  |
 
 ## Desarrolladores Backend
 
 | Nombre          | Rol                   |
 |-----------------|-----------------------|
 | [Juan Villegas](https://github.com/juan436 "Profile")     | Líder de Backend   |
+| [Moisés Torrealba](https://github.com/MoiMetd "Profile")  | Developer   |
+| [Melissa Camacaro](https://github.com/Mel270101 "Profile")  | Developer  |
+| [Gabriela Echeverría](https://github.com/gabaechv "Profile")  | Developer   |
+| [Carlos Escalona](https://github.com/CalOwO278 "Profile")  | Developer  |
+| [Jesús Pérez](https://github.com/JEPerezGomez "Profile")  | Developer  |
 
 ## Instalación y Uso
 
