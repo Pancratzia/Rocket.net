@@ -1,6 +1,6 @@
 # Rocket.Net - Software de Gestión Integral
 
-![RocketNet Logo](https://url-del-logo.com)
+<img height="300" width="300"  align="right" src="https://github.com/Pancratzia/Rocket.net/blob/main/Guias/Frontend/logo.jpg" alt="RocketNet Logo">
 
 Este proyecto tiene como objetivo desarrollar un software de gestión integral para **Rocket.Net**, un ISP líder en Venezuela (Ficticia. Creada para las materias de Proyecto de Software y Fundamentos de Aplicaciones Web de la UCLA). Nuestro objetivo es mejorar la comunicación interna, optimizar el inventario de servicios y facilitar la supervisión de las sedes y departamentos de la empresa.
 
