@@ -11,7 +11,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 
 function App() {
 
-  const LayoutExt = () => {  //Layour de las páginas externas (Login y Recuperar contraseña)
+  const LayoutExt = () => {  //Layout de las páginas externas (Login y Recuperar contraseña)
     return (
       <div className="main-login">
         <Panel_Lateral />
