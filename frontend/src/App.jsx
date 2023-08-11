@@ -4,13 +4,14 @@ import Login from './pages/login/Login';
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Recuperar_Password from './pages/recuperar_password/Recuperar_Password';
 import Panel_Lateral from './components/Panel_Lateral/Panel_Lateral';
+import Sidebar from './components/Sidebar/Sidebar';
 
 
 
 
 function App() {
 
-  const Layout = () => {
+  const LayoutExt = () => {
     return (
       <div className="main-login">
         <Panel_Lateral />
@@ -19,23 +20,53 @@ function App() {
     );
   };
 
-  const router = createBrowserRouter([
+  const LayoutSidebar = () => {
+    return (
+      <div className="main">
+        <Outlet />
+      </div>
+    );
+  };
 
+  const router = createBrowserRouter([
     {
-      path: "/",
-      element: <Layout />,
+      path: '/',
+      element: <LayoutSidebar />,
       children: [
         {
-          path: "/login",
-          element: <Login />,
-        },
+          element: <Sidebar />,
+          path: '/',
+        }
+        ,
         {
-          path: "/recuperar_password",
-          element: <Recuperar_Password />,
+          // Aquí se agregan las rutas para el dashboard
         },
       ],
     },
 
+
+    {
+      path: '/',
+      element: <LayoutExt />,
+      children: [
+        {
+          element: <Login />,
+          path: '/login',
+        }
+      ]
+    },
+    {
+      path: '/recuperar_password',
+      element: <LayoutExt />,
+      children: [
+        {
+          element: <Recuperar_Password />,
+          path: '/recuperar_password',
+        }
+      ]
+    },
+
+    
   ]);
   
  
