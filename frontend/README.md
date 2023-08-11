@@ -1,4 +1,4 @@
-<# BITACORA DE TRABAJO
+# BITACORA DE TRABAJO
 
 *Nota: Esta bitacora solo podrá ser editada por María Castillo*
 
