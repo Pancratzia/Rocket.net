@@ -11,7 +11,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 
 function App() {
 
-  const LayoutExt = () => {
+  const LayoutExt = () => {  //Layour de las páginas externas (Login y Recuperar contraseña)
     return (
       <div className="main-login">
         <Panel_Lateral />
@@ -20,7 +20,7 @@ function App() {
     );
   };
 
-  const LayoutSidebar = () => {
+  const LayoutSidebar = () => { //Layout de las páginas internas (Dashboard y todo lo que esté dentro)
     return (
       <div className="main">
         <Outlet />
@@ -66,7 +66,7 @@ function App() {
       ]
     },
 
-    
+
   ]);
   
  
