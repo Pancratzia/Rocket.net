@@ -1,35 +1,46 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Login from './pages/login/Login';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Recuperar_Password from './pages/recuperar_password/Recuperar_Password';
+import Panel_Lateral from './components/Panel_Lateral/Panel_Lateral';
+
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+  const Layout = () => {
+    return (
+      <div className="main-login">
+        <Panel_Lateral />
+        <Outlet />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    );
+  };
+
+  const router = createBrowserRouter([
+
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/recuperar_password",
+          element: <Recuperar_Password />,
+        },
+      ],
+    },
+
+  ]);
+  
+ 
+  return <RouterProvider router={router} />;
+  
 }
 
 export default App
