@@ -1,0 +1,23 @@
+.segunda-barra-superior {
+    background-image: url('../Images/fondo.webp');
+    height: 150px; /* Ajusta la altura de la segunda barra superior según tus necesidades */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white; /* Ajusta el color del texto según tus necesidades */
+    font-size: 24px; /* Ajusta el tamaño de fuente del texto según tus necesidades */
+    position: fixed; /* Añade esta propiedad para posicionar la barra en la parte superior de la página */
+    top: 70px; /* Ajusta el valor según la altura de la barra superior */
+    left: 0; /* Asegúrate de que la barra comience desde el extremo izquierdo */
+    width: 100%; /* Asegúrate de que la barra ocupe el 100% del ancho de la página */
+    z-index: 1; /* Añade esta propiedad para asegurarte de que la segunda barra esté por encima de la primera barra */
+
+  }
+  
+  .texto-central {
+    background-color: rgba(0, 0, 0, 0.5); /* Ajusta el color de fondo del texto según tus necesidades */
+    padding: 10px 0px; /* Ajusta el relleno interno del texto según tus necesidades */
+    justify-content: center;
+    align-items: center;
+  }
+  
