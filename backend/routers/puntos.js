@@ -3,10 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
 
-const routerPoligonos= express.Router();
+const routerPuntos= express.Router();
 
-routerPoligonos.use(express.json());
-routerPoligonos.use(cors());
+routerPuntos.use(express.json());
+routerPuntos.use(cors());
 
 
 
@@ -67,4 +67,4 @@ routerPoligonos.use(cors());
 
 
 
-module.exports = routerPoligonos;
+module.exports = routerPuntos;
