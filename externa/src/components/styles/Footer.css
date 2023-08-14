@@ -1,0 +1,43 @@
+
+  
+  .texto-derechos{
+    background-color: #032240;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 100%;
+  }
+
+  .contenido-footer{
+    background-color: #032240;
+  }
+
+  .panel-footer{
+    display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas con el mismo ancho */
+  }
+
+  .parte-izquierda, .parte-derecha{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    color: white;
+  }
+
+  @media screen and (max-width: 600px) {
+    .panel-footer {
+      grid-template-columns: 1fr; /* Una columna en lugar de dos en pantallas pequeñas */
+      grid-template-rows: auto auto; /* Ajusta el tamaño de las filas automáticamente */
+      gap: 10px; /* Espacio entre las filas */
+    }
+  
+    .parte-izquierda,
+    .parte-derecha {
+      padding: 10px; /* Reduce el padding en pantallas pequeñas */
+      text-align: justify;
+    }
+  }
