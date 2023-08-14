@@ -1,10 +1,5 @@
 .panel {
-    position: absolute;
-    top: 130px;
-    /* Ajusta la posición superior según la altura de las barras */
-    left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
     background-color: white;
     display: flex;
 }
@@ -46,6 +41,10 @@ input {
     background-color: #032240;
     margin-left: 10px;
     text-transform: uppercase;
+    font-size: Roboto, sans-serif;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
 
 }
 
@@ -78,9 +77,12 @@ input {
 }
 
 .boton-contactanos {
-    
+    font-size: Roboto, sans-serif;
+    color: white;
+    font-weight: bold;
     border-radius: 50px;
     background-color: #2CAB73;
+    padding: 10px;
     text-transform: uppercase;
    
     /* Ajusta el margen inferior de los botones según tus necesidades */

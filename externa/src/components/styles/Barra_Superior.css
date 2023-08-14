@@ -1,19 +1,6 @@
 .barra-superior {
   background-color: #032240;
-  height: 70px; /* Ajusta la altura de la barra superior según tus necesidades */
-  display: flex;
-  align-items: center;
-  padding: 0 20px; /* Ajusta el relleno lateral según tus necesidades */
+
   width: 100%; /* Asegúrate de que la barra ocupe el 100% del ancho de la página */
-  position: fixed; /* Añade esta propiedad para posicionar la barra en la parte superior de la página */
-  top: 0; /* Añade esta propiedad para asegurarte de que la barra esté fija en la parte superior */
-  left: 0; /* Añade esta propiedad para asegurarte de que la barra comience desde el extremo izquierdo */
 }
-
-
-.logo {
-  margin-right: 10px; /* Ajusta el margen derecho según tus necesidades */
-  width: 15%;
-}
-
 
