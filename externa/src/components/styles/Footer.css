@@ -1,63 +1,4 @@
-.bg-dark {
-    background-color: #032240 !important;
-  }
-  
-  .text-white {
-    color: #fff !important;
-  }
-  
-  .text-center {
-    text-align: center !important;
-  }
-  
-  .p-4 {
-    padding: 1.5rem !important;
-  }
-  
-  .pb-0 {
-    padding-bottom: 0 !important;
-  }
-  
-  .mb-4 {
-    margin-bottom: 1.5rem !important;
-  }
-  
-  .m-1 {
-    margin: 0.25rem !important;
-  }
-  
-  .text-center.p-3 {
-    text-align: center !important;
-    padding: 1rem !important;
-  }
-  
-  .text-center.p-3 a {
-    color: #fff !important;
-  }
-  
-  .text-center.p-3 a:hover {
-    color: #ccc !important;
-  }
-  
-  .text-center.p-3 {
-    background-color: #032240 !important;
-  }
-  
-  .fixed-bottom {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-  }
-  
-  .footer-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    background-color: #032240;
-    color: white;
-  }
+
   
   .texto-derechos{
     background-color: #032240;
@@ -83,5 +24,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: justify;
     color: white;
+  }
+
+  @media screen and (max-width: 600px) {
+    .panel-footer {
+      grid-template-columns: 1fr; /* Una columna en lugar de dos en pantallas pequeñas */
+      grid-template-rows: auto auto; /* Ajusta el tamaño de las filas automáticamente */
+      gap: 10px; /* Espacio entre las filas */
+    }
+  
+    .parte-izquierda,
+    .parte-derecha {
+      padding: 10px; /* Reduce el padding en pantallas pequeñas */
+      text-align: justify;
+    }
   }
