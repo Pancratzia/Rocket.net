@@ -20,6 +20,8 @@ routerAuditoria.use(cors());
 
 
 
+
+
 // get all
 
 
@@ -33,6 +35,19 @@ routerAuditoria.use(cors());
 
 // get by id
 
+
+
+
+
+
+
+
+
+
+
+
+
+// get por rango de fecha
 
 
 

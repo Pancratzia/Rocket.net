@@ -63,8 +63,4 @@ routerPuntos.use(cors());
 
 
 
-//get by id
-
-
-
 module.exports = routerPuntos;

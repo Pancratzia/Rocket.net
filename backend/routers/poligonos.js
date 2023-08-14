@@ -50,6 +50,7 @@ routerPoligonos.use(cors());
 
 
 
+
 //get all
 
 
@@ -57,13 +58,6 @@ routerPoligonos.use(cors());
 
 
 
-
-
-
-
-
-
-//get by id
 
 
 
