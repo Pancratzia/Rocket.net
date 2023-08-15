@@ -5,13 +5,13 @@ const port = 3000;
 
 //  Router
 const routerAuditoria = require('./routers/auditoria.js');
-app.use('/api/cursos/auditoria',routerAuditoria); 
+app.use('/api/auditoria',routerAuditoria); 
 
 const routerPoligonos = require('./routers/poligonos.js');
-app.use('/api/cursos/poligonos',routerPoligonos); 
+app.use('/api/poligonos',routerPoligonos); 
 
 const routerPuntos = require('./routers/puntos.js');
-app.use('/api/cursos/puntos',routerPuntos); 
+app.use('/api/puntos',routerPuntos); 
 
 app.listen(port, () => {
     console.log(`El servidor esta escuchando en el puerto ${port}`);

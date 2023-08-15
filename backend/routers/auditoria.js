@@ -46,7 +46,6 @@ routerAuditoria.use(cors());
 
 
 
-
 // get por rango de fecha
 
 
