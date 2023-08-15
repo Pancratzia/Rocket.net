@@ -15,10 +15,11 @@
 
 .texto-principal{
     font-size: 24px;
-    font-weight: semibold;
+    font-weight: 100px;
     padding: 20px;
     color: black;
-    font-family: 'Poppis', sans-serif;
+    
+    font-weight: 300;
     text-align: justify;
 }
 
