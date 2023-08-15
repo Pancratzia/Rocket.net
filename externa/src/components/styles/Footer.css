@@ -15,29 +15,61 @@
 
   .panel-footer{
     display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas con el mismo ancho */
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas con el mismo ancho */
+  
   }
 
-  .parte-izquierda, .parte-derecha{
+
+
+  .parte-izquierda,   .parte-derecha, .parte-centro{
+    color: white;
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    text-align: justify;
-    color: white;
+    align-items: left;
   }
 
-  @media screen and (max-width: 600px) {
-    .panel-footer {
-      grid-template-columns: 1fr; /* Una columna en lugar de dos en pantallas pequeñas */
-      grid-template-rows: auto auto; /* Ajusta el tamaño de las filas automáticamente */
-      gap: 10px; /* Espacio entre las filas */
-    }
+
+
+.icono-contenedor{
   
-    .parte-izquierda,
-    .parte-derecha {
-      padding: 10px; /* Reduce el padding en pantallas pequeñas */
-      text-align: justify;
-    }
+}
+
+  .icono{
+    color: white;
+    width: 25px;
+    height: 25px;
+    margin: 5px;
   }
+
+.boton-footer{
+  background-color: #2CAB73;
+  padding: 10PX;
+    width: 300px;
+    border-radius: 15px;
+    color: white;
+    font-size: bold;
+    font-weight: bold;
+    border: none;
+
+}
+
+.boton-footer-contenedor{
+  margin-top: 20px;
+}
+
+
+/* Estilos para pantallas pequeñas */
+@media screen and (max-width: 600px) {
+  .panel-footer {
+    grid-template-columns: 1fr; /* Una columna en lugar de tres en pantallas pequeñas */
+  }
+
+  .parte-izquierda,
+  .parte-derecha,
+  .parte-centro {
+    padding: 10px; /* Reduce el padding en pantallas pequeñas */
+    text-align: center; /* Centra el texto dentro del contenedor */
+  }
+}
