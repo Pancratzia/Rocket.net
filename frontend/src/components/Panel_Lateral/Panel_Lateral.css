@@ -10,3 +10,28 @@
 .logo{
   width: 100%;
 }
+
+.logo2{
+  display: none;
+  width: 100%;
+
+
+}
+
+@media (max-width: 768px) {
+  .panel-lateral{
+   
+   border-radius: 15px 15px 0 0;
+
+
+  }
+
+  .logo {
+    display: none;
+  }
+  .logo2 {
+    display: block;
+  }
+
+
+}
