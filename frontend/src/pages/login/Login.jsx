@@ -18,7 +18,7 @@ function Login() {
               <input type = 'password' className='input1' />
             </form>
             <button>Iniciar sesion</button> 
-            <a href='#'>¿Olvidaste la contraseña?</a>
+          
           </div>
         </div>
         <Link to="/recuperar_password">Recuperar Contraseña</Link>
