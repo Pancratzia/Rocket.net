@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
+const { DateTime } = require('luxon');
 
 const routerAuditoria= express.Router();
 
@@ -11,6 +12,7 @@ routerAuditoria.use(cors());
 
 
 // create 
+
 
 
 
