@@ -70,6 +70,7 @@ input {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: px;
 }
 
 img {
@@ -98,20 +99,23 @@ input {
     /* Ajusta el margen inferior de los botones según tus necesidades */
 }
 
-@media screen and (max-width: 600px) {
-    .panel {
-      flex-direction: column; /* Cambia la dirección de los elementos del panel a vertical */
-      align-items: center; /* Centra los elementos horizontalmente */
-      margin-bottom: 20px;
-    }
-  
-    .texto-secundario {
-      width: 100%;
-      padding: 20px;
-    }
-  
-    .division-izquierda,
-    .division-derecha {
-      flex: 1; /* Ocupa todo el ancho del panel en pantallas pequeñas */
-    }
+/* Estilos para pantallas pequeñas y de tamaño medio */
+@media screen and (max-width: 768px),
+       (min-width: 769px) and (max-width: 990px) {
+  .panel {
+    flex-direction: column; /* Cambia la dirección de los elementos del panel a vertical */
+    align-items: center; /* Centra los elementos horizontalmente */
+    margin-bottom: 20px;
   }
+
+  .texto-secundario {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .division-izquierda,
+  .division-derecha {
+    flex: 1; /* Ocupa todo el ancho del panel en pantallas pequeñas y de tamaño medio */
+  }
+
+ }
