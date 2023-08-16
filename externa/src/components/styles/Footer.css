@@ -61,15 +61,17 @@
 
 
 /* Estilos para pantallas pequeñas */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 768px),
+       (min-width: 769px) and (max-width: 990px) {
   .panel-footer {
-    grid-template-columns: 1fr; /* Una columna en lugar de tres en pantallas pequeñas */
+    grid-template-columns: 1fr; /* Una columna en lugar de tres en pantallas pequeñas y de tamaño medio */
   }
 
   .parte-izquierda,
   .parte-derecha,
   .parte-centro {
-    padding: 10px; /* Reduce el padding en pantallas pequeñas */
+    padding: 10px; /* Reduce el padding en pantallas pequeñas y de tamaño medio */
     text-align: center; /* Centra el texto dentro del contenedor */
   }
 }
+
