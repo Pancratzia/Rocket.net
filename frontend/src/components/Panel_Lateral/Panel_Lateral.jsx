@@ -1,11 +1,11 @@
 import React from 'react'
+import RocketLogo from '../../assets/img/ROCKETNETLOGO.png';
+import '../Panel_Lateral/Panel_Lateral.css';
 
 function Panel_Lateral() {
   return (
-    <div>
-      
-      Este es el panel lateral azul con el logo de rocketnet
-
+    <div className='panel-lateral'>
+      <img className='logo' src={RocketLogo} alt='Logo RocketNet'/>
     </div>
   )
 }

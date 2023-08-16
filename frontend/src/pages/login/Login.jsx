@@ -1,4 +1,5 @@
 import React from 'react'
+import '../login/Login.css'
 import { Link } from 'react-router-dom'
 
 function Login() {

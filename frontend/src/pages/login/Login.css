@@ -1,77 +1,42 @@
-html, 
-body {
-
-  background-color: black;
-}
-
-*{
-
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-
-}
-
-
-.contenedor-login
-{
-  background-color: #F5F9FF;
-  width: 830px;
-  height: 500px;
-  display: flex;
-  top: 50%;
-  transform: translateY(-50%);
-  position: relative;
-  margin: auto;  
-  padding: 20px;
-  border-radius: 20px;
- 
-
+.contenedor-login{
+  width: 100%;
+  display: flex;  
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
 
 }
 
 .contenedor-formulario{
   line-height: 10px;
-  display: column; 
   width: 100%;
-  
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
 }
 
 h1{
   text-align: center;
-  font-family: 'Arial';
   text-align: center;
   font-size: 40px;
-  margin-top: 6%;
-  margin-left: 17%;
-  font-family: 'Poppins', sans-serif;
   
-   
 }
   
 h2{
   font-size: 17px;
-  margin-top: 4%;
-  margin-left: 20%;
   white-space: nowrap;
-  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
     
 }
   
   
 h3{
-  margin-left: 45%;
   text-align: left;
-  margin-top: 4%;
-  font-family: 'Poppins', sans-serif;
   }
-  
+
+
 .input1{
   font-size: 18px;
   justify-content: center;
   font-family: 'Poppins', sans-serif;
-  margin-left: 37%;
-  margin-top: 3%;
   height: 45px;
   border-radius: 20px;
   width: 48%;
@@ -89,9 +54,6 @@ button{
   background-color: #032240;
   border: none;
   cursor:pointer;
-  margin-top: 3%;
-  margin-left: 37%;
-  margin-bottom: 4%;
   font-family: 'Poppins', sans-serif;
    
 }
@@ -100,7 +62,6 @@ a{
   color: black;
   white-space: nowrap;
   align-items: center;
-  margin-left: 35%;
   cursor: pointer;
   font-family: 'Poppins', sans-serif;
 

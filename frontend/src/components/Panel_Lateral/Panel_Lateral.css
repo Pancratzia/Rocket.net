@@ -1,0 +1,12 @@
+.panel-lateral{
+  background-color: #032240;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo{
+  width: 100%;
+}
