@@ -98,7 +98,7 @@ input {
     /* Ajusta el margen inferior de los botones según tus necesidades */
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
     .panel {
       flex-direction: column; /* Cambia la dirección de los elementos del panel a vertical */
       align-items: center; /* Centra los elementos horizontalmente */
@@ -115,3 +115,5 @@ input {
       flex: 1; /* Ocupa todo el ancho del panel en pantallas pequeñas */
     }
   }
+
+ 

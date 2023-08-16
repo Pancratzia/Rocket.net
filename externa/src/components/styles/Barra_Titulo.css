@@ -20,8 +20,9 @@
   @media screen and (max-width: 768px) {
     .titulo {
       font-size: 50px; /* Tamaño de fuente para pantallas más pequeñas */
-      justify-content: center;
       display: flex;
+      justify-content: center;
+    
       align-items: center;
     }
   }

@@ -61,7 +61,7 @@
 
 
 /* Estilos para pantallas pequeñas */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
   .panel-footer {
     grid-template-columns: 1fr; /* Una columna en lugar de tres en pantallas pequeñas */
   }
