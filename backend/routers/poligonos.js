@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
+const {validatePoliPost} = require('../validaciones/poligonos.js');
 
 const routerPoligonos= express.Router();
 
@@ -68,4 +69,4 @@ routerPoligonos.post('/', async(req, res) => {
 
 
 
-module.exports = routerPoligonos;
+module.exports = routerPoligonos ;

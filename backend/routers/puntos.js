@@ -2,6 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
+const {validatePuntPut} = require('../validaciones/validations.js');
+const {validatePuntD} = require('../validaciones/validations.js');
 
 const routerPuntos= express.Router();
 
