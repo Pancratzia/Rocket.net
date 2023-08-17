@@ -1,0 +1,39 @@
+.segunda-barra-superior {
+    background-image: url('../Images/fondo.jpeg');
+    height: 150px; /* Ajusta la altura de la segunda barra superior según tus necesidades */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white; /* Ajusta el color del texto según tus necesidades */
+    
+    
+    width: 100%; /* Asegúrate de que la barra ocupe el 100% del ancho de la página */
+
+  }
+
+  .titulo{
+    font-size: 70px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+  }
+
+  @media screen and (max-width: 768px) {
+    .titulo {
+      font-size: 50px; /* Tamaño de fuente para pantallas más pequeñas */
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .titulo {
+      font-size: 50px; /* Tamaño de fuente para pantallas más pequeñas */
+      display: flex;
+      justify-content: center;
+
+      align-items: center;
+    }
+  }
+  

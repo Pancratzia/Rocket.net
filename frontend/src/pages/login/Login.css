@@ -1,0 +1,162 @@
+.contenedor-login{
+  width: 100%;
+  display: flex;  
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+
+}
+
+.contenedor-formulario{
+  line-height: 10px;
+  width: 100%;
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
+}
+
+h1{
+  font-size: 40px;
+  margin-top: 10%;
+  margin-left: 10%;
+}
+  
+h2{
+  font-size: 17px;
+  font-weight: 300;
+  margin-left: 10%;  
+  margin-bottom: 5%;
+    
+}
+  
+  
+h3{
+  margin-left: 10%;
+  }
+
+
+.input1{
+  font-size: 18px;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  height: 45px;
+  border-radius: 20px;
+  width: 70%;
+  padding-left: 10px;
+  background-color: #E6E0E0;
+  border: 4px solid #2CAB73;
+  margin-left: 10%;
+}
+
+button{
+  text-align: start;
+  width: 70%;
+  font-size: 20px;
+  padding: 10px;
+  color: white;
+  background-color: #032240;
+  border: none;
+  cursor:pointer;
+  font-family: 'Poppins', sans-serif;
+  margin-left: 10%;
+  margin-top: 3%;
+  margin-bottom: 2%;
+   
+}
+
+a{
+  color: black;
+  white-space: nowrap;
+  align-items: center;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  margin: 10%;
+    
+ }
+
+
+ /*RESPONSIVE*/
+
+@media screen and (max-width: 768px) {
+ 
+  .main-login .contenedor-panel{
+ 
+
+    display: block;
+  
+  }
+
+  
+}
+  
+
+
+  @media (min-width: 768px) and (max-width: 1300px) {
+   
+    .main-login .contenedor-panel{
+
+    min-height: 400px;
+  } 
+
+  h1{
+    font-size: 30px;
+  }
+
+  h2, h3{
+    font-size: 15px;
+  }
+
+ 
+
+  button{
+    font-size: 15px;
+    width: 68%;
+    
+  }
+
+
+  a{
+    font-size: 15px;
+  
+  }
+  }
+
+
+  @media screen and (max-width: 450px) {
+     
+    .main-login .contenedor-panel{
+     
+      min-height: 400px; 
+    
+    }
+
+    h1{
+      font-size: 25px;
+    }
+    
+    h2{
+      line-height: normal;
+      font-size: 13px;
+      margin-top:2%
+    }
+  
+    h3{
+      font-size: 13px;
+    }
+
+    .input1{
+      height: 30px;
+    }
+
+    button{
+      font-size: 13px;
+   
+    }
+    
+    a{
+      font-size: 13px;
+    }
+
+  }
+
+
+
+
