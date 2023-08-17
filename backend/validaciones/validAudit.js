@@ -5,15 +5,16 @@ const { validateResult } = require('../helpers/validateHelper')
 const validateAudit = [
 
   check('operacion')
-    .exists()
-	.isLength({ max: 100 })
-	.custom((value, { req })=>{
+  	.exists()
+		.isLength({ max: 100 })
+		.custom((value, { req })=>{
 		let patron = /^\s+$/;
 
 		if(patron.test(value)){
 			return false
 		} return true
 	})
+	.isString()
     .not()
     .isEmpty(),
 	check('id_usuario')
@@ -25,9 +26,6 @@ const validateAudit = [
 ]
 
 
-// Otras validaciones abajo
-
-
-
 
 module.exports = { validateAudit }
+
