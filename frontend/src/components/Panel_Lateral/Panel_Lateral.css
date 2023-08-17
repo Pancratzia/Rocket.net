@@ -11,12 +11,6 @@
   width: 100%;
 }
 
-.logo2{
-  display: none;
-  width: 100%;
-
-
-}
 
 @media (max-width: 768px) {
   .panel-lateral{
@@ -25,13 +19,4 @@
 
 
   }
-
-  .logo {
-    display: none;
-  }
-  .logo2 {
-    display: block;
-  }
-
-
 }

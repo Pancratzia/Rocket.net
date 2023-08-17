@@ -3,7 +3,11 @@
   display: flex;  
   border-bottom-right-radius: 15px;
   border-top-right-radius: 15px;
-
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
 }
 
 .contenedor-formulario{
@@ -11,66 +15,86 @@
   width: 100%;
   border-bottom-left-radius: 0px;
   border-top-left-radius: 0px;
+  padding: 0 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 h1{
   font-size: 40px;
-  margin-top: 10%;
-  margin-left: 10%;
+  
 }
   
 h2{
   font-size: 17px;
   font-weight: 300;
-  margin-left: 10%;  
-  margin-bottom: 5%;
     
 }
-  
-  
-h3{
-  margin-left: 10%;
-  }
 
-
-.input1{
+.input{
   font-size: 18px;
   justify-content: center;
   font-family: 'Poppins', sans-serif;
   height: 45px;
   border-radius: 20px;
-  width: 70%;
+  width: 100%;
   padding-left: 10px;
   background-color: #E6E0E0;
   border: 4px solid #2CAB73;
-  margin-left: 10%;
 }
 
-button{
+.form{
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label{
+  margin: 5px 0;
+}
+
+.btn{
   text-align: start;
-  width: 70%;
   font-size: 20px;
   padding: 10px;
   color: white;
+  width: 95%;
   background-color: #032240;
   border: none;
   cursor:pointer;
   font-family: 'Poppins', sans-serif;
-  margin-left: 10%;
-  margin-top: 3%;
-  margin-bottom: 2%;
-   
+  margin: 10px auto 0;
+  transition: all 0.5s ease;
+  border-radius: 10px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
 }
 
-a{
-  color: black;
-  white-space: nowrap;
-  align-items: center;
+.btn:hover{
+  background-color: #032240ee;
+}
+
+.link{
+  color: #032240;
   cursor: pointer;
   font-family: 'Poppins', sans-serif;
-  margin: 10%;
-    
- }
+  transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+}
+.link:hover{
+  color: #032240ee;
+}
 
 
  /*RESPONSIVE*/
