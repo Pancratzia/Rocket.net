@@ -1,0 +1,77 @@
+
+  
+  .texto-derechos{
+    background-color: #032240;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 100%;
+  }
+
+  .contenido-footer{
+    background-color: #032240;
+  }
+
+  .panel-footer{
+    display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas con el mismo ancho */
+  
+  }
+
+
+
+  .parte-izquierda,   .parte-derecha, .parte-centro{
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+  }
+
+
+
+.icono-contenedor{
+  
+}
+
+  .icono{
+    color: white;
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+  }
+
+.boton-footer{
+  background-color: #2CAB73;
+  padding: 10PX;
+    width: 300px;
+    border-radius: 15px;
+    color: white;
+    font-size: bold;
+    font-weight: bold;
+    border: none;
+
+}
+
+.boton-footer-contenedor{
+  margin-top: 20px;
+}
+
+
+/* Estilos para pantallas pequeñas */
+@media screen and (max-width: 768px),
+       (min-width: 769px) and (max-width: 990px) {
+  .panel-footer {
+    grid-template-columns: 1fr; /* Una columna en lugar de tres en pantallas pequeñas y de tamaño medio */
+  }
+
+  .parte-izquierda,
+  .parte-derecha,
+  .parte-centro {
+    padding: 10px; /* Reduce el padding en pantallas pequeñas y de tamaño medio */
+    text-align: center; /* Centra el texto dentro del contenedor */
+  }
+}
+

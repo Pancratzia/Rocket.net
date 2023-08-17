@@ -2,6 +2,9 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
+const { validateAudit } = require('../validaciones/validations.js');
+const {obtenerFechayHora} = require('../funciones/funciones.js');
+
 
 const routerAuditoria= express.Router();
 
@@ -9,8 +12,10 @@ routerAuditoria.use(express.json());
 routerAuditoria.use(cors());
 
 
-
 // create 
+
+
+
 
 
 
