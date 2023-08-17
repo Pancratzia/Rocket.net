@@ -34,3 +34,18 @@
   height: 100%;
   object-fit: cover;
 }
+
+@media screen and (max-width: 768px) {
+  .main-login .contenedor-panel{
+    grid-template-columns: 1fr;
+    grid-template-rows: 20% 80%;
+  }
+}
+  
+
+@media screen and (max-width: 480px) {
+  .main-login .contenedor-panel{
+    width: 90%;
+  }
+}
+  

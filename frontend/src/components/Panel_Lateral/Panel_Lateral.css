@@ -1,4 +1,4 @@
-.panel-lateral{
+.panel-lateral {
   background-color: #032240;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
@@ -7,16 +7,20 @@
   align-items: center;
 }
 
-.logo{
-  width: 100%;
+.logo {
+  max-width: 100%;
 }
 
-
 @media (max-width: 768px) {
-  .panel-lateral{
-   
-   border-radius: 15px 15px 0 0;
+  .panel-lateral {
+    border-radius: 15px 15px 0 0;
+    -webkit-border-radius: 15px 15px 0 0;
+    -moz-border-radius: 15px 15px 0 0;
+    -ms-border-radius: 15px 15px 0 0;
+    -o-border-radius: 15px 15px 0 0;
+  }
 
-
+  .logo {
+    max-height: 200px;
   }
 }

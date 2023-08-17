@@ -7,13 +7,6 @@ function Panel_Lateral() {
   return (
     <div className="panel-lateral">
       <img className="logo" src={RocketLogo} alt="Logo RocketNet" />
-
-      {/*
-        ES MALA PRACTICA UTILIZAR DOS LOGOS. EL LOGO DEBE ADAPTARSE AL RESPONSIVE
-
-      <img className='logo2' src={RocketLogo2} alt='Logo RocketNet movil'/>
-      */}
-
     </div>
   );
 }
