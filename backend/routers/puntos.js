@@ -25,7 +25,18 @@ routerPuntos.use(cors());
 
 
 //update
-
+routerPuntos.put('/:id', async (req, res) => {
+    try {
+      const {id} = req.params;
+      const {id_zona, latitud, longitud} = req.body;
+      
+      const updateRocket = await pool.query('UPDATE "Puntos" SET id_zona = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_zona, latitud, longitud, id]);
+  
+      res.json('¡Todo fue actualizado!');
+    } catch (err) {
+      console.error(err.message)
+    }
+  })
 
 
 
@@ -38,7 +49,16 @@ routerPuntos.use(cors());
 
 
 //delete
+routerPuntos.delete('/:id', async(req, res )=> {
+  try {
+    const {id} = req.params;
+    const deleteRocket = await pool.query('DELETE FROM "Puntos" WHERE id_punto = $1', [id]);
 
+    res.json('El punto fue borrado');
+  } catch (err) {
+    console.error(err.message)
+  }
+})
 
 
 
