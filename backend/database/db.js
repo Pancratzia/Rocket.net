@@ -2,7 +2,7 @@ const Pool = require('pg').Pool;
 
 const pool = new Pool({
   user: "postgres",
-  password: "Efesios2.10",
+  password: "",
   host: "localhost",
   port: 5432,
   database: "rocket"
