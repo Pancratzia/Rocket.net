@@ -13,11 +13,12 @@ app.use('/api/poligonos',routerPoligonos);
 const routerPuntos = require('./routers/puntos.js');
 app.use('/api/puntos',routerPuntos); 
 
+
 app.get('/', (req, res)=>{
     res.send('Prueba de funcionamiento de backend 🖥️')
 });
 
-
+   
 app.listen(port, () => {
     console.log(`El servidor esta escuchando en el puerto ${port}`);
 })
