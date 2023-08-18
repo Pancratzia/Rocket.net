@@ -30,23 +30,18 @@ routerPuntos.post('/',validatePuntos, async(req,res)=>{
     }
 });
 
-
-
-
-
-
-
-
-
-
 //update
 routerPuntos.put('/:id', async (req, res) => {
     try {
       const {id} = req.params;
       const {id_zona, latitud, longitud} = req.body;
+      const  operacion  = req.method;
+      const  id_usuario  =req.headers['id_usuario'];
       
-      const updateRocket = await pool.query('UPDATE "Puntos" SET id_zona = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_zona, latitud, longitud, id]);
+      const updateRocket = await pool.query('UPDATE "puntos" SET id_zona = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_zona, latitud, longitud, id]);
   
+      auditar(operacion,id_usuario);
+
       res.json('¡Todo fue actualizado!');
     } catch (err) {
       console.error(err.message)
@@ -54,36 +49,22 @@ routerPuntos.put('/:id', async (req, res) => {
   })
 
 
-
-
-
-
-
-
-
-
-
 //delete
 routerPuntos.delete('/:id', async(req, res )=> {
   try {
     const {id} = req.params;
-    const deleteRocket = await pool.query('DELETE FROM "Puntos" WHERE id_punto = $1', [id]);
+    const  operacion  = req.method;
+    const  id_usuario  =req.headers['id_usuario'];
+
+    const deleteRocket = await pool.query('DELETE FROM "puntos" WHERE id_punto = $1', [id]);
+
+    auditar(operacion,id_usuario);
 
     res.json('El punto fue borrado');
   } catch (err) {
     console.error(err.message)
   }
 })
-
-
-
-
-
-
-
-
-
-
 
 //get all puntos
 

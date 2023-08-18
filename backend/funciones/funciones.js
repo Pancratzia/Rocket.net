@@ -23,7 +23,7 @@ function obtenerFechayHora(seleccion) {
 		const fechaActual = obtenerFechayHora("fecha");
     const horaActual = obtenerFechayHora("hora");
 
-		 db.query("INSERT INTO auditoria (operacion,id_usuario,fecha,hora) VALUES (UPPER($1),$2,CAST($3 as date),CAST($4 as time))",
+		 db.query("INSERT INTO auditorias (operacion,id_usuario,fecha,hora) VALUES (UPPER($1),$2,CAST($3 as date),CAST($4 as time))",
 			[operacion,id_usuario,fechaActual,horaActual]);
 	} catch (err) {
 		console.error(err.message);

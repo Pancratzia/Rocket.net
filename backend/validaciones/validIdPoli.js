@@ -3,11 +3,11 @@ const { validateResult } = require('../helpers/validateHelper')
 
 const validateIdPoligono = [
 	
-	check('id')
+	check('id_poligono')
 		.exists()
-		.not()
-		.isEmpty()
-		.isNumeric(),
+		.isNumeric()
+			.not()
+			.isEmpty(),
 		(req, res, next) => {
 			validateResult(req, res, next)
 		}

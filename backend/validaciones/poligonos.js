@@ -3,12 +3,12 @@ const { validateResult } = require('../helpers/validateHelper')
 
 const validatePoliPost = [
 
-	check('nombre_zona')
+	check('nombre_poligono')
 	.exists()
-	.not()
-	.isEmpty()
-    .isLength({ max: 50 })
-	.isAlphanumeric(),
+	.isLength({ max: 50 })
+	.isString()
+		.not()
+		.isEmpty(),
 	check('id_usuario')
 	.exists()
 	.isNumeric(),
