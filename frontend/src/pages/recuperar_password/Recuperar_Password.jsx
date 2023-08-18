@@ -1,54 +1,96 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import '../recuperar_password/Recuperar_Password.css';
-import { FaMagnifyingGlass } from "react-icons/fa6"
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Recuperar_Password.css";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 function Recuperar_Password() {
   return (
     <div className="contenedor-recuperar">
-        <form className="formulario-recuperar">
-          <div className="titulo-recuperar">
-            <h1>Has olvidado tu contraseña?</h1>
-            <p>Ingresa la informacion correspondiente en los campos de abajo</p>
-          </div>
+      <form className="formulario-recuperar">
+        <div className="titulo-recuperar">
+          <h1>Has olvidado tu contraseña?</h1>
+          <p>Ingresa la informacion correspondiente en los campos de abajo</p>
+        </div>
 
-          <div className="campos">
-            <div className="campo1">
-            <label className="labelre" htmlFor="usuario">Ingresa tu usuario</label>
-            <input name="usuario" id="usuario" type="text" className="inputre" />           
-            </div>
+        <div className="campos">
+          <div className="campo">
+            <label className="label" htmlFor="usuario">
+              Ingresa tu usuario
+            </label>
 
-            <FaMagnifyingGlass className='busqueda-icon'/>
-
-            <div className="campo2">
-            <label className="labelre" htmlFor="pregunta">Pregunta de seguridad</label>
-            <input name="respuesta" id="respuesta" type="text" className="inputre2" />
-            </div>
-          </div>
-
-          <div className="titulo-recuperar">
-            <h1>Nueva contraseña</h1>
-            <p>Recuerda colocar digitos en mayuscula, alfanumericos y caracteres especiales para mayor seguridad</p>
-          </div>
-
-          <div className="campos2">
-            <div className="campo3">
-            <label className="labelre" htmlFor="password">Contraseña nueva</label>
-            <input name="password" id="password" type="password" className="inputre" />
-            </div>
-
-            <div className="campo4">
-            <label className="labelre" htmlFor="password2">Repite contraseña nueva</label>
-            <input name="password2" id="password2" type="password" className="inputre2" />
+            <div className="field">
+              <input
+                name="usuario"
+                id="usuario"
+                type="text"
+                className="input withIcon"
+              />
+              <FaMagnifyingGlass className="busqueda-icon" />
             </div>
           </div>
 
-            <button className="btn">Validar</button>
-        </form>
+          <div className="campo">
+            <label className="label" id="pregunta" htmlFor="respuesta">
+              Pregunta de seguridad
+            </label>
 
-        <Link to="/Login" className="link">Volver al inicio de sesion</Link>
-      </div>
+            <div className="field">
+              <input
+                name="respuesta"
+                id="respuesta"
+                type="text"
+                className="input"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="titulo-recuperar">
+          <h1>Nueva contraseña</h1>
+          <p>
+            Recuerda colocar digitos en mayuscula, alfanumericos y caracteres
+            especiales para mayor seguridad
+          </p>
+        </div>
+
+        <div className="campos">
+          <div className="campo">
+            <label className="label" htmlFor="password">
+              nueva contraseña
+            </label>
+            <div className="field">
+              <input
+                name="password"
+                id="password"
+                type="password"
+                className="input"
+              />
+            </div>
+          </div>
+
+          <div className="campo">
+            <label className="label" htmlFor="confirmpassword">
+              repite la contraseña
+            </label>
+            <div className="field">
+              <input
+                name="confirmpassword"
+                id="confirmpassword"
+                type="password"
+                className="input"
+              />
+            </div>
+          </div>
+        </div>
+
+        <button className="btn">Validar</button>
+      </form>
+
+      <Link to="/Login" className="link">
+        Volver al inicio de sesion
+      </Link>
+    </div>
   );
-};
+}
 
-export default Recuperar_Password
+export default Recuperar_Password;

@@ -22,7 +22,7 @@ function Login() {
               type="password"
               className="input"
             />
-            <button className="btn">Iniciar sesion</button>
+            <button className="btn">Iniciar sesión</button>
           </form>
         </div>
 
