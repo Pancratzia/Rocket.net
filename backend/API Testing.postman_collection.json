@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:3000/api/puntos/",
+			"name": "POST puntos",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {}
 			},
@@ -35,40 +35,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3000/api/poligonos/1",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "id_usuario",
-						"value": "1",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"nombre_poligono\": \"Av.Xx\",\r\n    \"id_usuario\": 1\r\n}\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:3000/api/poligonos/1"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": "http://localhost:3000/api/poligonos"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/puntos/1",
+			"name": "PUT puntos",
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -92,7 +59,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3000/api/puntos/1",
+			"name": "DELETE puntos",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -107,64 +74,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3000/api/poligonos/1",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "id_usuario",
-						"value": "1",
-						"type": "text"
-					}
-				],
-				"url": "http://localhost:3000/api/poligonos/1"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"description\": \"I need to clean my pxnx \"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:3000/api/poligonos/"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos/3",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"description\": \"I need to clean my pxnx \"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:3000/api/poligonos/3"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/puntos",
+			"name": "GET puntos",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -185,45 +95,60 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3000/api/poligonos/3",
+			"name": "POST poligonos",
 			"request": {
-				"method": "DELETE",
+				"method": "POST",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"description\": \"I need to clean my pxnx \"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:3000/api/poligonos/3"
+				"url": "http://localhost:3000/api/poligonos"
 			},
 			"response": []
 		},
 		{
-			"name": "delete poligonos not exist",
+			"name": "PUT poligonos",
 			"request": {
-				"method": "DELETE",
-				"header": [],
+				"method": "PUT",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"description\": \"I need to clean my pxnx \"\r\n}",
+					"raw": "{\r\n    \"nombre_poligono\": \"Av.Xx\",\r\n    \"id_usuario\": 1\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:3000/api/poligonos/8"
+				"url": "http://localhost:3000/api/poligonos/1"
 			},
 			"response": []
 		},
 		{
-			"name": "delete poligonos but id is not numeric",
+			"name": "DELETE poligonos",
 			"request": {
 				"method": "DELETE",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:3000/api/poligonos/1"
+			},
+			"response": []
+		},
+		{
+			"name": "GET poligonos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -234,7 +159,7 @@
 						}
 					}
 				},
-				"url": "http://localhost:3000/api/poligonos/a"
+				"url": "http://localhost:3000/api/poligonos/"
 			},
 			"response": []
 		},
@@ -244,160 +169,6 @@
 				"method": "GET",
 				"header": [],
 				"url": "localhost:3000/api/auditoria/"
-			},
-			"response": []
-		},
-		{
-			"name": "PUT poligonos",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"nombre_poligonos\": \"adsas asd\",\n    \"id_usuario\": \"0\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "localhost:3000/api/poligonos/200"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/puntos/7",
-			"request": {
-				"method": "PUT",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/puntos/9",
-			"request": {
-				"method": "DELETE",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"request": {
-				"method": "POST",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/puntos/9",
-			"request": {
-				"method": "DELETE",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/puntos/9",
-			"request": {
-				"method": "DELETE",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"request": {
-				"method": "POST",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"request": {
-				"method": "POST",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"request": {
-				"method": "POST",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/puntos/3",
-			"request": {
-				"method": "PUT",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/puntos/3",
-			"request": {
-				"method": "PUT",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/puntos/3",
-			"request": {
-				"method": "PUT",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"request": {
-				"method": "POST",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"request": {
-				"method": "POST",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"request": {
-				"method": "POST",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/pol",
-			"request": {
-				"method": "POST",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"request": {
-				"method": "POST",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/api/poligonos",
-			"request": {
-				"method": "POST",
-				"header": []
 			},
 			"response": []
 		}

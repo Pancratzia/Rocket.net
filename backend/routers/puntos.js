@@ -15,12 +15,12 @@ routerPuntos.use(cors());
 //create
 routerPuntos.post('/',validatePuntos, async(req,res)=>{
     try {
-        const {id_zona,latitud,longitud} = req.body;
+        const {id_poligono,latitud,longitud} = req.body;
         const  operacion  = req.method;
         const  id_usuario  =req.headers['id_usuario'];
 
-        const newPuntos = await pool.query("INSERT INTO puntos (id_zona,latitud,longitud) VALUES($1,$2,$3)",
-            [id_zona, latitud, longitud]);
+        const newPuntos = await pool.query("INSERT INTO puntos (id_poligono,latitud,longitud) VALUES($1,$2,$3)",
+            [id_poligono, latitud, longitud]);
 
             auditar(operacion,id_usuario);
         
@@ -31,14 +31,14 @@ routerPuntos.post('/',validatePuntos, async(req,res)=>{
 });
 
 //update
-routerPuntos.put('/:id', async (req, res) => {
+routerPuntos.put('/:id',validatePuntos, async (req, res) => {
     try {
       const {id} = req.params;
-      const {id_zona, latitud, longitud} = req.body;
+      const {id_poligono, latitud, longitud} = req.body;
       const  operacion  = req.method;
       const  id_usuario  =req.headers['id_usuario'];
       
-      const updateRocket = await pool.query('UPDATE "puntos" SET id_zona = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_zona, latitud, longitud, id]);
+      const updateRocket = await pool.query('UPDATE "puntos" SET id_poligono = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_poligono, latitud, longitud, id]);
   
       auditar(operacion,id_usuario);
 

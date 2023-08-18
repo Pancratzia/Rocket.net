@@ -77,7 +77,7 @@ routerPoligonos.get('/', async (req, res) => {
 routerPoligonos.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const poligono = await pool.query('SELECT * FROM poligonos WHERE id_poligonos = $1', [id]);
+    const poligono = await pool.query('SELECT * FROM poligonos WHERE id_poligono = $1', [id]);
     res.json(poligono.rows[0]);
   } catch (error) {
     console.log(error);
