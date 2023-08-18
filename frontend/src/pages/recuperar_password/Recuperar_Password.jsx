@@ -56,7 +56,7 @@ function Recuperar_Password() {
         <div className="campos">
           <div className="campo">
             <label className="label" htmlFor="password">
-              Contraseña nueva
+              nueva contraseña
             </label>
             <div className="field">
               <input
@@ -70,7 +70,7 @@ function Recuperar_Password() {
 
           <div className="campo">
             <label className="label" htmlFor="confirmpassword">
-              Repite contraseña nueva
+              repite la contraseña
             </label>
             <div className="field">
               <input
