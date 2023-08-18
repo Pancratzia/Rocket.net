@@ -10,11 +10,12 @@
   display: grid;
   grid-template-columns: 35% 65%;
   height: 100%;
-  width: 60%;
   max-width: 800px;
+  min-width: 400px;
   border-radius: 15px;
   min-height: 500px;
 }
+
 
 .video-bg{
   position: fixed;

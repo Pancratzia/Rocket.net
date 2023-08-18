@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css';
-import Login from './pages/login/Login';
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Login from './pages/login/Login';
 import Recuperar_Password from './pages/recuperar_password/Recuperar_Password';
 import Panel_Lateral from './components/Panel_Lateral/Panel_Lateral';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -16,7 +16,7 @@ function App() {
       <div className="main-login">
         <div className="video-bg">
           <video className="video" autoPlay loop muted>
-            <source src="../public/estrellas.mp4" type="video/mp4"/>
+            <source src="./estrellas.mp4" type="video/mp4"/>
           </video>
         </div>
         <div className="contenedor-panel">
@@ -59,19 +59,13 @@ function App() {
         {
           element: <Login />,
           path: '/login',
-        }
-      ]
-    },
-    {
-      path: '/recuperar_password',
-      element: <LayoutExt />,
-      children: [
+        },
         {
           element: <Recuperar_Password />,
           path: '/recuperar_password',
         }
       ]
-    },
+    }
 
 
   ]);
