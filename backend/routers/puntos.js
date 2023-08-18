@@ -85,15 +85,16 @@ routerPuntos.delete('/:id', async(req, res )=> {
 
 
 
-//get all
+//get all puntos
 
-
-
-
-
-
-
-
+routerPuntos.get('/', async (req, res) => {
+  try {
+      const puntos = await pool.query('SELECT * FROM puntos');
+      res.json(puntos.rows);
+  } catch (error) {
+      console.log(error);
+  }
+})
 
 
 

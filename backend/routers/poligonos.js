@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
 
+const { validateIdPoligono } = require('../validaciones/validIdPoli.js');
 const {validatePoliPost} = require('../validaciones/poligonos.js');
 
 
@@ -48,30 +49,47 @@ routerPoligonos.put('/:id_poligonos', validatePoligonos, async (req, res) => {
 });
 
 
+//get all poligono
 
+routerPoligonos.get('/', async (req, res) => {
+  try {
+    const poligonos = await pool.query('SELECT * FROM poligonos');
+    res.json(poligonos.rows);
+  } catch (error) {
+    console.log(error);
+  }
+  
+});
 
+//get a poligono
 
+routerPoligonos.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const poligono = await pool.query('SELECT * FROM poligonos WHERE id_poligonos = $1', [id]);
+    res.json(poligono.rows[0]);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
+//delete a poligono
 
+routerPoligonos.delete('/:id', validateIdPoligono, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query('DELETE FROM poligonos WHERE id_poligonos = $1', [id]);
 
-//delete
+    if (result.rowCount === 0) {
+      // No se eliminó ningún polígono, ya que no se encontró en la base de datos
+      return res.status(404).json({ error: 'Polígono no encontrado' });
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-//get all
-
-
-
-
+    res.json('Polígono eliminado');
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error al eliminar el polígono' });
+  }
+});
 
 module.exports = routerPoligonos ;
