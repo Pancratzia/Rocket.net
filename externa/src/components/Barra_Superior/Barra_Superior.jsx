@@ -8,7 +8,7 @@ function Barra_Superior() {
     <div className="barra-superior">
 
 
-      <div>
+      <div className='logo-contenedor'>
         <img className='logo' src={logo} alt="" />
       </div>
     </div>
