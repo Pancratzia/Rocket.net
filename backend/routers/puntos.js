@@ -2,6 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
+const {validatePuntPut} = require('../validaciones/validations.js');
+const {validatePuntD} = require('../validaciones/validations.js');
 
 const { validatePuntos } = require('../validaciones/validPoints.js');
 const {auditar} = require('../funciones/funciones.js')
@@ -38,7 +40,18 @@ routerPuntos.post('/',validatePuntos, async(req,res)=>{
 
 
 //update
-
+routerPuntos.put('/:id', async (req, res) => {
+    try {
+      const {id} = req.params;
+      const {id_zona, latitud, longitud} = req.body;
+      
+      const updateRocket = await pool.query('UPDATE "Puntos" SET id_zona = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_zona, latitud, longitud, id]);
+  
+      res.json('¡Todo fue actualizado!');
+    } catch (err) {
+      console.error(err.message)
+    }
+  })
 
 
 
@@ -51,7 +64,16 @@ routerPuntos.post('/',validatePuntos, async(req,res)=>{
 
 
 //delete
+routerPuntos.delete('/:id', async(req, res )=> {
+  try {
+    const {id} = req.params;
+    const deleteRocket = await pool.query('DELETE FROM "Puntos" WHERE id_punto = $1', [id]);
 
+    res.json('El punto fue borrado');
+  } catch (err) {
+    console.error(err.message)
+  }
+})
 
 
 

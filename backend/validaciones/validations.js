@@ -55,7 +55,9 @@ const validatePoligonos = [ //Validacion para nombre_poligonos e id_usuarios44+
 
 	(req, res, next) =>  { validateResult(req, res, next) }
 
+
 ]
 
 module.exports = { validateAudit }
 module.exports = { validatePoligonos }
+
