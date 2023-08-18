@@ -86,13 +86,14 @@ routerPoligonos.get('/:id', async (req, res) => {
 
 //delete a poligono
 
-routerPoligonos.delete('/:id', validateIdPoligono, async (req, res) => {
+routerPoligonos.delete('/:id_poligono', validateIdPoligono, async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id_poligono } = req.params;
+    
     const  operacion  = req.method;
     const  user_id =req.headers['id_usuario'];
 
-    const result = await pool.query('DELETE FROM poligonos WHERE id_poligono = $1', [id]);
+    const result = await pool.query('DELETE FROM poligonos WHERE id_poligono = $1', [id_poligono]);
 
     if (result.rowCount === 0) {
       // No se eliminó ningún polígono, ya que no se encontró en la base de datos
