@@ -58,6 +58,14 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 4. Instala las dependencias: `npm install`
 5. Inicia el servidor: `npm run dev`
 
+## Reglas
+
+1. Los cambios y correcciones deben ser notificados con 24 horas de antelación.
+2. Los viernes habrá reuniones generales con los jefes de grupo para realizar el sprint review.
+3. Los viernes en la mañana será necesaria la apertura de PR para integrar al proyecto los cambios de la semana.
+4. Las reuniones de todo el equipo junto a los líderes de proyecto se realizarán en casos especiales.
+5. Las ausencias, problemas o retrasos deben notificarse con 48 horas de antelación o al momento en caso de tratarse de casos extremos.
+
 ## Contribución
 
 De momento, solo se permiten contribuciones de los miembros del equipo. Cualquier otro tipo de PR será rechazado.
