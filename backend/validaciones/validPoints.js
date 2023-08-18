@@ -3,7 +3,7 @@ const { validateResult } = require('../helpers/validateHelper')
 
 
 const validatePuntos = [
-	check('id_zona')
+	check('id_poligono')
 	.exists()
 	.isNumeric(),
 	check('latitud')
