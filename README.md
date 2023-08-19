@@ -12,6 +12,15 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 - **Integración de APIs:** Utilizaremos APIs gratuitas para mejorar diversas funcionalidades del sistema.
 - **Estadísticas y Reportes:** Ofreceremos reportes relevantes para la toma de decisiones empresariales.
 
+## Reglas
+
+1. Los cambios y correcciones deben ser notificados con 24 horas de antelación.
+2. Los viernes habrá reuniones generales con los jefes de grupo para realizar el sprint review.
+3. Los viernes en la mañana será necesaria la apertura de PR para integrar al proyecto los cambios de la semana.
+4. Las reuniones de todo el equipo junto a los líderes de proyecto se realizarán en casos especiales.
+5. Las ausencias, problemas o retrasos deben notificarse con 48 horas de antelación o al momento en caso de tratarse de casos extremos.
+6. Las fechas de entrega pautadas por asesores o líderes de grupo pueden contar con extensión máxima de hasta 12 horas en caso de situaciones extremas o justificadas.
+
 # **Asesores y Roles:**
 
 ## Asesor
@@ -57,6 +66,7 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 3. Dirijete a tu carpeta destino con `cd frontend/` o `cd backend/` 
 4. Instala las dependencias: `npm install`
 5. Inicia el servidor: `npm run dev`
+   
 
 ## Contribución
 

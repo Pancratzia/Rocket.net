@@ -44,13 +44,14 @@
   }
 
 .boton-footer{
-  background-color: #2CAB73;
-  padding: 10PX;
-    width: 300px;
-    border-radius: 15px;
+    font-size: Roboto, sans-serif;
     color: white;
-    font-size: bold;
     font-weight: bold;
+    border-radius: 50px;
+    background-color: #2CAB73;
+    padding: 10px;
+    width: 200px;
+    text-transform: uppercase;
     border: none;
 
 }
