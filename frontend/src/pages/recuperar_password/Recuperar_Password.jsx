@@ -8,8 +8,8 @@ function Recuperar_Password() {
     <div className="contenedor-recuperar">
       <form className="formulario-recuperar">
         <div className="titulo-recuperar">
-          <h1>Has olvidado tu contraseña?</h1>
-          <p>Ingresa la informacion correspondiente en los campos de abajo</p>
+          <h1>¿Has olvidado tu contraseña?</h1>
+          <p>Ingresa la información correspondiente en los campos de abajo</p>
         </div>
 
         <div className="campos">
@@ -48,8 +48,8 @@ function Recuperar_Password() {
         <div className="titulo-recuperar">
           <h1>Nueva contraseña</h1>
           <p>
-            Recuerda colocar digitos en mayuscula, alfanumericos y caracteres
-            especiales para mayor seguridad
+            <b>Recordatorio</b> escribe dígitos en mayúscula, tipo alfanuméricos y carácteres
+            especiales para mayor seguridad en la contraseña
           </p>
         </div>
 
@@ -83,7 +83,7 @@ function Recuperar_Password() {
           </div>
         </div>
 
-        <button className="btn">Validar</button>
+        <button className="btn">Guardar cambios</button>
       </form>
 
       <Link to="/Login" className="link">

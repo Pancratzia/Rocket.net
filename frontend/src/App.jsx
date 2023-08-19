@@ -17,6 +17,7 @@ function App() {
         <div className="video-bg">
           <video className="video" autoPlay loop muted>
             <source src="./estrellas.mp4" type="video/mp4"/>
+            <source src="./estrellas.webm" type="video/webm"/>
           </video>
         </div>
         <div className="contenedor-panel">
