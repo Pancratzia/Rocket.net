@@ -22,6 +22,7 @@ routerPoligonos.post('/',validatePoliPost, async(req, res) => {
       const {nombre_poligono} = req.body;
       const {id_usuario} = req.body;
 
+      // parametros para auditoria
       const  operacion  = req.method;
       const  user_id  =req.headers['id_usuario'];
 
@@ -41,6 +42,8 @@ routerPoligonos.post('/',validatePoliPost, async(req, res) => {
 routerPoligonos.put('/:id_poligono', validateIdPoligono, async (req, res) => {
   const { id_poligono} = req.params;
   const { nombre_poligono, id_usuario } = req.body;
+  
+  // parametros para auditoria
   const  operacion  = req.method;
   const  user_id  =req.headers['id_usuario'];
 
@@ -48,11 +51,12 @@ routerPoligonos.put('/:id_poligono', validateIdPoligono, async (req, res) => {
     // Actualiza el polígono en la base de datos
     const query = 'UPDATE poligonos SET nombre_poligono = $1, id_usuario = $2 WHERE id_poligono = $3';
     const values = [nombre_poligono, id_usuario, id_poligono];
+    
     await pool.query(query, values);
 
     auditar(operacion,user_id);
 
-    res.json({ mensaje: 'Polígono actualizado correctamente' });
+    res.json({ mensaje: 'Polígono actualizado correctamente' }); //  JSON.stringify(updatePoligono.rows[0])
   } catch (error) {
     console.error('Error al actualizar el polígono:', error);
     res.status(500).json({ error: error.message });
