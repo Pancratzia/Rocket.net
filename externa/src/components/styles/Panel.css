@@ -60,6 +60,7 @@ input {
 
 
 .division-izquierda {
+    min-height: 550px;
     flex: 1;
     display: flex;
     align-items: center;
