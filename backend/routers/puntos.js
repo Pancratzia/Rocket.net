@@ -29,15 +29,15 @@ routerPuntos.post('/',validatePuntos, async(req,res)=>{
 });
 
 //update
-routerPuntos.put('/:id_puntos',validatePuntos, async (req, res) => {
+routerPuntos.put('/:id_punto',validatePuntos, async (req, res) => {
     try {
-      const {id_puntos} = req.params;
+      const {id_punto} = req.params;
       const {id_poligono, latitud, longitud} = req.body;
 
       const  operacion  = req.method;
       const  id_usuario  =req.headers['id_usuario'];
       
-      const updateRocket = await pool.query('UPDATE "puntos" SET id_poligono = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_poligono, latitud, longitud, id_puntos]);
+      const updateRocket = await pool.query('UPDATE "puntos" SET id_poligono = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_poligono, latitud, longitud, id_punto]);
   
       auditar(operacion,id_usuario);
 
