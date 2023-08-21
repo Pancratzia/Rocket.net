@@ -3,8 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
 
-const { validateIdPoligono } = require('../validaciones/validIdPoli.js');
-const {validatePoliPost} = require('../validaciones/poligonos.js');
+const { validateIdPoligono,validatePoligonos} = require('../validaciones/ValidaPoligonos.js');
 const {auditar} = require('../funciones/funciones.js')
 
 
@@ -16,7 +15,7 @@ routerPoligonos.use(cors());
 
 
 //create
-routerPoligonos.post('/',validatePoliPost, async(req, res) => {
+routerPoligonos.post('/',validatePoligonos, async(req, res) => {
     try {
         
       const {nombre_poligono} = req.body;
@@ -49,7 +48,7 @@ routerPoligonos.put('/:id_poligono', validateIdPoligono, async (req, res) => {
 
   try {
     // Actualiza el polígono en la base de datos
-    const query = 'UPDATE poligonos SET nombre_poligono = $1, id_usuario = $2 WHERE id_poligono = $3';
+    const query = 'UPDATE poligonos SET nombre_poligono = $1 WHERE id_poligono = $2';
     const values = [nombre_poligono, id_usuario, id_poligono];
     
     await pool.query(query, values);
