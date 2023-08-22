@@ -77,10 +77,10 @@ routerPoligonos.get('/', async (req, res) => {
 
 //get a poligono
 
-routerPoligonos.get('/:id', async (req, res) => {
+routerPoligonos.get('/:id_poligono', async (req, res) => {
   try {
-    const { id } = req.params;
-    const poligono = await pool.query('SELECT * FROM poligonos WHERE id_poligono = $1', [id]);
+    const { id_poligono } = req.params;
+    const poligono = await pool.query('SELECT * FROM poligonos WHERE id_poligono = $1', [id_poligono]);
     res.json(poligono.rows[0]);
   } catch (error) {
     console.log(error);
@@ -96,9 +96,9 @@ routerPoligonos.delete('/:id_poligono', validaIdPoligono, async (req, res) => {
     const  operacion  = req.method;
     const  id_usuarioAuditoria =req.headers['id_usuario'];
 
-    const result = await pool.query('DELETE FROM poligonos WHERE id_poligono = $1', [id_poligono]);
+    const deletePoligono = await pool.query('DELETE FROM poligonos WHERE id_poligono = $1', [id_poligono]);
 
-    if (result.rowCount === 0) {
+    if (deletePoligono.rowCount === 0) {
       // No se eliminó ningún polígono, ya que no se encontró en la base de datos
       return res.status(404).json({ error: 'Polígono no encontrado' });
     }

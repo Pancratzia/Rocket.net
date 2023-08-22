@@ -36,10 +36,17 @@ const validaPoligono = [ //Validacion para nombre_poligonos e id_usuarios44+
 const validaIdPoligono = [
 	
 	check('id_poligono')
-		.exists()
-		.isNumeric()
+		.exists().withMessage('El campo id_poligono es requerido')
+		.isNumeric().withMessage('El campo id_poligono debe ser numérico')
 			.not()
-			.isEmpty(),
+			.isEmpty()
+			.custom((value, { req })=>{
+				let patron = /^$|^\s+$/;
+	
+				if(patron.test(value)){
+					return false
+				} return true
+			}).withMessage('El campo id_poligono no puede estar vacio'),
 		(req, res, next) => {
 			validarResultados(req, res, next)
 		}
