@@ -25,11 +25,17 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
       const  operacion  = req.method;
       const  id_usuarioAuditoria =req.headers['id_usuario'];
 
-      const newRocket= await pool.query('INSERT INTO public. "poligonos" (nombre_poligono, id_usuario) VALUES($1, $2) RETURNING *', [nombre_poligono, id_usuario]);
+      const buscarIdUsuario = await pool.query("SELECT id_usuario FROM usuarios WHERE id_usuario = $1",[id_usuario]);
+
+        if (buscarIdUsuario.rowCount === 0) {
+          return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+      const nuevoPoligono= await pool.query('INSERT INTO public. "poligonos" (nombre_poligono, id_usuario) VALUES($1, $2) RETURNING *', [nombre_poligono, id_usuario]);
 
       auditar(operacion,id_usuarioAuditoria);
 
-      res.send(JSON.stringify(newRocket.rows[0]));
+      res.send(JSON.stringify(nuevoPoligono.rows[0]));
     } catch (err) {
         console.error(err.message);
     }
@@ -63,11 +69,16 @@ routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
 });
 
 
-//get all poligono
+//get all and order them from first to last
 
 routerPoligonos.get('/', async (req, res) => {
   try {
-    const poligonos = await pool.query('SELECT * FROM poligonos');
+    const poligonos = await pool.query('SELECT * FROM poligonos ORDER BY id_poligono ASC');
+
+    if (poligonos.rowCount === 0) {
+      // No se eliminó ningún polígono, ya que no se encontró en la base de datos
+      return res.status(404).json({ error: 'No hay poligonos registrados' });
+    }
     res.json(poligonos.rows);
   } catch (error) {
     console.log(error);
@@ -77,38 +88,47 @@ routerPoligonos.get('/', async (req, res) => {
 
 //get a poligono
 
-routerPoligonos.get('/:id', async (req, res) => {
+routerPoligonos.get('/:id_poligono', validaIdPoligono, async (req, res) => {
   try {
-    const { id } = req.params;
-    const poligono = await pool.query('SELECT * FROM poligonos WHERE id_poligono = $1', [id]);
+    const { id_poligono } = req.params;
+    const poligono = await pool.query('SELECT * FROM poligonos WHERE id_poligono = $1', [id_poligono]);
+
+    if (poligono.rowCount === 0) {
+      // No se eliminó ningún polígono, ya que no se encontró en la base de datos
+      return res.status(404).json({ error: 'Polígono no encontrado' });
+    }
     res.json(poligono.rows[0]);
   } catch (error) {
     console.log(error);
   }
 });
 
-//delete a poligono
+//delete a poligono, 
 
 routerPoligonos.delete('/:id_poligono', validaIdPoligono, async (req, res) => {
   try {
-    const { id_poligono } = req.params;
-    
-    const  operacion  = req.method;
-    const  id_usuarioAuditoria =req.headers['id_usuario'];
+      const { id_poligono } = req.params;
+      
+      //if the polygon id route parameter is empty "" throw error message
+      if (!id_poligono) {
+          return res.status(400).json({ error: 'El campo id_poligono es requerido' });
+      }
+      
+      const operacion = req.method;
+      const id_usuarioAuditoria = req.headers['id_usuario'];
+      
+      const eliminarPoligono = await pool.query('DELETE FROM poligonos WHERE id_poligono = $1', [id_poligono]);
 
-    const result = await pool.query('DELETE FROM poligonos WHERE id_poligono = $1', [id_poligono]);
+      if (eliminarPoligono.rowCount === 0) {
+          return res.status(404).json({ error: 'Polígono no encontrado' });
+      }
 
-    if (result.rowCount === 0) {
-      // No se eliminó ningún polígono, ya que no se encontró en la base de datos
-      return res.status(404).json({ error: 'Polígono no encontrado' });
-    }
+      auditar(operacion, id_usuarioAuditoria);
 
-    auditar(operacion,id_usuarioAuditoria);
-
-    res.json('Polígono eliminado');
+      res.json('Polígono eliminado');
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Error al eliminar el polígono' });
+      console.log(error);
+      res.status(500).json({ error: 'Error al eliminar el polígono' });
   }
 });
 

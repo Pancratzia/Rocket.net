@@ -12,24 +12,26 @@ const validaPoligono = [ //Validacion para nombre_poligonos e id_usuarios44+
 				return false
 			} return true
 		}).withMessage('El campo nombre del poligono no puede estar vacio'),
-		
+	
+
+	(req, res, next) =>  { validarResultados(req, res, next) }
+
+
 ]
 
 const validaIdPoligono = [
 	
 	check('id_poligono')
-		.exists()
-		.isNumeric()
-			.not()
-			.isEmpty().custom(async (value) => {
-				const query = 'SELECT COUNT(*) AS count FROM poligonos WHERE id_poligono=$1';
-				const result = await pool.query(query, [value]);
-				const count = result.rows[0].count;
-				if (count == 0) {
-				throw new Error('El id_poligono no existe en la base de datos');
-				}
-				return true
-			}),
+		.exists().withMessage({error: 'El campo id_poligono no existe'})
+		.isNumeric().withMessage({error: 'El campo id_poligono debe ser numérico'})
+		.notEmpty().withMessage().withMessage({error: 'El campo id_poligono no puede estar vacío'})
+			.custom((value, { req })=>{
+				let patron = /^$|^\s+$/;
+	
+				if(patron.test(value)){
+					return false
+				} return true
+			}).withMessage({error: 'El campo id_poligono no puede estar vacio'}),
 		(req, res, next) => {
 			validarResultados(req, res, next)
 		}	
