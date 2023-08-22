@@ -40,7 +40,7 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
 // Ruta para modificar un polígono por su ID
 routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
   const { id_poligono} = req.params;
-  const { nombre_poligono, id_usuario } = req.body;
+  const { nombre_poligono } = req.body;
   
   // parametros para auditoria
   const  operacion  = req.method;
@@ -48,8 +48,8 @@ routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
 
   try {
     // Actualiza el polígono en la base de datos
-    const query = 'UPDATE poligonos SET nombre_poligono = $1, id_usuario = $2 WHERE id_poligono = $3';
-    const values = [nombre_poligono, id_usuario, id_poligono];
+    const query = 'UPDATE poligonos SET nombre_poligono=$1 WHERE id_poligono=$2';
+    const values = [nombre_poligono, id_poligono];
     
     await pool.query(query, values);
 
