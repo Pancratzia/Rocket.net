@@ -2,12 +2,13 @@ import React from 'react';
 import '../styles/Panel.css'; // Importa el archivo CSS para los estilos
 import mapa from '../Images/mapa.jpg';
 import { AiOutlineSearch } from 'react-icons/ai';
+import Mapview from '../Mapa/Mapview';
 
 function Panel() {
   return (
     <div className="panel">
       <div className="division-izquierda">
-        <img className='mapa' src={mapa} alt="Imagen" />
+        <Mapview/>
       </div>
       <div className="division-derecha">
         <p className='texto-principal'>¡Conoce si estás dentro de las zonas de Cobertura que cubre Rocket.net!
