@@ -1,8 +1,8 @@
 const { check } = require('express-validator') //TODO <---
-const { validateResult } = require('../helpers/validateHelper')
+const { validarResultados } = require('../helpers/validarHelper')
 
 
-const validatePuntos = [
+const validaPuntos = [
 	check('id_poligono')
 	.exists()
 	.isNumeric(),
@@ -32,10 +32,10 @@ const validatePuntos = [
 		.not()
 		.isEmpty(),
 		(req, res, next) => {
-			validateResult(req, res, next)
+			validarResultados(req, res, next)
 		}
 
 ]
 
 
-module.exports = { validatePuntos }
+module.exports = { validaPuntos }

@@ -1,8 +1,8 @@
 const { check } = require('express-validator') //TODO <---
-const { validateResult } = require('../helpers/validateHelper')
+const { validarResultados } = require('../helpers/validarHelper')
 
-const validatePoligonos = [ //Validacion para nombre_poligonos e id_usuarios44+
-	check('nombre_poligonos')
+const validaPoligono = [ //Validacion para nombre_poligonos e id_usuarios44+
+	check('nombre_poligono')
 		.exists().withMessage('El campo nombre del poligono es obligatorio')
 		.isLength({ max: 50 }).withMessage('El campo nombre del poligono no puede exceder los 50 caracteres')
 		.custom((value, { req })=>{
@@ -28,12 +28,12 @@ const validatePoligonos = [ //Validacion para nombre_poligonos e id_usuarios44+
 			return true
 		}).withMessage("El usuario no existe en la base de datos"),
 
-	(req, res, next) =>  { validateResult(req, res, next) }
+	(req, res, next) =>  { validarResultados(req, res, next) }
 
 
 ]
 
-const validateIdPoligono = [
+const validaIdPoligono = [
 	
 	check('id_poligono')
 		.exists()
@@ -41,8 +41,8 @@ const validateIdPoligono = [
 			.not()
 			.isEmpty(),
 		(req, res, next) => {
-			validateResult(req, res, next)
+			validarResultados(req, res, next)
 		}
 	
 ]
-module.exports = {validatePoligonos, validateIdPoligono }
+module.exports = {validaPoligono, validaIdPoligono}
