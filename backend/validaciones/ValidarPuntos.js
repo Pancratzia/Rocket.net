@@ -4,33 +4,16 @@ const { validarResultados } = require('../helpers/validarHelper')
 
 const validaPuntos = [
 	check('id_poligono')
-	.exists()
-	.isNumeric(),
+	.exists().withMessage({error: 'El campo id_poligono no existe'})
+	.isNumeric().withMessage({error: 'El campo id_poligono debe ser numérico'}),
 	check('latitud')
-	.exists()
-	.isNumeric()
-	.custom((value, { req })=>{
-			let patron = /^\s+$/;
-	
-			if(patron.test(value)){
-				return false
-			} return true
-		})
-		.not()
-		.isEmpty(),
-
+	.exists().withMessage({error: 'El campo latitud debe existir'})
+	.isNumeric().withMessage({error: 'El campo latitud debe ser numérico'}),
 		check('longitud')
-	.exists()
-	.isNumeric()
-		.custom((value, { req })=>{
-			let patron = /^\s+$/;
-	
-			if(patron.test(value)){
-				return false
-			} return true
-		})
+	.exists().withMessage({error: 'El campo longitud debe existir'})
+	.isNumeric().withMessage({error: 'El campo longitud debe ser numérico'})
 		.not()
-		.isEmpty(),
+		.isEmpty().withMessage({error: 'El campo longitud no debe estar vacio'}),
 		(req, res, next) => {
 			validarResultados(req, res, next)
 		}
