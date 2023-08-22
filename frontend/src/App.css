@@ -36,6 +36,13 @@
   object-fit: cover;
 }
 
+.main-dashboard{
+  display:grid;
+  grid-template-columns: auto 85%;
+}
+
+
+
 @media screen and (max-width: 1200px) {
   .main-login .contenedor-panel{
     width: 90%;
