@@ -17,7 +17,7 @@
     font-weight: 900;
   }
 
-  @media screen and (max-width: 768px) {
+  @media (max-width: 480px) {
     .titulo {
       font-size: 50px; /* Tamaño de fuente para pantallas más pequeñas */
       display: flex;
@@ -26,13 +26,13 @@
       align-items: center;
     }
   }
-
-  @media screen and (min-width: 768px) {
+  
+  @media (max-width: 768px) {
     .titulo {
       font-size: 50px; /* Tamaño de fuente para pantallas más pequeñas */
       display: flex;
       justify-content: center;
-
+      text-align: center;
       align-items: center;
     }
   }

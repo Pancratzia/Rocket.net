@@ -27,13 +27,13 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: left;
+    align-items: center;
   }
 
 
 
-.icono-contenedor{
-  
+.iconos-contenedor{
+
 }
 
   .icono{
@@ -41,6 +41,10 @@
     width: 25px;
     height: 25px;
     margin: 5px;
+  }
+
+  .icono:hover {
+    cursor: pointer;
   }
 
 .boton-footer{
@@ -61,18 +65,31 @@
 }
 
 
-/* Estilos para pantallas pequeñas */
-@media screen and (max-width: 768px),
-       (min-width: 769px) and (max-width: 990px) {
+@media (max-width: 480px) {
   .panel-footer {
-    grid-template-columns: 1fr; /* Una columna en lugar de tres en pantallas pequeñas y de tamaño medio */
+    grid-template-columns: 1fr;
   }
 
   .parte-izquierda,
   .parte-derecha,
   .parte-centro {
-    padding: 10px; /* Reduce el padding en pantallas pequeñas y de tamaño medio */
-    text-align: center; /* Centra el texto dentro del contenedor */
+    padding: 10px; 
+    text-align: center; 
   }
 }
+
+@media (max-width: 768px) {
+  .panel-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .parte-izquierda,
+  .parte-derecha,
+  .parte-centro {
+    padding: 10px;
+    text-align: center; 
+  }
+}
+
+
 
