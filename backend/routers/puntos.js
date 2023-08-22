@@ -54,7 +54,7 @@ routerPuntos.put('/:id_punto',validaPuntos, async (req, res) => {
       const  operacion  = req.method;
       const  id_usuarioAuditoria  =req.headers['id_usuario'];
       
-      const updateRocket = await pool.query('UPDATE "puntos" SET id_poligono = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_poligono, latitud, longitud, id_punto]);
+      const modificarPunto = await pool.query('UPDATE "puntos" SET id_poligono = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_poligono, latitud, longitud, id_punto]);
   
       auditar(operacion,id_usuarioAuditoria);
 
@@ -72,10 +72,14 @@ routerPuntos.delete('/:id', async(req, res )=> {
     const  operacion  = req.method;
     const  id_usuarioAuditoria  =req.headers['id_usuario'];
 
-    const deleteRocket = await pool.query('DELETE FROM "puntos" WHERE id_punto = $1', [id]);
+    const borrarPunto = await pool.query('DELETE FROM "puntos" WHERE id_punto = $1', [id]);
 
     auditar(operacion,id_usuarioAuditoria);
 
+    if (borrarPunto.rowCount === 0) {
+      // No se eliminó ningún polígono, ya que no se encontró en la base de datos
+      return res.status(404).json({ error: 'Punto no encontrado' });
+    }
     res.json('El punto fue borrado');
   } catch (err) {
     console.error(err.message)

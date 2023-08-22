@@ -12,7 +12,7 @@ const validaPoligono = [ //Validacion para nombre_poligonos e id_usuarios44+
 			} return true
 		}).withMessage('El campo nombre del poligono no puede estar vacio'),
 	
-	check('id_usuario')	
+	/*check('id_usuario')	
 		.exists().withMessage('El campo id_usuario es requerido')
 		.notEmpty().withMessage('El campo id_usuario no puede estar vacío')
 		.isNumeric().withMessage('El campo id_usuario debe ser numérico')
@@ -26,7 +26,7 @@ const validaPoligono = [ //Validacion para nombre_poligonos e id_usuarios44+
 			  throw new Error('El id_usuario no existe en la base de datos');
 			}
 			return true
-		}).withMessage("El usuario no existe en la base de datos"),
+		}).withMessage("El usuario no existe en la base de datos"),*/
 
 	(req, res, next) =>  { validarResultados(req, res, next) }
 
