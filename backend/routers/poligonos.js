@@ -35,7 +35,7 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
 
       auditar(operacion,id_usuarioAuditoria);
 
-      res.send(JSON.stringify(nuevoPoligono.rows[0]));
+      return res.status(200).json({ mensaje: 'Poligono creado exitosamente' });
     } catch (err) {
         console.error(err.message);
     }
@@ -53,6 +53,12 @@ routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
   const  id_usuarioAuditoria =req.headers['id_usuario'];
 
   try {
+
+    const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_usuario = $1",[id_poligono]);
+
+        if (buscarIdPoligono.rowCount === 0) {
+          return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
     // Actualiza el polígono en la base de datos
     const query = 'UPDATE poligonos SET nombre_poligono=$1 WHERE id_poligono=$2';
     const values = [nombre_poligono, id_poligono];
@@ -108,11 +114,6 @@ routerPoligonos.get('/:id_poligono', validaIdPoligono, async (req, res) => {
 routerPoligonos.delete('/:id_poligono', validaIdPoligono, async (req, res) => {
   try {
       const { id_poligono } = req.params;
-      
-      //if the polygon id route parameter is empty "" throw error message
-      if (!id_poligono) {
-          return res.status(400).json({ error: 'El campo id_poligono es requerido' });
-      }
       
       const operacion = req.method;
       const id_usuarioAuditoria = req.headers['id_usuario'];

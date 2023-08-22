@@ -24,14 +24,15 @@ const validaIdPoligono = [
 	check('id_poligono')
 		.exists().withMessage({error: 'El campo id_poligono no existe'})
 		.isNumeric().withMessage({error: 'El campo id_poligono debe ser numérico'})
-		.notEmpty().withMessage().withMessage({error: 'El campo id_poligono no puede estar vacío'})
+		.not()
+		.isEmpty().withMessage({error: 'El campo id_poligono no puede estar vacío'})
 			.custom((value, { req })=>{
 				let patron = /^$|^\s+$/;
-	
+	 
 				if(patron.test(value)){
 					return false
 				} return true
-			}).withMessage({error: 'El campo id_poligono no puede estar vacio'}),
+			}).withMessage({error: 'El campo id_poligono no puede contener espacios vacios'}),
 		(req, res, next) => {
 			validarResultados(req, res, next)
 		}	
