@@ -25,11 +25,17 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
       const  operacion  = req.method;
       const  id_usuarioAuditoria =req.headers['id_usuario'];
 
-      const newRocket= await pool.query('INSERT INTO public. "poligonos" (nombre_poligono, id_usuario) VALUES($1, $2) RETURNING *', [nombre_poligono, id_usuario]);
+      const buscarIdUsuario = await pool.query("SELECT id_usuario FROM usuarios WHERE id_usuario = $1",[id_usuario]);
+
+        if (buscarIdUsuario.rowCount === 0) {
+          return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+      const nuevoPoligono= await pool.query('INSERT INTO public. "poligonos" (nombre_poligono, id_usuario) VALUES($1, $2) RETURNING *', [nombre_poligono, id_usuario]);
 
       auditar(operacion,id_usuarioAuditoria);
 
-      res.send(JSON.stringify(newRocket.rows[0]));
+      res.send(JSON.stringify(nuevoPoligono.rows[0]));
     } catch (err) {
         console.error(err.message);
     }
