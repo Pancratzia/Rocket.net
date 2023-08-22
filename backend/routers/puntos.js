@@ -82,11 +82,11 @@ routerPuntos.delete('/:id', async(req, res )=> {
   }
 })
 
-//get all puntos
+//get all puntos and order them from first to last
 
 routerPuntos.get('/', async (req, res) => {
   try {
-      const puntos = await pool.query('SELECT * FROM puntos');
+      const puntos = await pool.query('SELECT * FROM puntos ORDER BY id_punto ASC');
       res.json(puntos.rows);
   } catch (error) {
       console.log(error);
