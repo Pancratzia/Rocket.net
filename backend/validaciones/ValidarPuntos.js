@@ -37,5 +37,15 @@ const validaPuntos = [
 
 ]
 
+const validaidPuntos  = [
+check('id_punto')
+		.exists()
+		.isNumeric().withMessage('El campo id_punto debe ser numérico')
+			.not()
+			.isEmpty(),
+		(req, res, next) => {
+			validarResultados(req, res, next)
+		}
 
-module.exports = { validaPuntos }
+	]
+module.exports = { validaPuntos, validaidPuntos }
