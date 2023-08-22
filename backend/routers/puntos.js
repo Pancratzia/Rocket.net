@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
 
-const { validatePuntos } = require('../validaciones/ValidaPuntos.js');
+const { validaPuntos } = require('../validaciones/ValidarPuntos.js');
 const {auditar} = require('../funciones/funciones.js')
 
 const routerPuntos= express.Router();
@@ -11,35 +11,52 @@ routerPuntos.use(express.json());
 routerPuntos.use(cors());
 
 //create
-routerPuntos.post('/',validatePuntos, async(req,res)=>{
+routerPuntos.post('/',validaPuntos, async(req,res)=>{
     try {
         const {id_poligono,latitud,longitud} = req.body;
         const  operacion  = req.method;
-        const  id_usuario  =req.headers['id_usuario'];
+        const  id_usuarioAuditoria  =req.headers['id_usuario'];
 
-        const newPuntos = await pool.query("INSERT INTO puntos (id_poligono,latitud,longitud) VALUES($1,$2,$3) RETURNING *",
+        // Validaciones para validar existencia del poligono
+        const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_poligono = $1",[id_poligono]);
+
+        if (buscarIdPoligono.rowCount === 0) {
+          return res.status(404).json({ error: 'Polígono no encontrado' });
+        }
+
+        //Validaciones para validar que un punto no tenga la misma latitud y longitud 
+        const existenciasPuntos = await pool.query("SELECT id_punto FROM puntos WHERE id_poligono = $1 AND latitud = $2 AND longitud = $3",
+        [id_poligono, latitud, longitud]);
+
+        if (existenciasPuntos.rows.length > 0) {
+        return res.status(400).send({error: "Ya existe este punto en el polígono"});
+        }
+
+        // Insertar puntos
+        await pool.query("INSERT INTO puntos (id_poligono,latitud,longitud) VALUES($1,$2,$3) RETURNING *",
             [id_poligono, latitud, longitud]);
 
-            auditar(operacion,id_usuario);
-        
-            res.send(JSON.stringify(newPuntos.rows[0]));
+        auditar(operacion,id_usuarioAuditoria);
+
+        return res.status(200).json({ mensaje: 'Punto creado exitosamente' });
+
     } catch (err) {
         console.error(err.message);
     }
 });
 
 //update
-routerPuntos.put('/:id_punto',validatePuntos, async (req, res) => {
+routerPuntos.put('/:id_punto',validaPuntos, async (req, res) => {
     try {
       const {id_punto} = req.params;
       const {id_poligono, latitud, longitud} = req.body;
 
       const  operacion  = req.method;
-      const  id_usuario  =req.headers['id_usuario'];
+      const  id_usuarioAuditoria  =req.headers['id_usuario'];
       
       const updateRocket = await pool.query('UPDATE "puntos" SET id_poligono = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_poligono, latitud, longitud, id_punto]);
   
-      auditar(operacion,id_usuario);
+      auditar(operacion,id_usuarioAuditoria);
 
       res.json('¡Todo fue actualizado!');
     } catch (err) {
@@ -53,11 +70,11 @@ routerPuntos.delete('/:id', async(req, res )=> {
   try {
     const {id} = req.params;
     const  operacion  = req.method;
-    const  id_usuario  =req.headers['id_usuario'];
+    const  id_usuarioAuditoria  =req.headers['id_usuario'];
 
     const deleteRocket = await pool.query('DELETE FROM "puntos" WHERE id_punto = $1', [id]);
 
-    auditar(operacion,id_usuario);
+    auditar(operacion,id_usuarioAuditoria);
 
     res.json('El punto fue borrado');
   } catch (err) {

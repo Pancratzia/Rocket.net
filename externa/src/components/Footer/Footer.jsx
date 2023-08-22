@@ -30,7 +30,7 @@ export default function Footer() {
                         <div className='panel-footer'>
                             <div className='parte-izquierda'>
 
-                                <div className='logo-contenedor'><img src={logo} alt="" /></div>
+                                <div className='contenedor-logo'><img src={logo} alt="" /></div>
                                 <div className='iconos-contenedor'>
                                     <TiSocialFacebook className='icono' />
                                     <BiLogoLinkedin className='icono' />
@@ -54,7 +54,7 @@ export default function Footer() {
 
                             <div className='parte-derecha'>
                                 <h2>Un poco sobre nosotros...</h2>
-                                <p> LOLorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore adipisci eius, odit excepturi ex consectetur, totam ipsa facere quam cupiditate vel doloremque, suscipit corporis voluptate laboriosam veritatis doloribus exercitationem consequatur?</p>
+                                <p> La empresa líder en el mercado de servicios de Internet. Nuestro compromiso es proporcionarte una conexión estable y veloz para que puedas disfrutar de una experiencia en línea sin interrupciones.</p>
                             </div>
                         </div>
                     </MDBCol>
@@ -66,7 +66,7 @@ export default function Footer() {
             </div>
 
             <div className='texto-derechos'>
-                © {new Date().getFullYear()} Rocket.net. All rights reserved.
+                © {new Date().getFullYear()} Rocket.net. Todos los derechos reservados.
             </div>
         </MDBFooter>
     );
