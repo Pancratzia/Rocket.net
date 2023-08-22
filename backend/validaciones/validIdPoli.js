@@ -7,11 +7,18 @@ const validateIdPoligono = [
 		.exists()
 		.isNumeric()
 			.not()
-			.isEmpty(),
+			.isEmpty()
+		.custom((value, { req })=>{
+			let patron = /^$|^\s+$/;
+
+			if(patron.test(value)){
+				return false
+			} return true
+		}).withMessage('El campo id_poligono no puede estar vacio'),
 		(req, res, next) => {
 			validateResult(req, res, next)
 		}
-	
+		
 ]
 
 module.exports = { validateIdPoligono }

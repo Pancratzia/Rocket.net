@@ -64,11 +64,11 @@ routerPoligonos.put('/:id_poligono', validateIdPoligono, async (req, res) => {
 });
 
 
-//get all poligono
+//get all and order them from first to last
 
 routerPoligonos.get('/', async (req, res) => {
   try {
-    const poligonos = await pool.query('SELECT * FROM poligonos');
+    const poligonos = await pool.query('SELECT * FROM poligonos ORDER BY id_poligono ASC');
     res.json(poligonos.rows);
   } catch (error) {
     console.log(error);
