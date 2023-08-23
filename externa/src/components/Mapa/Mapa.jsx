@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { MapContainer, Marker, Polygon, Popup, TileLayer, Tooltip, useMap, useMapEvents } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Polygon,
+  Popup,
+  TileLayer,
+  Tooltip,
+  useMap,
+  useMapEvents,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 const data = {
@@ -63,17 +72,34 @@ const data = {
     },
   ],
 };
+
 const invertCoordinates = (coordinates) =>
   coordinates.map((coord) => [coord[1], coord[0]]);
+
+function MapClickHandler({ onMapClick }) {
+  useMapEvents({
+    click: (e) => {
+      const { lat, lng } = e.latlng;
+      onMapClick(lat, lng);
+    },
+  });
+
+  return null;
+}
+
+function ChangeView({ center, zoom }) {
+  const map = useMap();
+  map.flyTo(center, zoom);
+  return null;
+}
 
 function Mapa() {
   const [markerPosition, setMarkerPosition] = useState([10.0736, -69.3214]);
   const [mapCenter, setMapCenter] = useState([10.0736, -69.3214]);
 
-  const handleMapClick = (e) => {
-    const clickedLatLng = e.latlng;
-    setMarkerPosition([clickedLatLng.lat, clickedLatLng.lng]);
-    setMapCenter([clickedLatLng.lat, clickedLatLng.lng]);
+  const handleMapClick = (lat, lng) => {
+    setMarkerPosition([lat, lng]);
+    setMapCenter([lat, lng]);
   };
 
   return (
@@ -81,18 +107,19 @@ function Mapa() {
       center={mapCenter}
       zoom={14}
       style={{ height: "100%", width: "100%" }}
-      onClick={handleMapClick}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
+      <MapClickHandler onMapClick={handleMapClick} />
+      <ChangeView center={mapCenter} zoom={14} />
       {data.features.map((feature, index) => (
         <Polygon
           key={index}
           positions={invertCoordinates(feature.geometry.coordinates[0])}
         >
-          <Popup>{feature.properties.name}</Popup>
+          <Tooltip>{feature.properties.name}</Tooltip>
         </Polygon>
       ))}
       <Marker position={markerPosition}>
