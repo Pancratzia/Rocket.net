@@ -93,7 +93,7 @@ function ChangeView({ center, zoom }) {
   return null;
 }
 
-function Mapa() {
+function Mapa({ currentPosition }) {
   const [markerPosition, setMarkerPosition] = useState([10.0736, -69.3214]);
   const [mapCenter, setMapCenter] = useState([10.0736, -69.3214]);
 
@@ -101,6 +101,13 @@ function Mapa() {
     setMarkerPosition([lat, lng]);
     setMapCenter([lat, lng]);
   };
+
+  useEffect(() => {
+    if (currentPosition) {
+      setMarkerPosition([currentPosition.lat, currentPosition.lng]);
+      setMapCenter([currentPosition.lat, currentPosition.lng]);
+    }
+  }, [currentPosition]);
 
   return (
     <MapContainer

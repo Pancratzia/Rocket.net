@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/Panel.css"; // Importa el archivo CSS para los estilos
 import Mapa from "../Mapa/Mapa";
 
 function Panel() {
+
+
+  const [currentPosition, setCurrentPosition] = useState(null);
+
+  const handleSearchClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setCurrentPosition({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        
+      });
+    } else {
+      alert("Este navegador no soporta geolocalización");
+    }
+  };
+
   return (
     <div className="panel">
       <div className="division-izquierda">
-        <Mapa />
+        <Mapa currentPosition={currentPosition} />
       </div>
       <div className="division-derecha">
         <p className="texto-principal">
@@ -20,7 +38,7 @@ function Panel() {
           Esperamos!
         </p>
         <div className="buscador">
-          <button className="boton-buscador">Buscar</button>
+          <button className="boton-buscador" onClick={handleSearchClick}>Buscar</button>
         </div>
         <p className="texto-secundario">
           **Estas areas de cobertura pueden sufrir cambios para el incremento
