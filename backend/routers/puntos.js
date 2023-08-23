@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
 
-const { validaPuntos } = require('../validaciones/ValidarPuntos.js');
+const { validaPuntos, validaidPuntos } = require('../validaciones/ValidarPuntos.js');
 const {auditar} = require('../funciones/funciones.js')
 
 const routerPuntos= express.Router();
@@ -66,7 +66,7 @@ routerPuntos.put('/:id_punto',validaPuntos, async (req, res) => {
 
 
 //delete
-routerPuntos.delete('/:id', async(req, res )=> {
+routerPuntos.delete('/:id', validaidPuntos, async(req, res )=> {
   try {
     const {id} = req.params;
     const  operacion  = req.method;

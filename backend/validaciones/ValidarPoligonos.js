@@ -6,6 +6,7 @@ const validaPoligono = [ //Validacion para nombre_poligonos e id_usuarios44+
 	check('nombre_poligono')
 		.exists().withMessage('El campo nombre del poligono es obligatorio')
 		.isLength({ max: 50 }).withMessage('El campo nombre del poligono no puede exceder los 50 caracteres')
+		.isAlpha().withMessage('El campo nombre del poligono no puede ser numérico')
 		.custom((value, { req })=>{
 			let patron = /^$|^\s+$/;
 			if (patron.test(value)) {
