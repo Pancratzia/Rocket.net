@@ -1,0 +1,104 @@
+.sidebar{
+    flex: 1;
+    border-right:0.5px solid lightgrey;
+    min-height: 100vh;
+    background-color: #2CAB73;
+
+    
+
+    .top-container{
+        background-color: #032240;
+        padding: 10px;
+        padding-top: 0;
+
+        .logo-container{
+
+            text-align: left;
+        
+            .logo{
+                width: 60%;
+                height: auto;
+                }
+        
+        }
+
+        .usuario-container{
+            display: flex;
+            align-items: left;
+            justify-content: left;
+
+            .usuario-info{
+                padding-left: 5px;
+                }
+        
+                .img-usuario{
+                height: 50px;
+                width: 50px;
+                object-fit: cover;
+                border-radius: 100%;
+                }
+                
+                .usuario-nombre{
+                font-size: 13px;
+                color: white;
+                font-weight: bold;
+                }
+        
+                .usuario-rol{
+                font-size: 10px;
+                color: white;
+                margin:0;
+                }
+            
+        }
+    
+    }
+
+    hr{
+        height:0;
+        border: 1px solid #299E6A;
+        margin:0;
+        
+    }
+
+    .center{
+        padding-left: 1px;
+
+        ul{
+            list-style-type: none;
+            margin:0;
+            padding:0;
+
+            .title-dashboard{
+                font-size: 10px;
+                font-weight: bold;
+                color: #032240;
+                padding: 8px;
+            }
+
+            li{
+                display: flex;
+                align-items: center;
+                padding: 6px;
+                cursor: pointer;
+
+                &:hover{
+                    background-color:#299E6A;
+
+                }
+                span{
+                    font-size: 13px;
+                    font-weight:normal;
+                    color:white;
+                    margin-left: 5px;
+
+                }
+
+                .icon{
+                    color:#032240;
+
+                }
+            }
+        }
+    }
+}
