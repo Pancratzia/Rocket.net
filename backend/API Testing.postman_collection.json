@@ -179,6 +179,27 @@
 			"response": []
 		},
 		{
+			"name": "GET poligonospuntos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"Localizar poligonos y puntos \"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/poligonospuntos"
+			},
+			"response": []
+		},
+		{
 			"name": "GET auditorias",
 			"request": {
 				"method": "GET",

@@ -5,13 +5,16 @@ const port = 3000;
 
 //  Router
 const routerAuditoria = require('./routers/auditoria.js');
-app.use('/api/auditorias', routerAuditoria); 
+app.use('/api/auditoria',routerAuditoria); 
 
 const routerPoligonos = require('./routers/poligonos.js');
 app.use('/api/poligonos',routerPoligonos); 
 
 const routerPuntos = require('./routers/puntos.js');
 app.use('/api/puntos',routerPuntos); 
+
+const routerPoligonosPuntos = require('./routers/poligonopuntos.js');
+app.use('/api/poligonospuntos',routerPoligonosPuntos);
 
 app.get('/', (req, res)=>{
     res.send('Prueba de funcionamiento de backend 🖥️')
