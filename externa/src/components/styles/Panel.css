@@ -1,144 +1,111 @@
 .panel {
-    width: 100%;
-    background-color: white;
-    display: flex;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
+.texto-principal {
+  font-size: 24px;
+  font-weight: 100px;
+  padding: 20px;
+  color: black;
 
-
-
-.mapa {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  font-weight: 300;
+  text-align: justify;
 }
 
-.texto-principal{
-    font-size: 24px;
-    font-weight: 100px;
-    padding: 20px;
-    color: black;
-    
-    font-weight: 300;
-    text-align: justify;
-}
-
-.texto-secundario{
-    font-size: 14px;
-    font-weight: 300;
-    text-align: justify;
-    width: 50%;
+.texto-secundario {
+  font-size: 14px;
+  font-weight: 300;
+  text-align: justify;
+  width: 50%;
 }
 
 input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    width: 200px;
-    background-color: white;
-  }
-
-
-.input-buscador{
-    margin-right: 10px;
-    padding: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 200px;
+  background-color: white;
 }
 
-.boton-buscador{
-    background-color: #032240;
-    margin-left: 10px;
-    text-transform: uppercase;
-    font-size: Roboto, sans-serif;
-    color: white;
-    font-weight: bold;
-    padding: 5px;
-    width: 150px;
-
+.input-buscador {
+  margin-right: 10px;
+  padding: 5px;
 }
 
+.boton-buscador {
+  background-color: #032240;
+  margin-left: 10px;
+  text-transform: uppercase;
+  font-size: Roboto, sans-serif;
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+  width: 150px;
+}
 
 .division-izquierda {
-    min-height: 550px;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  min-height: 550px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .division-derecha {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.buscador{
-    margin: 10px;
+.buscador {
+  margin: 10px;
 }
 
 img {
-    width: 200px;
-    /* Ajusta el ancho de la imagen según tus necesidades */
+  width: 200px;
+  /* Ajusta el ancho de la imagen según tus necesidades */
 }
 
 input {
-    width: 200px;
-    /* Ajusta el ancho del input según tus necesidades */
-    margin-bottom: 10px;
-    /* Ajusta el margen inferior del input según tus necesidades */
+  width: 200px;
+  /* Ajusta el ancho del input según tus necesidades */
+  margin-bottom: 10px;
+  /* Ajusta el margen inferior del input según tus necesidades */
 }
 
 .boton-contactanos {
-    font-size: Roboto, sans-serif;
-    color: white;
-    font-weight: bold;
-    border-radius: 50px;
-    background-color: #2CAB73;
-    padding: 10px;
-    width: 200px;
-    text-transform: uppercase;
-    border: none;
-   
-    /* Ajusta el margen inferior de los botones según tus necesidades */
+  font-size: Roboto, sans-serif;
+  color: white;
+  font-weight: bold;
+  border-radius: 50px;
+  background-color: #2cab73;
+  padding: 10px;
+  width: 200px;
+  text-transform: uppercase;
+  border: none;
+
+  /* Ajusta el margen inferior de los botones según tus necesidades */
 }
 
-@media (max-width: 480px) {
-    .panel {
-      flex-direction: column; 
-      align-items: center; 
-      margin-bottom: 20px;
-    }
-  
-    .texto-secundario {
-      width: 100%;
-      padding: 20px;
-    }
-  
-    .division-izquierda,
-    .division-derecha {
-      flex: 1; 
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .panel {
-      flex-direction: column; 
-      align-items: center; 
-      margin-bottom: 20px;
-    }
-  
-    .texto-secundario {
-      width: 100%;
-      padding: 20px;
-    }
-  
-    .division-izquierda,
-    .division-derecha {
-      flex: 1; 
+@media (max-width: 768px) {
+  .panel {
+    display: grid;
+    grid-template-rows: 40rem 1fr;
   }
 
+  .division-izquierda {
+    margin: 1rem;
   }
+
+  .texto-secundario {
+    width: 100%;
+    padding: 20px;
+  }
+
+}
