@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
+
 import {
   MapContainer,
   Marker,
@@ -96,6 +98,7 @@ function ChangeView({ center, zoom }) {
 function Mapa({ currentPosition }) {
   const [markerPosition, setMarkerPosition] = useState([10.0736, -69.3214]);
   const [mapCenter, setMapCenter] = useState([10.0736, -69.3214]);
+  const [data, setData] = useState({});
 
   const handleMapClick = (lat, lng) => {
     setMarkerPosition([lat, lng]);
@@ -103,11 +106,21 @@ function Mapa({ currentPosition }) {
   };
 
   useEffect(() => {
+
+    axios.get('http://localhost:3000/api/poligonospuntos')
+    .then(res => {
+        setData(res.data.Features);
+      })
+    .catch(error => {
+        console.error('Error al obtener los datos de la API', error);
+      });
+
     if (currentPosition) {
       setMarkerPosition([currentPosition.lat, currentPosition.lng]);
       setMapCenter([currentPosition.lat, currentPosition.lng]);
     }
   }, [currentPosition]);
+
 
   return (
     <MapContainer
