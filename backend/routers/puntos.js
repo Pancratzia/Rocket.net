@@ -66,13 +66,13 @@ routerPuntos.put('/:id_punto',validaPuntos, async (req, res) => {
 
 
 //delete
-routerPuntos.delete('/:id', validaidPuntos, async(req, res )=> {
+routerPuntos.delete('/:id_punto', validaidPuntos, async(req, res )=> {
   try {
-    const {id} = req.params;
+    const {id_punto} = req.params;
     const  operacion  = req.method;
     const  id_usuarioAuditoria  =req.headers['id_usuario'];
 
-    const borrarPunto = await pool.query('DELETE FROM "puntos" WHERE id_punto = $1', [id]);
+    const borrarPunto = await pool.query('DELETE FROM "puntos" WHERE id_punto = $1', [id_punto]);
 
     auditar(operacion,id_usuarioAuditoria);
 
