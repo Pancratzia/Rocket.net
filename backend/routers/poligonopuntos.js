@@ -56,9 +56,18 @@ routerPoligonosPuntos.get('/', async (req, res) => {
     const featuresArray = [...featuresMap.values()];
 
     const geoJsonResponse = {
-      Features: featuresArray.map(feature => {
-        feature.geometry.coordinates = [feature.geometry.coordinates[0]];
-        return feature;
+      type: "FeatureCollection",
+      features: featuresArray.map(feature => {
+        return {
+          type: "Feature",
+          properties: {
+            name: feature.properties.name,
+          },
+          geometry: {
+            coordinates: [feature.geometry.coordinates[0]],
+            type: "Polygon", // Cambio de ubicación del campo "type"
+          },
+        };
       })
     };
 
