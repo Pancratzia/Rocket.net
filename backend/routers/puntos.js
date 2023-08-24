@@ -53,6 +53,10 @@ routerPuntos.put('/:id_punto',validaPuntos, async (req, res) => {
 
       const  operacion  = req.method;
       const  id_usuarioAuditoria  =req.headers['id_usuario'];
+
+      // Validaciones para validar existencia del poligono
+      // Validar que exita el punto a modificar
+      // ---> aca <-----
       
       // Validaciones para validar existencia del poligono
       const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_poligono = $1",[id_poligono]);
