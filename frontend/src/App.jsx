@@ -5,6 +5,7 @@ import Login from './pages/login/Login';
 import Recuperar_Password from './pages/recuperar_password/Recuperar_Password';
 import Panel_Lateral from './components/Panel_Lateral/Panel_Lateral';
 import Sidebar from './components/Sidebar/Sidebar';
+import Navbar from './components/Navbar/Navbar';
 
 
 
@@ -30,8 +31,12 @@ function App() {
 
   const LayoutSidebar = () => { //Layout de las páginas internas (Dashboard y todo lo que esté dentro)
     return (
-      <div className="main">
+      <div className="main-dashboard">
+        <Sidebar/>
+      <div className="derecha"> 
+        <Navbar />
         <Outlet />
+        </div> 
       </div>
     );
   };
@@ -42,7 +47,7 @@ function App() {
       element: <LayoutSidebar />,
       children: [
         {
-          element: <Sidebar />,
+          element: <div className="div">Hola</div>,
           path: '/',
         }
         ,
