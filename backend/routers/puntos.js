@@ -14,6 +14,7 @@ routerPuntos.use(cors());
 routerPuntos.post('/',validaPuntos, async(req,res)=>{
     try {
         const {id_poligono,latitud,longitud} = req.body;
+        
         const  operacion  = req.method;
         const  id_usuarioAuditoria  =req.headers['id_usuario'];
 
@@ -55,8 +56,11 @@ routerPuntos.put('/:id_punto',validaPuntos, async (req, res) => {
       const  id_usuarioAuditoria  =req.headers['id_usuario'];
 
       // Validaciones para validar existencia del poligono
-      // Validar que exita el punto a modificar
-      // ---> aca <-----
+      const buscarIdPunto = await pool.query("SELECT id_punto FROM puntos WHERE id_punto = $1",[id_punto]);
+
+      if (buscarIdPunto.rowCount === 0) {
+        return res.status(404).json({ error: 'Punto no encontrado' });
+      }
       
       // Validaciones para validar existencia del poligono
       const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_poligono = $1",[id_poligono]);
