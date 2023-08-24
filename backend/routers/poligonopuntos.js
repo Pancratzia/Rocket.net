@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
 
-const { auditar } = require('../funciones/funciones.js')
+
 
 const routerPoligonosPuntos = express.Router();
 
