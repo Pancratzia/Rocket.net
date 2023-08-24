@@ -54,7 +54,7 @@ routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
 
   try {
 
-    const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_poligono = $1",[id_poligono]);
+    const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_usuario = $1",[id_poligono]);
 
         if (buscarIdPoligono.rowCount === 0) {
           return res.status(404).json({ error: 'Poligono no encontrado' });
