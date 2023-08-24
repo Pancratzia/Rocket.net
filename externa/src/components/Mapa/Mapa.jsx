@@ -73,7 +73,7 @@ const data = {
   ],
 };
 
-const invertCoordinates = (coordinates) =>
+const invertirCoordenadas = (coordinates) =>
   coordinates.map((coord) => [coord[1], coord[0]]);
 
 function MapClickHandler({ onMapClick }) {
@@ -87,31 +87,31 @@ function MapClickHandler({ onMapClick }) {
   return null;
 }
 
-function ChangeView({ center, zoom }) {
+function CambiarVista({ center, zoom }) {
   const map = useMap();
   map.flyTo(center, zoom);
   return null;
 }
 
-function Mapa({ currentPosition }) {
-  const [markerPosition, setMarkerPosition] = useState([10.0736, -69.3214]);
-  const [mapCenter, setMapCenter] = useState([10.0736, -69.3214]);
+function Mapa({ posicionActual }) {
+  const [marcaPosicion, setMarcarPosicion] = useState([10.0736, -69.3214]);
+  const [centrarMapa, setCentrarMapa] = useState([10.0736, -69.3214]);
 
   const handleMapClick = (lat, lng) => {
-    setMarkerPosition([lat, lng]);
-    setMapCenter([lat, lng]);
+    setMarcarPosicion([lat, lng]);
+    setCentrarMapa([lat, lng]);
   };
 
   useEffect(() => {
-    if (currentPosition) {
-      setMarkerPosition([currentPosition.lat, currentPosition.lng]);
-      setMapCenter([currentPosition.lat, currentPosition.lng]);
+    if (posicionActual) {
+      setMarcarPosicion([posicionActual.lat, posicionActual.lng]);
+      setcentrarMapa([posicionActual.lat, posicionActual.lng]);
     }
-  }, [currentPosition]);
+  }, [posicionActual]);
 
   return (
     <MapContainer
-      center={mapCenter}
+      center={centrarMapa}
       zoom={14}
       style={{ height: "100%", width: "100%" }}
     >
@@ -120,16 +120,16 @@ function Mapa({ currentPosition }) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <MapClickHandler onMapClick={handleMapClick} />
-      <ChangeView center={mapCenter} zoom={14} />
+      <CambiarVista center={centrarMapa} zoom={14} />
       {data.features.map((feature, index) => (
         <Polygon
           key={index}
-          positions={invertCoordinates(feature.geometry.coordinates[0])}
+          positions={invertirCoordenadas(feature.geometry.coordinates[0])}
         >
           <Tooltip>{feature.properties.name}</Tooltip>
         </Polygon>
       ))}
-      <Marker position={markerPosition}>
+      <Marker position={marcaPosicion}>
         <Popup>Estás Aquí</Popup>
       </Marker>
     </MapContainer>
