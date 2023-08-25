@@ -69,10 +69,11 @@
             padding:0;
 
             .title-dashboard{
-                font-size: 10px;
+                font-size: 13px;
                 font-weight: bold;
                 color: #032240;
                 padding: 8px;
+                cursor: default ; //propiedad para que no aparezca el puntero en el titulo
             }
 
             li{
@@ -86,7 +87,7 @@
 
                 }
                 span{
-                    font-size: 13px;
+                    font-size: 15px;
                     font-weight:normal;
                     color:white;
                     margin-left: 5px;
@@ -110,7 +111,9 @@
         white-space: nowrap;
     }
 
+
 }
+
 
 @media screen and (max-width: 768px) {
 
