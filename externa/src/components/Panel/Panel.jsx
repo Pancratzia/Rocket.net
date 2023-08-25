@@ -5,12 +5,12 @@ import Mapa from "../Mapa/Mapa";
 function Panel() {
 
 
-  const [currentPosition, setCurrentPosition] = useState(null);
+  const [posicionActual, setPosicionActual] = useState(null);
 
-  const handleSearchClick = () => {
+  const manejarBuscarClick = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setCurrentPosition({
+      navigator.geolocation.setPosicionActual((position) => {
+        setPosicionActual({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
@@ -24,7 +24,7 @@ function Panel() {
   return (
     <div className="panel">
       <div className="division-izquierda">
-        <Mapa currentPosition={currentPosition} />
+        <Mapa posicionActual={posicionActual} />
       </div>
       <div className="division-derecha">
         <p className="texto-principal">
@@ -38,7 +38,7 @@ function Panel() {
           Esperamos!
         </p>
         <div className="buscador">
-          <button className="boton-buscador" onClick={handleSearchClick}>Buscar</button>
+          <button className="boton-buscador" onClick={manejarBuscarClick}>Buscar</button>
         </div>
         <p className="texto-secundario">
           **Estas areas de cobertura pueden sufrir cambios para el incremento
