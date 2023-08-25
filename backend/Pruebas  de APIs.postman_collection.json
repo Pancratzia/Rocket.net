@@ -1,0 +1,282 @@
+{
+	"info": {
+		"_postman_id": "6f7f7037-d19e-4124-94f4-a61ae1a03b62",
+		"name": "Pruebas  de APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29047754",
+		"_collection_link": "https://interstellar-spaceship-404941.postman.co/workspace/Team-Workspace~f0d8a6aa-dad6-42cc-8386-949c495a880c/collection/29047754-6f7f7037-d19e-4124-94f4-a61ae1a03b62?action=share&source=collection_link&creator=29047754"
+	},
+	"item": [
+		{
+			"name": "POST JV puntos",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id_poligono\" : 4,    \r\n    \"latitud\" : 10.9981,\r\n    \"longitud\" : -69.9994\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/puntos/"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT JP puntos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>ID</th>\r",
+							"        <th>Nombre Poligono</th>\r",
+							"        <th>ID Poligono</th>\r",
+							"        <th>Longitud</th>\r",
+							"        <th>Latitud</th>\r",
+							"    </tr>\r",
+							"    \r",
+							"    {{#each response}}\r",
+							"        <tr>\r",
+							"            <td>{{id_punto}}</td>\r",
+							"            <td>{{nombre_poligono}}</td>\r",
+							"            <td>{{id_poligono}}</td>\r",
+							"            <td>{{longitud}}</td>\r",
+							"            <td>{{latitud}}</td>\r",
+							"        </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return { response: pm.response.json() }\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id_poligono\" : 1,\r\n    \"latitud\" : 10.052735,\r\n    \"longitud\" : -69.37488\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/puntos/5"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete MT puntos",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:3000/api/puntos/87"
+			},
+			"response": []
+		},
+		{
+			"name": "GET JV puntos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/api/puntos/"
+			},
+			"response": []
+		},
+		{
+			"name": "GET CE puntos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/api/puntos/"
+			},
+			"response": []
+		},
+		{
+			"name": "Post MT Poligono",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre_poligono\":\"Florencio Gimenez\" ,\r\n    \"id_usuario\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/poligonos/"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT GE  poligonos",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre_poligono\": \"Nucleo Obelisco Oeste\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/poligonos/1"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE CE poligono",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:3000/api/poligonos/3"
+			},
+			"response": []
+		},
+		{
+			"name": "GET CE poligonos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/api/poligonos/"
+			},
+			"response": []
+		},
+		{
+			"name": "GET JP puntos y poligonos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>ID</th>\r",
+							"        <th>Nombre Poligono</th>\r",
+							"        <th>ID Poligono</th>\r",
+							"        <th>Longitud</th>\r",
+							"        <th>Latitud</th>\r",
+							"    </tr>\r",
+							"    \r",
+							"    {{#each response}}\r",
+							"        <tr>\r",
+							"            <td>{{id_punto}}</td>\r",
+							"            <td>{{nombre_poligono}}</td>\r",
+							"            <td>{{id_poligono}}</td>\r",
+							"            <td>{{longitud}}</td>\r",
+							"            <td>{{latitud}}</td>\r",
+							"        </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return { response: pm.response.json() }\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "http://localhost:3000/api/poligonospuntos"
+			},
+			"response": []
+		},
+		{
+			"name": "GET GE auditoria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/api/auditoria/"
+			},
+			"response": []
+		}
+	]
+}
