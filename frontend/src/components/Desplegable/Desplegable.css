@@ -14,16 +14,24 @@
     background-color: #2CAB73;
     box-shadow: 2px 1px #C6C6C6;
     position: absolute;
+    
 }
+
+
 
 ul{
     list-style: none;
     margin:0;
     padding:3px;
     cursor: pointer;
-    font-size: 13px;
     color: white; 
  
+}
+
+.menu{
+
+    font-size: 14px;
+    margin-bottom: 2px;
 }
 
 .menu:hover{
@@ -38,9 +46,22 @@ ul{
 
 }
 
+@media screen and (max-width: 1200px) {
+
+    .menu{
+        margin-bottom: 5px;
+        white-space: nowrap;
+        
+}
+}
+
 @media screen and (max-width: 768px) {
 
-    ul{
-        font-size: 10px;
-    }
+    .menu{
+        font-size: 12px;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        
 }
+}
+
