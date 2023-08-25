@@ -1,7 +1,7 @@
 const { DateTime } = require('luxon');
 const db = require('../database/db.js');
 
-const { validateAudit } = require('../validaciones/validAudit.js');
+// const { validateAudit } = require('../validaciones/validAudit.js');
 
 function obtenerFechayHora(seleccion) {
     const zonaHoraria = 'America/Caracas';

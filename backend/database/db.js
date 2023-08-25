@@ -1,11 +1,13 @@
+require('dotenv').config(); // Carga las variables de entorno desde el archivo .env
+
 const Pool = require('pg').Pool;
 
 const pool = new Pool({
-  user: "postgres",
-  password: "",
-  host: "localhost",
-  port: 5432,
-  database: "rocket"
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_DATABASE
 });
 
 module.exports = pool;
