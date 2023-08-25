@@ -1,6 +1,5 @@
 .sidebar{
     flex: 1;
-    border-right:0.5px solid lightgrey;
     min-height: 100vh;
     background-color: #2CAB73;
 
@@ -102,3 +101,56 @@
         }
     }
 }
+
+
+
+@media screen and (max-width: 1200px) {
+
+    .sidebar{
+        white-space: nowrap;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+
+    .logo {
+        display: none; // se oculta el logo
+    }
+
+    .top-container{
+        height: 60px; // se ajusta al alto del Navbar
+        width: max-content; // ancho del contenedor ya que ocupa por defecto el ancho del Sidebar
+        position: relative;  //para hacer visible todo el container y se pueda visualizar el nombre y tipo de usuario
+          
+          
+    }
+
+    .img-usuario{
+        margin-top: 5px;
+
+    }
+    .sidebar{
+        width: 50px; 
+    }
+
+
+    .title-dashboard{
+        display: none; // se oculta los titulos
+    }
+
+    .icon{
+
+        width: 30px; 
+        height:30px;
+      
+    }
+    span{
+        display: none; 
+    }
+    
+    
+ 
+  }
+
