@@ -7,7 +7,6 @@ const validaPoligono = [ //Validacion para nombre_poligonos e id_usuarios44+
 		.exists().withMessage('El campo nombre del poligono es obligatorio')
 		.isLength({ max: 50 }).withMessage('El campo nombre del poligono no puede exceder los 50 caracteres')
 		.isString()
-		.isIn(['a-z', '0-9'])
 		.withMessage('El campo nombre del poligono debe ser String')
 		.custom((value, { req })=>{
 			let patron = /^$|^\s+$/;
