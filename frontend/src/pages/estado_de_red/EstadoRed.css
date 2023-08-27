@@ -1,0 +1,22 @@
+.titulo{
+    font-size: 22px;
+    margin-left: 15px;
+}
+
+table{
+    border-collapse: collapse;
+    text-align: center;
+    width: 96%;
+    border-top: 1px solid #032240;
+    margin-top: 5%;
+    margin-left: 20px;    
+}
+
+th{
+    border-bottom: 1px solid #032240;
+}
+
+td{
+    border-bottom: 1px solid #c7c7c7;
+    padding: 20px; 
+}
