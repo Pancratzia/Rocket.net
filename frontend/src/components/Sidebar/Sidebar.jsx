@@ -101,11 +101,11 @@ function Sidebar() {
             <hr/>
             <li>
 
-            <Link to='/login' title='Cerrar Sesion'>
+            <Link style={{textDecoration: 'none'}} to='/login' title='Cerrar Sesion'>
               <FaDoorOpen className="icon"/>
               <span>Cerrar Sesion</span>
             </Link>
-            
+
             </li>
             </ul>
         </div>
