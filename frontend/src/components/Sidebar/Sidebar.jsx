@@ -14,7 +14,9 @@ import { FaWifi } from "react-icons/fa";
 import { FaComments } from "react-icons/fa";
 import { FaCog } from "react-icons/fa";
 import { FaDoorOpen } from "react-icons/fa";
+import { FaRocket } from "react-icons/fa";
 import RocketAltLogo from "../../assets/img/rocket-alt.png";
+import { Link } from "react-router-dom";
 
 
 function Sidebar() {
@@ -22,7 +24,9 @@ function Sidebar() {
      <div className="sidebar">
         <div className="top-container">
           <div className="logo-container">
+            <Link to="/" title='home'>
             <img className="logo" src={RocketAltLogo} alt="Logo RocketNet" />  
+            </Link>
             </div>
           <div className="usuario-container">  
             <img className="img-usuario" src={UserDefault} alt="foto del usuario"/>
@@ -65,6 +69,11 @@ function Sidebar() {
             <span>Gestion de Planes</span>
             </li>
             <p className="title-dashboard">INFORMACION</p>
+             <li>
+            <FaRocket className="icon" />
+            <span>Estado de Red</span>
+            </li>
+            <hr/>
             <li>
             <FaClock className="icon" />
             <span>Auditorias</span>
@@ -98,8 +107,12 @@ function Sidebar() {
             </li>
             <hr/>
             <li>
-            <FaDoorOpen className="icon"/>
-                <span>Cerrar Sesion</span>
+
+            <Link style={{textDecoration: 'none'}} to='/login' title='Cerrar Sesion'>
+              <FaDoorOpen className="icon"/>
+              <span>Cerrar Sesion</span>
+            </Link>
+
             </li>
             </ul>
         </div>

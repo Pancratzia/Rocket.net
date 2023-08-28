@@ -9,17 +9,17 @@ function Panel() {
 
   const manejarBuscarClick = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.setPosicionActual((position) => {
+      navigator.geolocation.getCurrentPosition((position) => {
         setPosicionActual({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-        
       });
     } else {
-      alert("Este navegador no soporta geolocalización");
+      alert("Este navegador no soporta geolocalización");
     }
   };
+  
 
   return (
     <div className="panel">
@@ -41,8 +41,7 @@ function Panel() {
           <button className="boton-buscador" onClick={manejarBuscarClick}>Buscar</button>
         </div>
         <p className="texto-secundario">
-          **Estas areas de cobertura pueden sufrir cambios para el incremento
-          del alcance de las coberturas
+          **Estas zonas de cobertura pueden sufrir cambios en el tiempo. Seguimos trabajando para conectar a nuestros clientes.
         </p>
         <button className="boton-contactanos">Contactanos</button>
       </div>
