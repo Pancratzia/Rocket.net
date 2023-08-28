@@ -9,17 +9,17 @@ function Panel() {
 
   const manejarBuscarClick = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.setPosicionActual((position) => {
+      navigator.geolocation.getCurrentPosition((position) => {
         setPosicionActual({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-        
       });
     } else {
-      alert("Este navegador no soporta geolocalización");
+      alert("Este navegador no soporta geolocalización");
     }
   };
+  
 
   return (
     <div className="panel">

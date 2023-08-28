@@ -48,19 +48,17 @@ function Mapa({ posicionActual }) {
   };
 
   useEffect(() => {
-
     axios.get('http://localhost:3000/api/poligonospuntos')
-    .then(res => {
+      .then(res => {
         setData(res.data);
       })
-    .catch(error => {
+      .catch(error => {
         console.error('Error al obtener los datos de la API', error);
       });
-
+  
     if (posicionActual) {
       setMarcarPosicion([posicionActual.lat, posicionActual.lng]);
-      setcentrarMapa([posicionActual.lat, posicionActual.lng]);
-
+      setCentrarMapa([posicionActual.lat, posicionActual.lng]);
     }
   }, [posicionActual]);
 
