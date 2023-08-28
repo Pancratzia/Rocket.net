@@ -49,7 +49,6 @@ function Mapa({ posicionActual }) {
 
   useEffect(() => {
 
-
     axios.get('http://localhost:3000/api/poligonospuntos')
     .then(res => {
         setData(res.data);
