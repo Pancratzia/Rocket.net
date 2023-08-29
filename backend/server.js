@@ -16,6 +16,9 @@ app.use('/api/puntos',routerPuntos);
 const routerPoligonosPuntos = require('./routers/poligonopuntos.js');
 app.use('/api/poligonospuntos',routerPoligonosPuntos);
 
+const routerUsuario = require('./routers/usuarios.js');
+app.use('/api/usuarios',routerUsuario);
+
 
 //Prueba de funcionamiento
 app.get('/', (req, res)=>{
