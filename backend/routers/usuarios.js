@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
 
+const { validarIdUsuarios,validaActualizarUsuario } = require('../validaciones/ValidarUsuarios')
+
 const routerUsuarios = express.Router();
 
 routerUsuarios.use(express.json());
@@ -40,7 +42,7 @@ routerUsuarios.post('/', async (req, res) => {
 
 // Modificar Usuario
 
-routerUsuarios.put('/:id_usuario', async (req, res) => {
+routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, async (req, res) => {
     const { id_usuario } = req.params;
     const {
         nombre_usuario,
@@ -66,6 +68,20 @@ routerUsuarios.put('/:id_usuario', async (req, res) => {
         
         if (usuarioExistente.rowCount === 0) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Verifica si id_sededepar existe en la base de datos
+        const sedeDeparExistente = await pool.query('SELECT * FROM sedes_departamentos WHERE id_sede_departamento = $1', [id_sededepar]);
+
+        if (sedeDeparExistente.rowCount === 0) {
+            return res.status(400).json({ error: 'id_sededepar no existe en la base de datos' });
+        }
+
+        // Verifica si id_tipousuario existe en la base de datos
+        const tipoUsuarioExistente = await pool.query('SELECT * FROM tipos_usuarios WHERE id_tipo_usuario = $1', [id_tipousuario]);
+
+        if (tipoUsuarioExistente.rowCount === 0) {
+            return res.status(400).json({ error: 'id_tipousuario no existe en la base de datos' });
         }
 
         // Define el query SQL para actualizar el usuario
