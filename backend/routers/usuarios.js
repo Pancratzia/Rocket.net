@@ -5,6 +5,8 @@ const cors = require('cors');
 const pool = require('../database/db.js');
 
 const { validarIdUsuarios,validaActualizarUsuario } = require('../validaciones/ValidarUsuarios')
+const { join, extname } = require('path');
+
 
 const routerUsuarios = express.Router();
 
