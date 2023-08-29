@@ -64,9 +64,6 @@ const validaActualizarUsuario = [
         .optional()
         .isLength({ max: 20 }).withMessage({error: 'El campo extension_telefonica no puede exceder los 20 caracteres'}),
 
-    check('borrado')
-        .optional()
-        .isBoolean().withMessage({error: 'El campo borrado debe ser un valor booleano'})
 ];
 
 
