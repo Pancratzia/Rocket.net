@@ -68,7 +68,8 @@ const columns = [
         paddingLeft: 2,
         fontSize: 20, 
         fontWeight: 'bold',
-        backgroundColor: '#F0F0F0'
+        backgroundColor: '#F0F0F0',
+        fontFamily: 'Poppins' 
     
         }}
         >
