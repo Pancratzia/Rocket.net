@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-
 //  Router
 const routerAuditoria = require('./routers/auditoria.js');
 app.use('/api/auditoria',routerAuditoria); 
