@@ -13,7 +13,11 @@ app.use('/api/poligonos',routerPoligonos);
 const routerPuntos = require('./routers/puntos.js');
 app.use('/api/puntos',routerPuntos); 
 
+const routerPoligonosPuntos = require('./routers/poligonopuntos.js');
+app.use('/api/poligonospuntos',routerPoligonosPuntos);
 
+
+//Prueba de funcionamiento
 app.get('/', (req, res)=>{
     res.send('Prueba de funcionamiento de backend 🖥️')
 });

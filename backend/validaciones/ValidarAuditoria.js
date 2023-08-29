@@ -1,8 +1,8 @@
 const { check } = require('express-validator') //TODO <---
-const { validateResult } = require('../helpers/validateHelper')
+const { validarResultados } = require('../helpers/validarHelper')
 
 
-const validateAudit = [
+const validaAuditoria = [
 
   check('operacion')
   	.exists()
@@ -21,7 +21,7 @@ const validateAudit = [
 		.exists()
 		.isNumeric(),
 		(req, res, next) => {
-			validateResult(req, res, next)
+			validarResultados(req, res, next)
 		}
 ]
 
