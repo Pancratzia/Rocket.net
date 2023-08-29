@@ -10,6 +10,7 @@ import { FaDiceD6 } from "react-icons/fa";
 import { FaClock } from "react-icons/fa";
 import { FaPoll } from "react-icons/fa";
 import { FaFolder } from "react-icons/fa";
+import { FaWifi } from "react-icons/fa";
 import { FaComments } from "react-icons/fa";
 import { FaCog } from "react-icons/fa";
 import { FaDoorOpen } from "react-icons/fa";
@@ -86,6 +87,12 @@ function Sidebar() {
             <li>
             <FaFolder className="icon" />
             <span>Archivos</span>
+            </li>
+
+            <hr/>
+            <li>
+            <FaWifi className="icon" />
+            <span>Estado de Red</span>
             </li>
 
             <p className="title-dashboard">USUARIO</p>
