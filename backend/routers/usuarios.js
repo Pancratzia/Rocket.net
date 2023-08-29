@@ -11,6 +11,7 @@ const routerUsuarios = express.Router();
 routerUsuarios.use(express.json());
 routerUsuarios.use(cors());
 
+// Carga de imagenes
 const CURRENT_DIR = __dirname;
 const MIMETYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
