@@ -100,7 +100,7 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), async (req, res) => 
 
 // Modificar Usuario
 
-routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, async (req, res) => {
+routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, multerCarga.single('fileUsuario'), async (req, res) => {
     const { id_usuario } = req.params;
     const {
         nombre_usuario,
@@ -111,10 +111,12 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, a
         pregunta,
         respuesta,
         clave,
-        foto_usuario,
         extension_telefonica,
         borrado
     } = req.body;
+
+    // Obtén el nombre del archivo cargado
+    const fileUsuario = req.file.filename;
     
     // parametros para auditoria
     const operacion = req.method;
@@ -176,7 +178,7 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, a
             pregunta,
             respuestaEncriptada,
             claveEncriptada,
-            foto_usuario,
+            fileUsuario,
             extension_telefonica,
             borrado,
             id_usuario
