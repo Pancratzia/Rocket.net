@@ -2,18 +2,110 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
 
-const routerUsuario = express.Router();
+const routerUsuarios = express.Router();
 
-routerUsuario.put('/:id_usuario', async (req, res) => {
+routerUsuarios.use(express.json());
+routerUsuarios.use(cors());
+
+
+
+/// Crear Usuario
+
+routerUsuarios.post('/', async (req, res) => {
+
+  try {
+
+    const {nombre_usuario,sede_departamento,tipo_usuario,nombre,apellido,pregunta,respuesta,clave,foto_usuario,extension_telefonica} = req.body;
+
+    
+
+  } catch (err) {
+    console.error(err.message);
+  }
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+// Modificar Usuario
+
+routerUsuarios.put('/:id_usuario', async (req, res) => {
     const { id_usuario } = req.params;
-    const { nombre_usuario } = req.body;
+    const {
+        nombre_usuario,
+        id_sededepar,
+        id_tipousuario,
+        nombre,
+        apellido,
+        pregunta,
+        respuesta,
+        clave,
+        foto_usuario,
+        extension_telefonica,
+        borrado
+    } = req.body;
     
     // parametros para auditoria
     const operacion = req.method;
-    const id_usuarioAuditoria = req.headers['id_usuario'];
+   // const id_usuarioAuditoria = req.headers['id_usuario'];
 
     try {
+        // Verifica si el usuario existe en la base de datos
+        const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1', [id_usuario]);
         
+        if (usuarioExistente.rowCount === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Define el query SQL para actualizar el usuario
+        const query = `
+            UPDATE usuarios 
+            SET 
+                nombre_usuario = $1,
+                id_sededepar = $2,
+                id_tipousuario = $3,
+                nombre = $4,
+                apellido = $5,
+                pregunta = $6,
+                respuesta = $7,
+                clave = $8,
+                foto_usuario = $9,
+                extension_telefonica = $10,
+                borrado = $11
+            WHERE id_usuario = $12
+        `;
+        
+        const values = [
+            nombre_usuario,
+            id_sededepar,
+            id_tipousuario,
+            nombre,
+            apellido,
+            pregunta,
+            respuesta,
+            clave,
+            foto_usuario,
+            extension_telefonica,
+            borrado,
+            id_usuario
+        ];
+
+        // Ejecuta el query de actualización
+        await pool.query(query, values);
+
+        // Realiza la auditoría si es necesario
+       // auditar(operacion, id_usuarioAuditoria);
 
         res.json({ mensaje: 'Usuario actualizado correctamente' });
     } catch (error) {
@@ -25,4 +117,36 @@ routerUsuario.put('/:id_usuario', async (req, res) => {
 
 
 
-module.exports = routerUsuario  
+
+
+
+
+
+
+
+
+
+//  Eliminar Usuario
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Obtener Usuario
+
+
+
+
+
+
+module.exports = routerUsuarios;
