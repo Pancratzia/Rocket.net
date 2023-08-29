@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
+const bcrypt = require('bcrypt');
 
 const { validarIdUsuarios,validaActualizarUsuario } = require('../validaciones/ValidarUsuarios')
 
@@ -70,11 +71,11 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, a
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        // Verifica si id_sededepar existe en la base de datos
+       // Verifica si id_sededepar existe en la base de datos
         const sedeDeparExistente = await pool.query('SELECT * FROM sedes_departamentos WHERE id_sede_departamento = $1', [id_sededepar]);
 
         if (sedeDeparExistente.rowCount === 0) {
-            return res.status(400).json({ error: 'id_sededepar no existe en la base de datos' });
+             return res.status(400).json({ error: 'id_sededepar no existe en la base de datos' });
         }
 
         // Verifica si id_tipousuario existe en la base de datos
@@ -83,6 +84,13 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, a
         if (tipoUsuarioExistente.rowCount === 0) {
             return res.status(400).json({ error: 'id_tipousuario no existe en la base de datos' });
         }
+
+        // Encriptar la clave
+        const claveEncriptada = await bcrypt.hash(clave, 10);
+
+        // Encriptar la respuesta
+        const respuestaEncriptada = await bcrypt.hash(respuesta, 10);
+        
 
         // Define el query SQL para actualizar el usuario
         const query = `
@@ -109,8 +117,8 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, a
             nombre,
             apellido,
             pregunta,
-            respuesta,
-            clave,
+            respuestaEncriptada,
+            claveEncriptada,
             foto_usuario,
             extension_telefonica,
             borrado,
