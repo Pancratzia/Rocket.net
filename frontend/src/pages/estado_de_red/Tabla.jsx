@@ -57,7 +57,7 @@ const columns = [
       <Box sx=
       {{ height: 300, 
         width: '100%', 
-        fontFamily: 'Poppins' 
+        fontFamily: 'Poppins',
         
       
       }}>
@@ -66,9 +66,8 @@ const columns = [
        {{
         marginBottom: 10, 
         paddingLeft: 2,
-        fontSize: 20, 
+        fontSize: 40, 
         fontWeight: 'bold',
-        backgroundColor: '#F0F0F0',
         fontFamily: 'Poppins' 
     
         }}
