@@ -40,7 +40,7 @@ function Sidebar() {
         <ul>
           <p className="title-dashboard">MAIN</p>
           <li>
-            <Link to="/">
+            <Link style={{ textDecoration: 'none' }} to="/">
               <FaThLarge className="icon" />
               <span>Dashboard</span>
             </Link>
@@ -71,12 +71,7 @@ function Sidebar() {
             <span>Gestion de Planes</span>
           </li>
           <p className="title-dashboard">INFORMACION</p>
-          <li>
-
-            <FaRocket className="icon" />
-            <span>Estado de Red</span>
-
-          </li>
+       
           <hr />
           <li>
             <FaClock className="icon" />
@@ -95,7 +90,7 @@ function Sidebar() {
 
           <hr />
           <li>
-            <Link to="/estado_de_red">
+            <Link style={{ textDecoration: 'none' }} to="/estado_de_red">
               <FaWifi className="icon" />
               <span>Estado de Red</span>
             </Link>
