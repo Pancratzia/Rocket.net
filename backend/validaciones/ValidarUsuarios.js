@@ -56,10 +56,6 @@ const validaActualizarUsuario = [
         .optional()
         .isLength({ min: 250 }).withMessage({error: 'El campo clave debe tener al menos 250 caracteres'}),
 
-    check('foto_usuario')
-        .optional()
-        .isLength({ max: 250 }).withMessage({error: 'El campo foto_usuario no puede exceder los 250 caracteres'}),
-
     check('extension_telefonica')
         .optional()
         .isLength({ max: 20 }).withMessage({error: 'El campo extension_telefonica no puede exceder los 20 caracteres'}),

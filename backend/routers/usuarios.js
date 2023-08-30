@@ -8,6 +8,11 @@ const bcrypt = require('bcrypt');
 const { validarIdUsuarios,validaActualizarUsuario } = require('../validaciones/ValidarUsuarios')
 const { join, extname } = require('path');
 
+// Función para verificar la existencia de un ID en una tabla
+async function verificarExistencia(id, tabla, campo) {
+  const result = await pool.query(`SELECT ${campo} FROM ${tabla} WHERE ${campo} = $1`, [id]);
+  return result.rowCount > 0;
+}
 
 const routerUsuarios = express.Router();
 
@@ -116,7 +121,7 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
     } = req.body;
 
     // Obtén el nombre del archivo cargado
-    const fileUsuario = req.file.filename;
+    const fileUsuario1 = req.file.filename;
 
     // Convierte a mayúsculas los campos que deben ser en mayúsculas
     const nombreEnMayusculas = nombre.toUpperCase();
@@ -129,26 +134,17 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
    // const id_usuarioAuditoria = req.headers['id_usuario'];
 
     try {
-         // Verifica si el usuario existe en la base de datos
-         const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1', [id_usuario]);
-        
-         if (usuarioExistente.rowCount === 0) {
-             return res.status(404).json({ error: 'Usuario no encontrado' });
-         }
- 
-        // Verifica si id_sededepar existe en la base de datos
-         const sedeDeparExistente = await pool.query('SELECT * FROM sedes_departamentos WHERE id_sede_departamento = $1', [id_sededepar]);
- 
-         if (sedeDeparExistente.rowCount === 0) {
-              return res.status(400).json({ error: 'id_sededepar no existe en la base de datos' });
-         }
- 
-         // Verifica si id_tipousuario existe en la base de datos
-         const tipoUsuarioExistente = await pool.query('SELECT * FROM tipos_usuarios WHERE id_tipo_usuario = $1', [id_tipousuario]);
- 
-         if (tipoUsuarioExistente.rowCount === 0) {
-             return res.status(400).json({ error: 'id_tipousuario no existe en la base de datos' });
-         }
+         // Verificar existencia de ID en las tablas
+          const existeSede = await verificarExistencia(id_sededepar, 'sedes_departamentos', 'id_sede_departamento');
+          if (!existeSede) {
+          return res.status(400).json({ error: 'id_sededepar no existe en la base de datos' });
+          }
+
+          const existeTipoUsuario = await verificarExistencia(id_tipousuario, 'tipos_usuarios', 'id_tipo_usuario');
+           if (!existeTipoUsuario) {
+           return res.status(400).json({ error: 'id_tipousuario no existe en la base de datos' });
+          }
+
 
         // Encriptar la clave
         const claveEncriptada = await bcrypt.hash(clave, 10);
@@ -184,7 +180,7 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
               preguntaEnMayusculas,
               respuestaEncriptada,
               claveEncriptada,
-              fileUsuario,
+              fileUsuario1,
               extension_telefonica,
               borrado,
               id_usuario
