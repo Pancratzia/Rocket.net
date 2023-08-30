@@ -63,6 +63,9 @@ const validaActualizarUsuario = [
     check('extension_telefonica')
         .optional()
         .isLength({ max: 20 }).withMessage({error: 'El campo extension_telefonica no puede exceder los 20 caracteres'}),
+    (req, res, next) => {
+      validarResultados(req, res, next)
+    }
 
 ];
 

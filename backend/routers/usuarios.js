@@ -117,32 +117,38 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
 
     // Obtén el nombre del archivo cargado
     const fileUsuario = req.file.filename;
+
+    // Convierte a mayúsculas los campos que deben ser en mayúsculas
+    const nombreEnMayusculas = nombre.toUpperCase();
+    const apellidoEnMayusculas = apellido.toUpperCase();
+    const preguntaEnMayusculas = pregunta.toUpperCase();
+    
     
     // parametros para auditoria
     const operacion = req.method;
    // const id_usuarioAuditoria = req.headers['id_usuario'];
 
     try {
-        // Verifica si el usuario existe en la base de datos
-        const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1', [id_usuario]);
+         // Verifica si el usuario existe en la base de datos
+         const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1', [id_usuario]);
         
-        if (usuarioExistente.rowCount === 0) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
-       // Verifica si id_sededepar existe en la base de datos
-        const sedeDeparExistente = await pool.query('SELECT * FROM sedes_departamentos WHERE id_sede_departamento = $1', [id_sededepar]);
-
-        if (sedeDeparExistente.rowCount === 0) {
-             return res.status(400).json({ error: 'id_sededepar no existe en la base de datos' });
-        }
-
-        // Verifica si id_tipousuario existe en la base de datos
-        const tipoUsuarioExistente = await pool.query('SELECT * FROM tipos_usuarios WHERE id_tipo_usuario = $1', [id_tipousuario]);
-
-        if (tipoUsuarioExistente.rowCount === 0) {
-            return res.status(400).json({ error: 'id_tipousuario no existe en la base de datos' });
-        }
+         if (usuarioExistente.rowCount === 0) {
+             return res.status(404).json({ error: 'Usuario no encontrado' });
+         }
+ 
+        // Verifica si id_sededepar existe en la base de datos
+         const sedeDeparExistente = await pool.query('SELECT * FROM sedes_departamentos WHERE id_sede_departamento = $1', [id_sededepar]);
+ 
+         if (sedeDeparExistente.rowCount === 0) {
+              return res.status(400).json({ error: 'id_sededepar no existe en la base de datos' });
+         }
+ 
+         // Verifica si id_tipousuario existe en la base de datos
+         const tipoUsuarioExistente = await pool.query('SELECT * FROM tipos_usuarios WHERE id_tipo_usuario = $1', [id_tipousuario]);
+ 
+         if (tipoUsuarioExistente.rowCount === 0) {
+             return res.status(400).json({ error: 'id_tipousuario no existe en la base de datos' });
+         }
 
         // Encriptar la clave
         const claveEncriptada = await bcrypt.hash(clave, 10);
@@ -170,18 +176,19 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
         `;
         
         const values = [
-            nombre_usuario,
-            id_sededepar,
-            id_tipousuario,
-            nombre,
-            apellido,
-            pregunta,
-            respuestaEncriptada,
-            claveEncriptada,
-            fileUsuario,
-            extension_telefonica,
-            borrado,
-            id_usuario
+              nombre_usuario,
+              id_sededepar,
+              id_tipousuario,
+              nombreEnMayusculas,
+              apellidoEnMayusculas,
+              preguntaEnMayusculas,
+              respuestaEncriptada,
+              claveEncriptada,
+              fileUsuario,
+              extension_telefonica,
+              borrado,
+              id_usuario
+
         ];
 
         // Ejecuta el query de actualización
@@ -192,9 +199,9 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
 
         res.json({ mensaje: 'Usuario actualizado correctamente' });
     } catch (error) {
-        console.error('Error al actualizar el usuario:', error);
-        res.status(500).json({ error: 'Error al actualizar el usuario' });
-    }
+      console.error('Error al actualizar el usuario:', error);
+      res.status(500).json({ error: error.message });
+  }
 });
 
 
