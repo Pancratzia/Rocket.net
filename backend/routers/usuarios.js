@@ -190,17 +190,31 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, a
 
 //  Eliminar Usuario
 
+// Eliminar Usuario
+routerUsuarios.put('/borrar-usuario/:id_usuario', validarIdUsuarios, async (req, res) => {
+  try {
+    const { id_usuario } = req.params;
 
+    const query = `
+      UPDATE usuarios 
+      SET borrado = true
+      WHERE id_usuario = $1
+    `;
 
+    const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1', [id_usuario]);
 
+    if (usuarioExistente.rowCount === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
 
+    await pool.query(query, [id_usuario]);
 
-
-
-
-
-
-
+    res.json({ mensaje: 'Usuario marcado como borrado' });
+  } catch (error) {
+    console.error('Error al marcar usuario como borrado:', error);
+    res.status(500).json({ error: 'Error al marcar usuario como borrado' });
+  }
+});
 
 
 
