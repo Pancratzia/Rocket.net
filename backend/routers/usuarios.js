@@ -5,8 +5,13 @@ const cors = require('cors');
 const pool = require('../database/db.js');
 const bcrypt = require('bcrypt');
 
-const { validarIdUsuarios,validaActualizarUsuario } = require('../validaciones/ValidarUsuarios')
+const crypto = require('crypto');
+
+
+const { validarIdUsuarios, validaActualizarUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
+const {convertirMayusculas} = require('../funciones/funciones.js')
 const { join, extname } = require('path');
+
 
 // Función para verificar la existencia de un ID en una tabla
 async function verificarExistencia(id, tabla, campo) {
@@ -15,7 +20,6 @@ async function verificarExistencia(id, tabla, campo) {
 }
 
 const routerUsuarios = express.Router();
-
 routerUsuarios.use(express.json());
 routerUsuarios.use(cors());
 
@@ -27,9 +31,12 @@ const MIMETYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 const multerCarga = multer({
   storage: multer.diskStorage({
     destination: join(CURRENT_DIR, '../cargas'),
-    filename: (req, file, cb) =>{
+    filename: (req, file, cb) => {
       const extArchivo = extname(file.originalname);
-      const nombreArchivo = file.originalname.split(extArchivo)[0];
+      const nombreArchivo = file.originalname.split(extArchivo)[0]
+        .split(extArchivo)[0]
+        .replace(/\s+/g, '_')
+        .toLowerCase();
 
       cb(null, `${nombreArchivo}-${Date.now()}-${extArchivo}`);
     },
@@ -45,57 +52,93 @@ const multerCarga = multer({
 
 /// Crear Usuario
 
-routerUsuarios.post('/', multerCarga.single('fileUsuario'), async (req, res) => {
+routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, async (req, res) => {
+
+  const consulta = `
+  INSERT INTO usuarios (
+    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica
+  )
+  SELECT
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
+  WHERE EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
+    AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
+  RETURNING *; `;
 
   try {
-
     const {
-      nombre_usuario,id_sededepar,id_tipousuario,
-      nombre,apellido,pregunta,respuesta,clave,
+      nombre_usuario, id_sededepar, id_tipousuario,
+      nombre, apellido, pregunta, respuesta, clave,
       extension_telefonica
     } = req.body;
-    const fileUsuario = req.file.filename;
 
+    const imagenUsuario = req.file.filename;
 
+    const camposAmayusculas = ['nombre', 'apellido', 'pregunta'];
+    const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
 
-  //   // Insertar puntos
-    await pool.query("INSERT INTO usuarios" +
-    "(nombre_usuario,id_sededepar,id_tipousuario,nombre,apellido,pregunta,respuesta,clave,foto_usuario,extension_telefonica)"+ 
-    "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
-    [
-      nombre_usuario,
-      id_sededepar,
-      id_tipousuario,
-      nombre,
-      apellido,
-      pregunta,
-      respuesta,
-      clave,
-      fileUsuario,
-      extension_telefonica
-    ]
-  );
+    const fraseEncriptacion = crypto.randomBytes(64).toString('base64');
+    const claveSegura = await bcrypt.hash(clave + fraseEncriptacion, 12);
+    const respuestaSegura = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
 
+    const crearUsuario = await pool.query(consulta, [
+      nombre_usuario, id_sededepar, id_tipousuario, camposMayus.nombre, camposMayus.apellido,
+      camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica
+    ]);
 
+    if (crearUsuario.rows.length === 0) {
+      return res.status(400).json({ error: 'Error al crear el usuario' });
+    }
+    
     return res.status(200).json({ mensaje: 'Usuario creado exitosamente' });
 
-
-
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    console.error(error.message);
   }
-
-
-
 });
 
+// Modificar Usuario
 
+routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, async (req, res) => {
+  const { id_usuario } = req.params;
+  const {
+    nombre_usuario,
+    id_sededepar,
+    id_tipousuario,
+    nombre,
+    apellido,
+    pregunta,
+    respuesta,
+    clave,
+    foto_usuario,
+    extension_telefonica,
+    borrado
+  } = req.body;
 
+  // parametros para auditoria
+  const operacion = req.method;
+  // const id_usuarioAuditoria = req.headers['id_usuario'];
 
+  try {
+    // Verifica si el usuario existe en la base de datos
+    const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1', [id_usuario]);
 
+    if (usuarioExistente.rowCount === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
 
+    // Verifica si id_sededepar existe en la base de datos
+    const sedeDeparExistente = await pool.query('SELECT * FROM sedes_departamentos WHERE id_sede_departamento = $1', [id_sededepar]);
 
+    if (sedeDeparExistente.rowCount === 0) {
+      return res.status(400).json({ error: 'id_sededepar no existe en la base de datos' });
+    }
 
+    // Verifica si id_tipousuario existe en la base de datos
+    const tipoUsuarioExistente = await pool.query('SELECT * FROM tipos_usuarios WHERE id_tipo_usuario = $1', [id_tipousuario]);
+
+    if (tipoUsuarioExistente.rowCount === 0) {
+      return res.status(400).json({ error: 'id_tipousuario no existe en la base de datos' });
+    }
 
 
 
@@ -155,6 +198,9 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
 
         // Define el query SQL para actualizar el usuario
         const query = `
+=======
+    // Define el query SQL para actualizar el usuario
+    const query = `
             UPDATE usuarios 
             SET 
                 nombre_usuario = $1,
@@ -170,6 +216,7 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
                 borrado = $11
             WHERE id_usuario = $12
         `;
+
         
         const values = [
               nombre_usuario,
@@ -197,6 +244,33 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);
       res.status(500).json({ error: error.message });
+=======
+
+    const values = [
+      nombre_usuario,
+      id_sededepar,
+      id_tipousuario,
+      nombre,
+      apellido,
+      pregunta,
+      respuesta,
+      clave,
+      foto_usuario,
+      extension_telefonica,
+      borrado,
+      id_usuario
+    ];
+
+    // Ejecuta el query de actualización
+    await pool.query(query, values);
+
+    // Realiza la auditoría si es necesario
+    // auditar(operacion, id_usuarioAuditoria);
+
+    res.json({ mensaje: 'Usuario actualizado correctamente' });
+  } catch (error) {
+    console.error('Error al actualizar el usuario:', error);
+    res.status(500).json({ error: 'Error al actualizar el usuario' });
   }
 });
 
@@ -229,7 +303,14 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
 
 
 //Obtener Usuario
-
+routerUsuarios.get('/',async (req, res) => {
+  try {
+      const usuarios = await pool.query('SELECT nombre_usuario,id_sededepar,id_tipousuario,nombre,apellido,pregunta,respuesta,clave,extension_telefonica FROM usuarios ORDER BY id_usuario ASC');
+      res.json(usuarios.rows);
+  } catch (error) {
+      console.log(error);
+  }
+})
 
 
 
