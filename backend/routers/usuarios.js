@@ -4,8 +4,10 @@ const multer = require('multer');
 const cors = require('cors');
 const pool = require('../database/db.js');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const { validarIdUsuarios, validaActualizarUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
+const {convertirMayusculas} = require('../funciones/funciones.js')
 const { join, extname } = require('path');
 
 const routerUsuarios = express.Router();
@@ -44,14 +46,14 @@ const multerCarga = multer({
 routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, async (req, res) => {
 
   const consulta = `
-    INSERT INTO usuarios (
-      nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica
-    )
-    SELECT
-      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
-    WHERE
-      EXISTS (SELECT id_sede_departamento FROM sedes_departamentos WHERE id_sede_departamento = $2)
-      AND EXISTS (SELECT id_tipo_usuario FROM tipos_usuarios WHERE id_tipo_usuario = $3);`;
+  INSERT INTO usuarios (
+    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica
+  )
+  SELECT
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
+  WHERE EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
+    AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
+  RETURNING *; `;
 
   try {
     const {
@@ -60,29 +62,28 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
       extension_telefonica
     } = req.body;
 
-    const nombreMayuscula = nombre.toUpperCase();
-    const apellidoMayuscula = apellido.toUpperCase();
-    const preguntaMayuscula = pregunta.toUpperCase();
-
-    const fraseEncriptacion = 'j4nv$₹m7r3lo5!nv₹l';
-    const claveSegura = await bcrypt.hash(clave + fraseEncriptacion, 12);
-    const respuestaSegura = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
-    
     const imagenUsuario = req.file.filename;
 
+    const camposAmayusculas = ['nombre', 'apellido', 'pregunta'];
+    const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
+
+    const fraseEncriptacion = crypto.randomBytes(64).toString('base64');
+    const claveSegura = await bcrypt.hash(clave + fraseEncriptacion, 12);
+    const respuestaSegura = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
+
     const crearUsuario = await pool.query(consulta, [
-      nombre_usuario, id_sededepar, id_tipousuario, nombreMayuscula, apellidoMayuscula,
-      preguntaMayuscula, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica
+      nombre_usuario, id_sededepar, id_tipousuario, camposMayus.nombre, camposMayus.apellido,
+      camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica
     ]);
 
-    if (crearUsuario.rowCount === 0) {
-      return res.status(400).json({ error: 'id_sededepar y/o id_tipousuario no existen en la base de datos' });
+    if (crearUsuario.rows.length === 0) {
+      return res.status(400).json({ error: 'Error al crear el usuario' });
     }
-
+    
     return res.status(200).json({ mensaje: 'Usuario creado exitosamente' });
 
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    console.error(error.message);
   }
 });
 
