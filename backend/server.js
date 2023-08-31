@@ -18,6 +18,8 @@ app.use('/api/poligonospuntos',routerPoligonosPuntos);
 const routerUsuarios = require('./routers/usuarios.js');
 app.use('/api/usuario',routerUsuarios);
 
+const routerSedes = require('./routers/sedes.js');
+app.use('/api/sedes',routerSedes);
 
 //Prueba de funcionamiento
 app.get('/', (req, res)=>{
