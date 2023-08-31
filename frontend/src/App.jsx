@@ -38,7 +38,7 @@ function App() {
       <div className="derecha"> 
         <Navbar />
         <Outlet />
-        <Tabla/> 
+        
         </div> 
       </div>
     );
@@ -55,7 +55,10 @@ function App() {
         }
         ,
         {
-          // Aquí se agregan las rutas para el dashboard
+          
+          element: <Tabla />,
+          path: '/estado_de_red',
+
         },
       ],
     },
