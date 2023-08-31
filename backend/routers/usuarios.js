@@ -206,13 +206,6 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, a
 
 //Obtener Usuario
  routerUsuarios.get('/', async (req, res) => {
- var img = fs.readFileSync(req.file.path);
-  var encode_image = img.toString('base64');
-
-  var finalImg = {
-    contentType: req.file.mimetype,
-    image: new Buffer(encode_image, 'base64')
-  };
   try {
       const usuarios = await pool.query('SELECT * FROM usuarios ORDER BY id_usuario ASC');
       res.json(usuarios.rows);
@@ -221,7 +214,6 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, a
   }
 })
 
-//routerUsuarios.use('/public', express.static(join(CURRENT_DIR, '../cargas')));
 
 
 
