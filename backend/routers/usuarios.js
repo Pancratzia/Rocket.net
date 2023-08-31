@@ -67,6 +67,7 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
   try {
     const { nombre_usuario, id_sededepar, id_tipousuario,nombre, apellido, pregunta, respuesta, clave, extension_telefonica} = req.body;
     const operacion = req.method;
+
     const id_usuarioAuditoria = req.headers['id_usuario'];
     const imagenUsuario = req.file.filename;
 
@@ -241,7 +242,4 @@ routerUsuarios.put('/borrar-usuario/:id_usuario', validarIdUsuarios, async (req,
 });
 
 
-
-
-
-module.exports = routerUsuarios;
+module.exports = routerUsuarios
