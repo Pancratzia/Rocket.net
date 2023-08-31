@@ -229,10 +229,12 @@ routerUsuarios.put('/borrar-usuario/:id_usuario', validarIdUsuarios, async (req,
 
 
 //Obtener Usuario
-routerUsuarios.get('/', async (req, res) => {
+
+ routerUsuarios.get('/', async (req, res) => {
   try {
-    const usuarios = await pool.query('SELECT nombre_usuario,id_sededepar,id_tipousuario,nombre,apellido,pregunta,respuesta,clave,extension_telefonica FROM usuarios ORDER BY id_usuario ASC');
-    res.json(usuarios.rows);
+      const usuarios = await pool.query('SELECT * FROM usuarios ORDER BY id_usuario ASC');
+      res.json(usuarios.rows);
+
   } catch (error) {
     console.log(error);
   }
