@@ -65,11 +65,7 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
   RETURNING *; `;
 
   try {
-    const {
-      nombre_usuario, id_sededepar, id_tipousuario,
-      nombre, apellido, pregunta, respuesta, clave,
-      extension_telefonica
-    } = req.body;
+    const { nombre_usuario, id_sededepar, id_tipousuario,nombre, apellido, pregunta, respuesta, clave, extension_telefonica} = req.body;
     const operacion = req.method;
     const id_usuarioAuditoria = req.headers['id_usuario'];
     const imagenUsuario = req.file.filename;
