@@ -23,7 +23,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id_poligono\" : 4,    \r\n    \"latitud\" : 10.9981,\r\n    \"longitud\" : -69.9994\r\n}",
+					"raw": "{\r\n    \"id_poligono\" : 10,    \r\n    \"latitud\" : 10.9981,\r\n    \"longitud\" : -69.9994\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -275,6 +275,204 @@
 				"method": "GET",
 				"header": [],
 				"url": "localhost:3000/api/auditoria/"
+			},
+			"response": []
+		},
+		{
+			"name": "POST JV usuario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre_usuario",
+							"value": "Juancho123",
+							"type": "text"
+						},
+						{
+							"key": "id_sededepar",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "id_tipousuario",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "nombre",
+							"value": "juan",
+							"type": "text"
+						},
+						{
+							"key": "apellido",
+							"value": "villegas",
+							"type": "text"
+						},
+						{
+							"key": "pregunta",
+							"value": "¿equipo favorito?",
+							"type": "text"
+						},
+						{
+							"key": "respuesta",
+							"value": "real madrid",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "1234abc1234",
+							"type": "text"
+						},
+						{
+							"key": "fileUsuario",
+							"type": "file",
+							"src": "/E:/Pictures/imagenes/20220508_194057.jpg"
+						},
+						{
+							"key": "extension_telefonica",
+							"value": "04141",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:3000/api/usuario"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT CE Usuarios",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre_usuario",
+							"value": "klowo278",
+							"type": "text"
+						},
+						{
+							"key": "id_sededepar",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "id_tipousuario",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "nombre",
+							"value": "Carlos",
+							"type": "text"
+						},
+						{
+							"key": "apellido",
+							"value": "Escalona",
+							"type": "text"
+						},
+						{
+							"key": "pregunta",
+							"value": "hola?",
+							"type": "text"
+						},
+						{
+							"key": "respuesta",
+							"value": "chao!",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "root",
+							"type": "text"
+						},
+						{
+							"key": "fileUsuario",
+							"type": "file",
+							"src": "/E:/Pictures/imagenes/20220508_194057.jpg"
+						},
+						{
+							"key": "extension_telefonica",
+							"value": "0424",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:3000/api/usuario/1"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT JP Eliminar usuario",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/usuario/borrar-usuario/1?id_usuario=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuario",
+						"borrar-usuario",
+						"1"
+					],
+					"query": [
+						{
+							"key": "id_usuario",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get MT Usuario",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "id_usuarioAuditoria",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:3000/api/usuario"
+			},
+			"response": []
+		},
+		{
+			"name": "GET GE sedes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/api/sedes"
 			},
 			"response": []
 		}

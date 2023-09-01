@@ -45,8 +45,8 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 | [María Castillo](https://github.com/marfcastillo "Profile")  | Líder de Frontend   |
 | [Moisés Villarroel](https://github.com/MoisesV2605 "Profile")  | Developer   |
 | [Rosibel Cordero ](https://github.com/none "Profile")  | Developer  |
-| [Víctor Pérez](https://github.com/Victorgpm97 "Profile")  | Developer   |
-| [Luis Pernalete](https://github.com/Alejandro19977 "Profile")  | Developer  |
+| [Víctor Pérez](https://github.com/Victorgpm97 "Profile")  | RETIRADO   |
+| [Luis Pernalete](https://github.com/Alejandro19977 "Profile")  | RETIRADO  |
 
 ## Desarrolladores Backend
 
@@ -54,7 +54,7 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 |-----------------|-----------------------|
 | [Juan Villegas](https://github.com/juan436 "Profile")     | Líder de Backend   |
 | [Moisés Torrealba](https://github.com/MoiMetd "Profile")  | Developer   |
-| [Melissa Camacaro](https://github.com/Mel270101 "Profile")  | Developer  |
+| [Melissa Camacaro](https://github.com/Mel270101 "Profile")  | RETIRADA  |
 | [Gabriela Echeverría](https://github.com/gabaechv "Profile")  | Developer   |
 | [Carlos Escalona](https://github.com/CalOwO278 "Profile")  | Developer  |
 | [Jesús Pérez](https://github.com/JEPerezGomez "Profile")  | Developer  |
