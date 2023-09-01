@@ -1,6 +1,8 @@
 import React from 'react';
 import "./GestionUsuarios.css";
 import Tabla  from '../../components/Tabla/Tabla';
+import Add from '../../components/Add/Add';
+import { useState } from 'react';
 
 function GestionUsuarios(){
 
@@ -58,26 +60,40 @@ function GestionUsuarios(){
         }
     ]
 
-    const filas = [
+    const filas = [];
 
-    ]
-        //div contenedor del componente tabla donde se le pasan las tres props (titulo, columnas y filas 
+  const [showAddModal, setShowAddModal] = useState(false);
 
+  const handleOpenAddModal = () => {
+    setShowAddModal(true);
+  };
 
-    return(
+  const handleSave = () => {
+    // Lógica para guardar el usuario
+    setShowAddModal(false);
+  };
+
+  const handleCancel = () => {
+    setShowAddModal(false);
+  };
+
+  return (
     <div className='contenedor-gestion'>
-        <div className='titulo'>
+      <div className='titulo'>
         <h1>Gestion de usuarios</h1>
-        </div>
-        <div className='contenedor-busqueda'>
-        <button className='boton'>Agregar</button>   
-        </div>
+      </div>
+      <div className='contenedor-busqueda'>
+        <button className='boton' onClick={handleOpenAddModal}>Agregar</button>
+        <button className='boton boton-editar' onClick={handleOpenAddModal}>Editar</button>
+      </div>
 
-        <div className='contenedor-tabla'> 
-             <Tabla columns = {columnas}  rows = {filas}/> 
-        </div>
+      {/* <div className='contenedor-tabla'>
+        <Tabla columns={columnas} rows={filas} />
+      </div> */}
+
+      {showAddModal && <Add onSave={handleSave} onCancel={handleCancel} />}
     </div>
-    );
+  );
 }
 
 export default GestionUsuarios;
