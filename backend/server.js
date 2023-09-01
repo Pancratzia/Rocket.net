@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-
 //  Router
 const routerAuditoria = require('./routers/auditoria.js');
 app.use('/api/auditoria',routerAuditoria); 
@@ -16,6 +15,11 @@ app.use('/api/puntos',routerPuntos);
 const routerPoligonosPuntos = require('./routers/poligonopuntos.js');
 app.use('/api/poligonospuntos',routerPoligonosPuntos);
 
+const routerUsuarios = require('./routers/usuarios.js');
+app.use('/api/usuario',routerUsuarios);
+
+const routerSedes = require('./routers/sedes.js');
+app.use('/api/sedes',routerSedes);
 
 //Prueba de funcionamiento
 app.get('/', (req, res)=>{
