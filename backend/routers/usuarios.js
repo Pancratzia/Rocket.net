@@ -30,7 +30,7 @@ const multerCarga = multer({
         .replace(/\s+/g, '_')
         .toLowerCase();
 
-      cb(null, `${nombreArchivo}-+${Date.now()}${extArchivo}`);
+      cb(null, `${nombreArchivo}-${Date.now()}-${extArchivo}`);
     },
   }),
   fileFilter: (req, file, cb) => {
