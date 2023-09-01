@@ -215,10 +215,10 @@ routerUsuarios.patch('/:id_usuario', validarIdUsuarios, async (req, res) => {
         UPDATE usuarios 
         SET borrado = true
         WHERE id_usuario = $1
-        RETURNING *
+       
       )
       SELECT * FROM usuario_borrado
-      WHERE borrado = true;
+      WHERE borrado = true  RETURNING *;
     `;
 
     const result = await pool.query(queryBorrarYVerificar, [id_usuario]);
