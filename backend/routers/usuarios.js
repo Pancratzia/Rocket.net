@@ -62,17 +62,17 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
       NOT EXISTS (SELECT 1 FROM usuarios WHERE nombre_usuario = $1) AS nombreUsuarioNoExiste
   )
   INSERT INTO usuarios (
-    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica
+    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica, telefono, cedula, correo
   )
   SELECT
-    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13 
   FROM validaciones
   WHERE existeSedeDepartamento = true AND existeTipoUsuario = true AND nombreUsuarioNoExiste
   RETURNING *;
 `;
 
   try {
-    const { nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, extension_telefonica } = req.body;
+    const { nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, extension_telefonica, telefono, cedula, correo } = req.body;
     const operacion = req.method;
 
     const id_usuarioAuditoria = req.headers['id_usuario'];
@@ -87,7 +87,8 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
 
     const crearUsuario = await pool.query(consulta, [
       nombre_usuario, id_sededepar, id_tipousuario, camposMayus.nombre, camposMayus.apellido,
-      camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica
+      camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica,
+      telefono, cedula, correo
     ]);
 
     if (crearUsuario.rows.length === 0) {
@@ -223,13 +224,12 @@ routerUsuarios.patch('/:id_usuario', validarIdUsuarios, async (req, res) => {
     const result = await pool.query(queryBorrarYVerificar, [id_usuario]);
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Usuario no encontrado o ya marcado como borrado' });
+      return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    res.json({ mensaje: 'Usuario marcado como borrado' });
+    res.json({ mensaje: 'Usuario eliminado correctamento' });
   } catch (error) {
-    console.error('Error al marcar usuario como borrado:', error);
-    res.status(500).json({ error: 'Error al marcar usuario como borrado' });
+    res.status(500).json({ error: 'Error al eliminar usuario' });
   }
 });
 

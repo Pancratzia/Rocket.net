@@ -114,8 +114,23 @@ const validarUsuario = [
     .not()
     .isEmpty(),
   check('extension_telefonica')
+    .isLength({ max: 8 })
+    .matches(/^[0-9]+$/)
+    .not()
+    .isEmpty(),
+    check('telefono')
     .isLength({ max: 20 })
-    .isString()
+    .matches(/^[0-9]+$/)
+    .not()
+    .isEmpty(),
+    check('cedula')
+    .matches(/^[0-9]+$/)
+    .isLength({ max: 20 })
+    .not()
+    .isEmpty(),
+    check('correo')
+    .isLength({ max: 255 })
+    .matches(/^[\w-.]+@[\w-_]+\.[A-Za-z]{2,4}$/)
     .not()
     .isEmpty(),
   (req, res, next) => {
