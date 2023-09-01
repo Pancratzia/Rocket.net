@@ -15,66 +15,58 @@ routerPuntos.post('/', validaPuntos, async (req, res) => {
   try {
     const { id_poligono, latitud, longitud } = req.body;
 
-    const operacion = req.method;
-    const id_usuarioAuditoria = req.headers['id_usuario'];
+    const queryCrearPunto = `
+      INSERT INTO puntos (id_poligono, latitud, longitud)
+      SELECT $1, $2, $3
+      WHERE NOT EXISTS (
+        SELECT 1 FROM puntos WHERE id_poligono = $1 AND latitud = $2 AND longitud = $3
+      )
+      RETURNING *;
+    `;
 
-    //Validaciones para validar que un punto no tenga la misma latitud y longitud 
-    const existenciasPuntos = await pool.query("SELECT id_punto FROM puntos WHERE id_poligono = $1 AND latitud = $2 AND longitud = $3",
-      [id_poligono, latitud, longitud]);
+    const result = await pool.query(queryCrearPunto, [id_poligono, latitud, longitud]);
 
-    if (existenciasPuntos.rows.length > 0) {
-      return res.status(400).send({ error: "Ya existe este punto en el polígono" });
+    if (result.rows.length === 0) {
+      return res.status(400).json({ error: 'El punto ya existe en el polígono' });
     }
 
-    const existePoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_poligono = $1", [id_poligono]);
-    if (existePoligono.rowCount === 0) {
-      return res.status(404).json({ error: 'Polígono no encontrado' });
-    }
-
-    await pool.query("INSERT INTO puntos (id_poligono,latitud,longitud) VALUES($1,$2,$3) RETURNING *",
-      [id_poligono, latitud, longitud]);
-
-    auditar(operacion, id_usuarioAuditoria);
-
-    return res.status(200).json({ mensaje: 'Punto creado exitosamente' });
-
-  } catch (err) {
-    console.error(err.message);
+    res.status(200).json({ mensaje: 'Punto creado exitosamente', punto: result.rows[0] });
+  } catch (error) {
+    console.error(error.message);
   }
 });
 
+
+
 //update
-routerPuntos.put('/:id_punto', validaPuntos, async (req, res) => {
-  try {
-    const { id_punto } = req.params;
-    const { id_poligono, latitud, longitud } = req.body;
+routerPuntos.put('/:id_punto', async (req, res) => {
+    try {
+        const { id_punto } = req.params;
+        const { id_poligono, latitud, longitud } = req.body;
+        const operacion = req.method;
+        const id_usuarioAuditoria = req.headers['id_usuario'];
 
-    const operacion = req.method;
-    const id_usuarioAuditoria = req.headers['id_usuario'];
+        const query = `
+            UPDATE puntos
+            SET id_poligono = $1, latitud = $2, longitud = $3
+            WHERE id_punto = $4
+            AND EXISTS (SELECT 1 FROM poligonos WHERE id_poligono = $1)
+            RETURNING *;
+        `;
 
-    // Validaciones para validar existencia del punto
-    const buscarIdPunto = await pool.query("SELECT id_punto FROM puntos WHERE id_punto = $1", [id_punto]);
+        const result = await pool.query(query, [id_poligono, latitud, longitud, id_punto]);
 
-    if (buscarIdPunto.rowCount === 0) {
-      return res.status(404).json({ error: 'Punto no encontrado' });
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Punto no encontrado o Polígono no existe' });
+        }
+
+        auditar(operacion, id_usuarioAuditoria);
+
+        res.status(200).json({ mensaje: 'Punto modificado exitosamente' });
+    } catch (err) {
+        console.error(err.message);
     }
-
-    // Validaciones para validar existencia del poligono
-    const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_poligono = $1", [id_poligono]);
-
-    if (buscarIdPoligono.rowCount === 0) {
-      return res.status(404).json({ error: 'Polígono no encontrado' });
-    }
-
-    const modificarPunto = await pool.query('UPDATE "puntos" SET id_poligono = $1, latitud = $2, longitud = $3 WHERE id_punto = $4', [id_poligono, latitud, longitud, id_punto]);
-
-    auditar(operacion, id_usuarioAuditoria);
-
-    res.status(200).json({ mensaje: 'Punto modificado exitosamente' });
-  } catch (err) {
-    console.error(err.message)
-  }
-})
+});
 
 
 //delete
