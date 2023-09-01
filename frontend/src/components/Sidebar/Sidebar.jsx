@@ -47,8 +47,10 @@ function Sidebar() {
           </li>
           <p className="title-dashboard">GESTION</p>
           <li>
-            <FaUsersCog className="icon" />
-            <span>Gestion de Usuarios</span>
+          <Link style={{ textDecoration: 'none' }} to="/gestion_usuarios">
+              <FaUsersCog className="icon" />
+              <span>Gestion de Usuarios</span>
+            </Link>
           </li>
           <hr />
           <li>

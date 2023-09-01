@@ -6,7 +6,8 @@ import Recuperar_Password from './pages/recuperar_password/Recuperar_Password';
 import Panel_Lateral from './components/Panel_Lateral/Panel_Lateral';
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/Navbar/Navbar';
-import Tabla from './pages/estado_de_red/Tabla'
+import EstadoRed from './pages/estado_de_red/EstadoRed';
+import GestionUsuarios from './pages/gestion_usuarios/GestionUsuarios';
 
 
 
@@ -55,9 +56,13 @@ function App() {
         }
         ,
         {
-          
-          element: <Tabla />,
+          element: <EstadoRed/>,
           path: '/estado_de_red',
+
+        },
+        {
+          element: <GestionUsuarios/>,
+          path: '/gestion_usuarios',
 
         },
       ],
