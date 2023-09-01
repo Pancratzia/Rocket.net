@@ -210,29 +210,29 @@ routerUsuarios.patch('/:id_usuario', validarIdUsuarios, async (req, res) => {
   try {
     const { id_usuario } = req.params;
 
-    const queryBorrarYVerificar = `
-      WITH usuario_borrado AS (
-        UPDATE usuarios 
-        SET borrado = true
-        WHERE id_usuario = $1
-       
-      )
-      SELECT * FROM usuario_borrado
-      WHERE borrado = true  RETURNING *;
-    `;
+    // Validacion #1
+    const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1 AND borrado = false', [id_usuario]);
 
-    const result = await pool.query(queryBorrarYVerificar, [id_usuario]);
-
-    if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
+    if (usuarioExistente.rowCount === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado o ya marcado como borrado' });
     }
 
-    res.json({ mensaje: 'Usuario eliminado correctamento' });
+    // Actualiza el usuario y marca como borrado
+    const updateQuery = `
+      UPDATE usuarios 
+      SET borrado = true
+      WHERE id_usuario = $1
+      RETURNING *;
+    `;
+
+    await pool.query(updateQuery, [id_usuario]);
+
+    res.json({ mensaje: 'Usuario marcado como borrado' });
   } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar usuario' });
+    console.error('Error al marcar usuario como borrado:', error);
+    res.status(500).json({ error: 'Error al marcar usuario como borrado' });
   }
 });
-
 
 //Obtener Usuario
 
