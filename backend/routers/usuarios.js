@@ -9,7 +9,7 @@ const crypto = require('crypto');
 
 
 const { validarIdUsuarios, validaActualizarUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
-const { auditar,convertirMayusculas } = require('../funciones/funciones.js')
+const { auditar, convertirMayusculas } = require('../funciones/funciones.js')
 const { join, extname } = require('path');
 
 
@@ -55,17 +55,24 @@ const multerCarga = multer({
 routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, async (req, res) => {
 
   const consulta = `
+  WITH validaciones AS (
+    SELECT
+      EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2) AS existeSedeDepartamento,
+      EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3) AS existeTipoUsuario,
+      NOT EXISTS (SELECT 1 FROM usuarios WHERE nombre_usuario = $1) AS nombreUsuarioNoExiste
+  )
   INSERT INTO usuarios (
     nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica
   )
   SELECT
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
-  WHERE EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
-    AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
-  RETURNING *; `;
+  FROM validaciones
+  WHERE existeSedeDepartamento = true AND existeTipoUsuario = true AND nombreUsuarioNoExiste
+  RETURNING *;
+`;
 
   try {
-    const { nombre_usuario, id_sededepar, id_tipousuario,nombre, apellido, pregunta, respuesta, clave, extension_telefonica} = req.body;
+    const { nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, extension_telefonica } = req.body;
     const operacion = req.method;
 
     const id_usuarioAuditoria = req.headers['id_usuario'];
@@ -184,7 +191,7 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
     ];
 
     // Ejecuta el query de actualización
-    await pool.query(query, values)  ;
+    await pool.query(query, values);
 
     // Realiza la auditoría si es necesario
     auditar(operacion, id_usuarioAuditoria);
@@ -231,10 +238,10 @@ routerUsuarios.put('/borrar-usuario/:id_usuario', validarIdUsuarios, async (req,
 
 //Obtener Usuario
 
- routerUsuarios.get('/', async (req, res) => {
+routerUsuarios.get('/', async (req, res) => {
   try {
-      const usuarios = await pool.query('SELECT * FROM usuarios ORDER BY id_usuario ASC');
-      res.json(usuarios.rows);
+    const usuarios = await pool.query('SELECT * FROM usuarios ORDER BY id_usuario ASC');
+    res.json(usuarios.rows);
 
   } catch (error) {
     console.log(error);
