@@ -27,7 +27,7 @@ routerPuntos.post('/', validaPuntos, async (req, res) => {
     const result = await pool.query(queryCrearPunto, [id_poligono, latitud, longitud]);
 
     if (result.rows.length === 0) {
-      return res.status(400).json({ error: 'El punto ya existe en el polígono' });
+      return res.status(400).json({ error: 'Error al crear Punto' });
     }
 
     res.status(200).json({ mensaje: 'Punto creado exitosamente', punto: result.rows[0] });
