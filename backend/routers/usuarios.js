@@ -4,20 +4,12 @@ const multer = require('multer');
 const cors = require('cors');
 const pool = require('../database/db.js');
 const bcrypt = require('bcrypt');
-
 const crypto = require('crypto');
 
 
-const { validarIdUsuarios, validaActualizarUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
-const { auditar, convertirMayusculas } = require('../funciones/funciones.js')
+const { validarIdUsuario, validarActUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
+const { auditar,convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
 const { join, extname } = require('path');
-
-
-// Función para verificar la existencia de un ID en una tabla
-async function verificarExistencia(id, tabla, campo) {
-  const result = await pool.query(`SELECT ${campo} FROM ${tabla} WHERE ${campo} = $1`, [id]);
-  return result.rowCount > 0;
-}
 
 const routerUsuarios = express.Router();
 routerUsuarios.use(express.json());
@@ -43,8 +35,11 @@ const multerCarga = multer({
   }),
   fileFilter: (req, file, cb) => {
     if (MIMETYPES.includes(file.mimetype)) cb(null, true)
-    else cb(new Error(`Solo estos tipos de MIMYTIPES ${MIMETYPES.join('')} son permitidos`))
+    else {
+      cb(new Error('Tipo de archivo no permitido'), false); 
+    }
   },
+      
   limits: {
     fieldSize: 10000000
   }
@@ -108,7 +103,7 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
 
 // Modificar Usuario
 
-routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, multerCarga.single('fileUsuario'), async (req, res) => {
+routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdUsuario, validarActUsuario, validarUsuario,  async (req, res) => {
   const { id_usuario } = req.params;
   const {
     nombre_usuario,
@@ -120,11 +115,13 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
     respuesta,
     clave,
     extension_telefonica,
-    borrado
+    telefono,
+    cedula,
+    correo
   } = req.body;
 
   // Obtén el nombre del archivo cargado
-  const fileUsuario = req.file.filename;
+  const fileUsuario = req.file ? req.file.filename : null;
 
   // Convierte a mayúsculas los campos que deben ser en mayúsculas
   const nombreEnMayusculas = nombre.toUpperCase();
@@ -137,43 +134,40 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
   const id_usuarioAuditoria = req.headers['id_usuario'];
 
   try {
-    // Verificar existencia de ID en las tablas
-    const existeSede = await verificarExistencia(id_sededepar, 'sedes_departamentos', 'id_sede_departamento');
-    if (!existeSede) {
-      return res.status(400).json({ error: 'id_sededepar no existe en la base de datos' });
-    }
 
-    const existeTipoUsuario = await verificarExistencia(id_tipousuario, 'tipos_usuarios', 'id_tipo_usuario');
-    if (!existeTipoUsuario) {
-      return res.status(400).json({ error: 'id_tipousuario no existe en la base de datos' });
-    }
-
-
+    // Crear frase de encriptación
+    const fraseEncriptacion = crypto.randomBytes(64).toString('base64');
+    
     // Encriptar la clave
-    const claveEncriptada = await bcrypt.hash(clave, 10);
+    const claveEncriptada = await bcrypt.hash(clave + fraseEncriptacion, 12);
 
     // Encriptar la respuesta
-    const respuestaEncriptada = await bcrypt.hash(respuesta, 10);
+    const respuestaEncriptada = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
 
 
     // Define el query SQL para actualizar el usuario
     const query = `
-            UPDATE usuarios 
-            SET 
-                nombre_usuario = $1,
-                id_sededepar = $2,
-                id_tipousuario = $3,
-                nombre = $4,
-                apellido = $5,
-                pregunta = $6,
-                respuesta = $7,
-                clave = $8,
-                foto_usuario = $9,
-                extension_telefonica = $10,
-                borrado = $11
-            WHERE id_usuario = $12
-        `;
-
+       UPDATE usuarios 
+      SET 
+        nombre_usuario = $1,
+        id_sededepar = $2,
+        id_tipousuario = $3,
+        nombre = $4,
+        apellido = $5,
+        pregunta = $6,
+        respuesta = $7,
+        clave = $8,
+        foto_usuario = COALESCE($9, foto_usuario),
+        extension_telefonica = $10,
+        telefono = $11,
+        cedula = $12,
+        correo = $13
+      WHERE id_usuario = $14
+        AND NOT borrado
+        AND EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
+        AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
+      RETURNING *;
+    `;
 
     const values = [
       nombre_usuario,
@@ -186,13 +180,19 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
       claveEncriptada,
       fileUsuario,
       extension_telefonica,
-      borrado,
+      telefono,
+      cedula,
+      correo,
       id_usuario
 
     ];
 
     // Ejecuta el query de actualización
-    await pool.query(query, values);
+    const actualizarUsuario = await pool.query(query, values);
+
+    if (actualizarUsuario.rowCount === 0) {
+      return res.status(400).json({ error: 'No se pudo actualizar el usuario.' });
+    }
 
     // Realiza la auditoría si es necesario
     auditar(operacion, id_usuarioAuditoria);
@@ -204,9 +204,11 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
   }
 });
 
+routerUsuarios.use(errorHandler);
+
 
 // Eliminar Usuario
-routerUsuarios.patch('/:id_usuario', validarIdUsuarios, async (req, res) => {
+routerUsuarios.patch('/:id_usuario', validarIdUsuario, async (req, res) => {
   try {
     const { id_usuario } = req.params;
 
