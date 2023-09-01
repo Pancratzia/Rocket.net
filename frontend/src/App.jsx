@@ -6,7 +6,7 @@ import Recuperar_Password from './pages/recuperar_password/Recuperar_Password';
 import Panel_Lateral from './components/Panel_Lateral/Panel_Lateral';
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/Navbar/Navbar';
-import EstadoRed from './pages/estado_de_red/EstadoRed';
+import Tabla from './pages/estado_de_red/Tabla'
 
 
 
@@ -56,7 +56,7 @@ function App() {
         ,
         {
           
-          element: <EstadoRed/>,
+          element: <Tabla />,
           path: '/estado_de_red',
 
         },
