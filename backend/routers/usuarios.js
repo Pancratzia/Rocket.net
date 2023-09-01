@@ -4,7 +4,6 @@ const multer = require('multer');
 const cors = require('cors');
 const pool = require('../database/db.js');
 const bcrypt = require('bcrypt');
-
 const crypto = require('crypto');
 
 
