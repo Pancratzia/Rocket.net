@@ -43,6 +43,18 @@ function convertirMayusculas(campos, datos) {
   return datosMayusculas;
 }
 
+function errorHandler(err, req, res, next) {
+  console.error(err.stack); // Registra el error en la consola (opcional)
+
+  // Verifica si el error es una instancia de Error y tiene un mensaje personalizado
+  if (err instanceof Error && err.message) {
+    res.status(400).json({ error: err.message }); // Envia el mensaje de error en formato JSON
+  } else {
+    res.status(500).json({ error: 'Ha ocurrido un error inesperado.' }); // Error genérico
+  }
+}
 
 
-module.exports = { obtenerFechayHora, auditar, convertirMayusculas };
+
+
+module.exports = { obtenerFechayHora, auditar, convertirMayusculas, errorHandler };

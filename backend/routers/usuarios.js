@@ -8,8 +8,8 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
 
-const { validarIdUsuarios, validarActUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
-const { auditar,convertirMayusculas } = require('../funciones/funciones.js')
+const { validarIdUsuario, validarActUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
+const { auditar,convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
 const { join, extname } = require('path');
 
 const routerUsuarios = express.Router();
@@ -31,13 +31,16 @@ const multerCarga = multer({
         .replace(/\s+/g, '_')
         .toLowerCase();
 
-      cb(null, `${nombreArchivo}-${extArchivo}`);
+      cb(null, `${nombreArchivo}-+${Date.now()}${extArchivo}`);
     },
   }),
   fileFilter: (req, file, cb) => {
     if (MIMETYPES.includes(file.mimetype)) cb(null, true)
-    else cb(new Error(`Solo estos tipos de MIMYTIPES ${MIMETYPES.join('')} son permitidos`))
+    else {
+      cb(new Error('Tipo de archivo no permitido'), false); 
+    }
   },
+      
   limits: {
     fieldSize: 10000000
   }
@@ -48,17 +51,24 @@ const multerCarga = multer({
 routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, async (req, res) => {
 
   const consulta = `
+  WITH validaciones AS (
+    SELECT
+      EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2) AS existeSedeDepartamento,
+      EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3) AS existeTipoUsuario,
+      NOT EXISTS (SELECT 1 FROM usuarios WHERE nombre_usuario = $1) AS nombreUsuarioNoExiste
+  )
   INSERT INTO usuarios (
-    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica
+    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica, telefono, cedula, correo
   )
   SELECT
-    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
-  WHERE EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
-    AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
-  RETURNING *; `;
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13 
+  FROM validaciones
+  WHERE existeSedeDepartamento = true AND existeTipoUsuario = true AND nombreUsuarioNoExiste
+  RETURNING *;
+`;
 
   try {
-    const { nombre_usuario, id_sededepar, id_tipousuario,nombre, apellido, pregunta, respuesta, clave, extension_telefonica} = req.body;
+    const { nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, extension_telefonica, telefono, cedula, correo } = req.body;
     const operacion = req.method;
 
     const id_usuarioAuditoria = req.headers['id_usuario'];
@@ -73,7 +83,8 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
 
     const crearUsuario = await pool.query(consulta, [
       nombre_usuario, id_sededepar, id_tipousuario, camposMayus.nombre, camposMayus.apellido,
-      camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica
+      camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica,
+      telefono, cedula, correo
     ]);
 
     if (crearUsuario.rows.length === 0) {
@@ -93,7 +104,7 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
 
 // Modificar Usuario
 
-routerUsuarios.put('/:id_usuario', validarIdUsuarios, validarActUsuario, multerCarga.single('fileUsuario'), async (req, res) => {
+routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdUsuario, validarActUsuario, validarUsuario,  async (req, res) => {
   const { id_usuario } = req.params;
   const {
     nombre_usuario,
@@ -104,7 +115,10 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validarActUsuario, multerC
     pregunta,
     respuesta,
     clave,
-    extension_telefonica
+    extension_telefonica,
+    telefono,
+    cedula,
+    correo
   } = req.body;
 
   // Obtén el nombre del archivo cargado
@@ -145,8 +159,11 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validarActUsuario, multerC
         respuesta = $7,
         clave = $8,
         foto_usuario = COALESCE($9, foto_usuario),
-        extension_telefonica = $10
-      WHERE id_usuario = $11
+        extension_telefonica = $10,
+        telefono = $11,
+        cedula = $12,
+        correo = $13
+      WHERE id_usuario = $14
         AND NOT borrado
         AND EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
         AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
@@ -164,6 +181,9 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validarActUsuario, multerC
       claveEncriptada,
       fileUsuario,
       extension_telefonica,
+      telefono,
+      cedula,
+      correo,
       id_usuario
 
     ];
@@ -185,45 +205,44 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validarActUsuario, multerC
   }
 });
 
+routerUsuarios.use(errorHandler);
+
 
 // Eliminar Usuario
-routerUsuarios.put('/borrar-usuario/:id_usuario', validarIdUsuarios, async (req, res) => {
+routerUsuarios.patch('/:id_usuario', validarIdUsuario, async (req, res) => {
   try {
     const { id_usuario } = req.params;
-    const operacion = req.method;
-    const id_usuarioAuditoria = req.headers['id_usuario'];
 
-    const query = `
-      UPDATE usuarios 
-      SET borrado = true
-      WHERE id_usuario = $1
+    const queryBorrarYVerificar = `
+      WITH usuario_borrado AS (
+        UPDATE usuarios 
+        SET borrado = true
+        WHERE id_usuario = $1
+        RETURNING *
+      )
+      SELECT * FROM usuario_borrado
+      WHERE borrado = true;
     `;
 
-    const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1', [id_usuario]);
+    const result = await pool.query(queryBorrarYVerificar, [id_usuario]);
 
-    if (usuarioExistente.rowCount === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    await pool.query(query, [id_usuario]);
-
-    auditar(operacion, id_usuarioAuditoria);
-
-    res.json({ mensaje: 'Usuario eliminado exitosamente' });
+    res.json({ mensaje: 'Usuario eliminado correctamento' });
   } catch (error) {
-    console.error('Error al marcar usuario como borrado:', error);
-    res.status(500).json({ error: 'Error al marcar usuario como borrado' });
+    res.status(500).json({ error: 'Error al eliminar usuario' });
   }
 });
 
 
-
 //Obtener Usuario
 
- routerUsuarios.get('/', async (req, res) => {
+routerUsuarios.get('/', async (req, res) => {
   try {
-      const usuarios = await pool.query('SELECT * FROM usuarios ORDER BY id_usuario ASC');
-      res.json(usuarios.rows);
+    const usuarios = await pool.query('SELECT * FROM usuarios ORDER BY id_usuario ASC');
+    res.json(usuarios.rows);
 
   } catch (error) {
     console.log(error);
