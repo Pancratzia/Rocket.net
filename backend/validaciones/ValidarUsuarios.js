@@ -49,12 +49,14 @@ const validarUsuario = [
     .not()
     .isEmpty(),
   check('pregunta')
-  .exists()
+    .exists()
+    .isString()
     .isLength({ max: 255 })
     .not()
     .isEmpty(),
   check('respuesta')
     .isLength({ max: 255 })
+    .isString()
     .not()
     .isEmpty(),
   check('clave')
@@ -67,17 +69,17 @@ const validarUsuario = [
     .matches(/^[0-9]+$/)
     .not()
     .isEmpty(),
-    check('telefono')
+  check('telefono')
     .isLength({ max: 20 })
     .matches(/^[0-9]+$/)
     .not()
     .isEmpty(),
-    check('cedula')
+  check('cedula')
     .matches(/^[0-9]+$/)
     .isLength({ max: 20 })
     .not()
     .isEmpty(),
-    check('correo')
+  check('correo')
     .isLength({ max: 255 })
     .matches(/^[\w-.]+@[\w-_]+\.[A-Za-z]{2,4}$/)
     .not()
@@ -132,9 +134,9 @@ const validarActUsuario = [
 
   check('correo')
     .optional(),
-    (req, res, next) => {
-      validarResultados(req, res, next)
-    }
+  (req, res, next) => {
+    validarResultados(req, res, next)
+  }
 
 ];
 

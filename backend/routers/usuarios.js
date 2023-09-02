@@ -8,7 +8,7 @@ const crypto = require('crypto');
 
 
 const { validarIdUsuario, validarActUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
-const { auditar,convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
+const { auditar, convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
 const { join, extname } = require('path');
 
 const routerUsuarios = express.Router();
@@ -36,10 +36,10 @@ const multerCarga = multer({
   fileFilter: (req, file, cb) => {
     if (MIMETYPES.includes(file.mimetype)) cb(null, true)
     else {
-      cb(new Error('Tipo de archivo no permitido'), false); 
+      cb(new Error('Tipo de archivo no permitido'), false);
     }
   },
-      
+
   limits: {
     fieldSize: 10000000
   }
@@ -67,6 +67,7 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
 `;
 
   try {
+  
     const { nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, extension_telefonica, telefono, cedula, correo } = req.body;
     const operacion = req.method;
 
@@ -103,7 +104,7 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
 
 // Modificar Usuario
 
-routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdUsuario, validarActUsuario, validarUsuario,  async (req, res) => {
+routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdUsuario, validarActUsuario, validarUsuario, async (req, res) => {
   const { id_usuario } = req.params;
   const {
     nombre_usuario,
@@ -137,7 +138,7 @@ routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdU
 
     // Crear frase de encriptación
     const fraseEncriptacion = crypto.randomBytes(64).toString('base64');
-    
+
     // Encriptar la clave
     const claveEncriptada = await bcrypt.hash(clave + fraseEncriptacion, 12);
 
@@ -191,7 +192,7 @@ routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdU
     const actualizarUsuario = await pool.query(query, values);
 
     if (actualizarUsuario.rowCount === 0) {
-      return res.status(400).json({ error: 'No se pudo actualizar el usuario.' });
+      return res.status(400).json({ error: 'Error al actualizar el usuario.' });
     }
 
     // Realiza la auditoría si es necesario
@@ -216,7 +217,7 @@ routerUsuarios.patch('/:id_usuario', validarIdUsuario, async (req, res) => {
     const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1 AND borrado = false', [id_usuario]);
 
     if (usuarioExistente.rowCount === 0) {
-      return res.status(404).json({ error: 'Usuario no encontrado o ya marcado como borrado' });
+      return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
     // Actualiza el usuario y marca como borrado
@@ -229,7 +230,7 @@ routerUsuarios.patch('/:id_usuario', validarIdUsuario, async (req, res) => {
 
     await pool.query(updateQuery, [id_usuario]);
 
-    res.json({ mensaje: 'Usuario marcado como borrado' });
+    res.json({ mensaje: 'Usuario eliminado correctamente' });
   } catch (error) {
     console.error('Error al marcar usuario como borrado:', error);
     res.status(500).json({ error: 'Error al marcar usuario como borrado' });
@@ -240,8 +241,8 @@ routerUsuarios.patch('/:id_usuario', validarIdUsuario, async (req, res) => {
 
 routerUsuarios.get('/', async (req, res) => {
   try {
-      const usuarios = await pool.query('SELECT nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica, telefono, cedula, correo FROM usuarios WHERE borrado = false ORDER BY id_usuario ASC');
-      res.json(usuarios.rows);
+    const usuarios = await pool.query('SELECT nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica, telefono, cedula, correo FROM usuarios WHERE borrado = false ORDER BY id_usuario ASC');
+    res.json(usuarios.rows);
 
   } catch (error) {
     console.log(error);
@@ -250,14 +251,14 @@ routerUsuarios.get('/', async (req, res) => {
 
 //Obtener un Usuario
 
- routerUsuarios.get('/:id_usuario', async (req, res) => {
+routerUsuarios.get('/:id_usuario', async (req, res) => {
   try {
-    const {id_usuario} = req.params;
-      const usuarios = await pool.query('SELECT nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica telefono, cedula, correo FROM usuarios WHERE id_usuario = $1 AND borrado = false', [id_usuario]);
-      if (usuarios.rowCount === 0) {
-        return res.status(404).json({ error: 'Usuario no encontrado' });
-      }
-      res.json(usuarios.rows[0]);
+    const { id_usuario } = req.params;
+    const usuarios = await pool.query('SELECT nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica telefono, cedula, correo FROM usuarios WHERE id_usuario = $1 AND borrado = false', [id_usuario]);
+    if (usuarios.rowCount === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json(usuarios.rows[0]);
 
   } catch (error) {
     console.log(error);
