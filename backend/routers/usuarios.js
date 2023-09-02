@@ -4,20 +4,12 @@ const multer = require('multer');
 const cors = require('cors');
 const pool = require('../database/db.js');
 const bcrypt = require('bcrypt');
-
 const crypto = require('crypto');
 
 
-const { validarIdUsuarios, validaActualizarUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
-const { auditar,convertirMayusculas } = require('../funciones/funciones.js')
+const { validarIdUsuario, validarActUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
+const { auditar, convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
 const { join, extname } = require('path');
-
-
-// Función para verificar la existencia de un ID en una tabla
-async function verificarExistencia(id, tabla, campo) {
-  const result = await pool.query(`SELECT ${campo} FROM ${tabla} WHERE ${campo} = $1`, [id]);
-  return result.rowCount > 0;
-}
 
 const routerUsuarios = express.Router();
 routerUsuarios.use(express.json());
@@ -43,8 +35,11 @@ const multerCarga = multer({
   }),
   fileFilter: (req, file, cb) => {
     if (MIMETYPES.includes(file.mimetype)) cb(null, true)
-    else cb(new Error(`Solo estos tipos de MIMYTIPES ${MIMETYPES.join('')} son permitidos`))
+    else {
+      cb(new Error('Tipo de archivo no permitido'), false);
+    }
   },
+
   limits: {
     fieldSize: 10000000
   }
@@ -55,17 +50,25 @@ const multerCarga = multer({
 routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, async (req, res) => {
 
   const consulta = `
+  WITH validaciones AS (
+    SELECT
+      EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2) AS existeSedeDepartamento,
+      EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3) AS existeTipoUsuario,
+      NOT EXISTS (SELECT 1 FROM usuarios WHERE nombre_usuario = $1) AS nombreUsuarioNoExiste
+  )
   INSERT INTO usuarios (
-    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica
+    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica, telefono, cedula, correo
   )
   SELECT
-    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
-  WHERE EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
-    AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
-  RETURNING *; `;
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13 
+  FROM validaciones
+  WHERE existeSedeDepartamento = true AND existeTipoUsuario = true AND nombreUsuarioNoExiste
+  RETURNING *;
+`;
 
   try {
-    const { nombre_usuario, id_sededepar, id_tipousuario,nombre, apellido, pregunta, respuesta, clave, extension_telefonica} = req.body;
+  
+    const { nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, extension_telefonica, telefono, cedula, correo } = req.body;
     const operacion = req.method;
 
     const id_usuarioAuditoria = req.headers['id_usuario'];
@@ -80,7 +83,8 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
 
     const crearUsuario = await pool.query(consulta, [
       nombre_usuario, id_sededepar, id_tipousuario, camposMayus.nombre, camposMayus.apellido,
-      camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica
+      camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica,
+      telefono, cedula, correo
     ]);
 
     if (crearUsuario.rows.length === 0) {
@@ -100,7 +104,7 @@ routerUsuarios.post('/', multerCarga.single('fileUsuario'), validarUsuario, asyn
 
 // Modificar Usuario
 
-routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, multerCarga.single('fileUsuario'), async (req, res) => {
+routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdUsuario, validarActUsuario, validarUsuario, async (req, res) => {
   const { id_usuario } = req.params;
   const {
     nombre_usuario,
@@ -112,11 +116,13 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
     respuesta,
     clave,
     extension_telefonica,
-    borrado
+    telefono,
+    cedula,
+    correo
   } = req.body;
 
   // Obtén el nombre del archivo cargado
-  const fileUsuario = req.file.filename;
+  const fileUsuario = req.file ? req.file.filename : null;
 
   // Convierte a mayúsculas los campos que deben ser en mayúsculas
   const nombreEnMayusculas = nombre.toUpperCase();
@@ -129,43 +135,40 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
   const id_usuarioAuditoria = req.headers['id_usuario'];
 
   try {
-    // Verificar existencia de ID en las tablas
-    const existeSede = await verificarExistencia(id_sededepar, 'sedes_departamentos', 'id_sede_departamento');
-    if (!existeSede) {
-      return res.status(400).json({ error: 'id_sededepar no existe en la base de datos' });
-    }
 
-    const existeTipoUsuario = await verificarExistencia(id_tipousuario, 'tipos_usuarios', 'id_tipo_usuario');
-    if (!existeTipoUsuario) {
-      return res.status(400).json({ error: 'id_tipousuario no existe en la base de datos' });
-    }
-
+    // Crear frase de encriptación
+    const fraseEncriptacion = crypto.randomBytes(64).toString('base64');
 
     // Encriptar la clave
-    const claveEncriptada = await bcrypt.hash(clave, 10);
+    const claveEncriptada = await bcrypt.hash(clave + fraseEncriptacion, 12);
 
     // Encriptar la respuesta
-    const respuestaEncriptada = await bcrypt.hash(respuesta, 10);
+    const respuestaEncriptada = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
 
 
     // Define el query SQL para actualizar el usuario
     const query = `
-            UPDATE usuarios 
-            SET 
-                nombre_usuario = $1,
-                id_sededepar = $2,
-                id_tipousuario = $3,
-                nombre = $4,
-                apellido = $5,
-                pregunta = $6,
-                respuesta = $7,
-                clave = $8,
-                foto_usuario = $9,
-                extension_telefonica = $10,
-                borrado = $11
-            WHERE id_usuario = $12
-        `;
-
+       UPDATE usuarios 
+      SET 
+        nombre_usuario = $1,
+        id_sededepar = $2,
+        id_tipousuario = $3,
+        nombre = $4,
+        apellido = $5,
+        pregunta = $6,
+        respuesta = $7,
+        clave = $8,
+        foto_usuario = COALESCE($9, foto_usuario),
+        extension_telefonica = $10,
+        telefono = $11,
+        cedula = $12,
+        correo = $13
+      WHERE id_usuario = $14
+        AND NOT borrado
+        AND EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
+        AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
+      RETURNING *;
+    `;
 
     const values = [
       nombre_usuario,
@@ -178,13 +181,19 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
       claveEncriptada,
       fileUsuario,
       extension_telefonica,
-      borrado,
+      telefono,
+      cedula,
+      correo,
       id_usuario
 
     ];
 
     // Ejecuta el query de actualización
-    await pool.query(query, values)  ;
+    const actualizarUsuario = await pool.query(query, values);
+
+    if (actualizarUsuario.rowCount === 0) {
+      return res.status(400).json({ error: 'Error al actualizar el usuario.' });
+    }
 
     // Realiza la auditoría si es necesario
     auditar(operacion, id_usuarioAuditoria);
@@ -196,45 +205,60 @@ routerUsuarios.put('/:id_usuario', validarIdUsuarios, validaActualizarUsuario, m
   }
 });
 
+routerUsuarios.use(errorHandler);
+
 
 // Eliminar Usuario
-routerUsuarios.put('/borrar-usuario/:id_usuario', validarIdUsuarios, async (req, res) => {
+routerUsuarios.patch('/:id_usuario', validarIdUsuario, async (req, res) => {
   try {
     const { id_usuario } = req.params;
-    const operacion = req.method;
-    const id_usuarioAuditoria = req.headers['id_usuario'];
 
-    const query = `
-      UPDATE usuarios 
-      SET borrado = true
-      WHERE id_usuario = $1
-    `;
-
-    const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1', [id_usuario]);
+    // Validacion #1
+    const usuarioExistente = await pool.query('SELECT * FROM usuarios WHERE id_usuario = $1 AND borrado = false', [id_usuario]);
 
     if (usuarioExistente.rowCount === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
-    await pool.query(query, [id_usuario]);
+    // Actualiza el usuario y marca como borrado
+    const updateQuery = `
+      UPDATE usuarios 
+      SET borrado = true
+      WHERE id_usuario = $1
+      RETURNING *;
+    `;
 
-    auditar(operacion, id_usuarioAuditoria);
+    await pool.query(updateQuery, [id_usuario]);
 
-    res.json({ mensaje: 'Usuario eliminado exitosamente' });
+    res.json({ mensaje: 'Usuario eliminado correctamente' });
   } catch (error) {
     console.error('Error al marcar usuario como borrado:', error);
     res.status(500).json({ error: 'Error al marcar usuario como borrado' });
   }
 });
 
-
-
 //Obtener Usuario
 
- routerUsuarios.get('/', async (req, res) => {
+routerUsuarios.get('/', async (req, res) => {
   try {
-      const usuarios = await pool.query('SELECT * FROM usuarios ORDER BY id_usuario ASC');
-      res.json(usuarios.rows);
+    const usuarios = await pool.query('SELECT nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica, telefono, cedula, correo FROM usuarios WHERE borrado = false ORDER BY id_usuario ASC');
+    res.json(usuarios.rows);
+
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//Obtener un Usuario
+
+routerUsuarios.get('/:id_usuario', async (req, res) => {
+  try {
+    const { id_usuario } = req.params;
+    const usuarios = await pool.query('SELECT nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica telefono, cedula, correo FROM usuarios WHERE id_usuario = $1 AND borrado = false', [id_usuario]);
+    if (usuarios.rowCount === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json(usuarios.rows[0]);
 
   } catch (error) {
     console.log(error);
