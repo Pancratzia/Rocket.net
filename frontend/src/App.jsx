@@ -6,6 +6,8 @@ import Recuperar_Password from './pages/recuperar_password/Recuperar_Password';
 import Panel_Lateral from './components/Panel_Lateral/Panel_Lateral';
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/Navbar/Navbar';
+import EstadoRed from './pages/estado_de_red/EstadoRed';
+import GestionUsuarios from './pages/gestion_usuarios/GestionUsuarios';
 
 
 
@@ -24,6 +26,7 @@ function App() {
         <div className="contenedor-panel">
         <Panel_Lateral />
         <Outlet />
+
         </div>
       </div>
     );
@@ -36,6 +39,7 @@ function App() {
       <div className="derecha"> 
         <Navbar />
         <Outlet />
+        
         </div> 
       </div>
     );
@@ -52,7 +56,14 @@ function App() {
         }
         ,
         {
-          // Aquí se agregan las rutas para el dashboard
+          element: <EstadoRed/>,
+          path: '/estado_de_red',
+
+        },
+        {
+          element: <GestionUsuarios/>,
+          path: '/gestion_usuarios',
+
         },
       ],
     },

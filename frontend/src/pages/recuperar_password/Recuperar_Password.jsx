@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Recuperar_Password.css";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 function Recuperar_Password() {
+  const [usuario, setUsuario] = useState("");
+  const [respuesta, setRespuesta] = useState("");
+  const [contraseña, setContraseña] = useState("");
+  const [confirmarContraseña, setConfirmarContraseña] = useState("");
+
+  const manejarFormulario = (event) => {
+    event.preventDefault();
+
+    if (usuario.trim() === "" || respuesta.trim() === "" || contraseña.trim() === "" || confirmarContraseña.trim() === "") {
+      MySwal.fire({
+        title: <strong>Oops! Lo siento. No pudimos procesar tu solicitud</strong>,
+        html: <i>Por favor intentar nuevamente al seleccionar "Olvidaste tu contraseña"</i>,
+        icon: "error",
+      });
+    } else {
+      MySwal.fire({
+        title: <strong>¡Haz creado una nueva contraseña exitosamente!</strong>,
+        html: <i>Puedes intentar iniciar sesión con tu nueva contraseña</i>,
+        icon: "success",
+      });
+    }
+  };
+
   return (
     <div className="contenedor-recuperar">
-      <form className="formulario-recuperar">
+      <form className="formulario-recuperar" onSubmit={manejarFormulario}>
         <div className="titulo-recuperar">
           <h1>¿Has olvidado tu contraseña?</h1>
           <p>Ingresa la información correspondiente en los campos de abajo</p>
@@ -24,6 +51,8 @@ function Recuperar_Password() {
                 id="usuario"
                 type="text"
                 className="input withIcon"
+                value={usuario}
+                onChange={(e) => setUsuario(e.target.value)}
               />
               <FaMagnifyingGlass className="busqueda-icon" />
             </div>
@@ -40,6 +69,8 @@ function Recuperar_Password() {
                 id="respuesta"
                 type="text"
                 className="input"
+                value={respuesta}
+                onChange={(e) => setRespuesta(e.target.value)}
               />
             </div>
           </div>
@@ -55,39 +86,45 @@ function Recuperar_Password() {
 
         <div className="campos">
           <div className="campo">
-            <label className="label" htmlFor="password">
-              nueva contraseña
+            <label className="label" htmlFor="contraseña">
+              Nueva contraseña
             </label>
             <div className="field">
               <input
-                name="password"
-                id="password"
-                type="password"
+                name="contraseña"
+                id="contraseña"
+                type="contraseña"
                 className="input"
+                value={contraseña}
+                onChange={(e) => setContraseña(e.target.value)}
               />
             </div>
           </div>
 
           <div className="campo">
-            <label className="label" htmlFor="confirmpassword">
-              repite la contraseña
+            <label className="label" htmlFor="confirmarcontraseña">
+              Repite la contraseña
             </label>
             <div className="field">
               <input
-                name="confirmpassword"
-                id="confirmpassword"
-                type="password"
+                name="confirmarcontraseña"
+                id="confirmarcontraseña"
+                type="contraseña"
                 className="input"
+                value={confirmarContraseña}
+                onChange={(e) => setConfirmarContraseña(e.target.value)}
               />
             </div>
           </div>
         </div>
 
-        <button className="btn">Guardar cambios</button>
+        <button className="btn" type="submit">
+          Guardar cambios
+        </button>
       </form>
 
       <Link to="/Login" className="link">
-        Volver al inicio de sesion
+        Volver al inicio de sesión
       </Link>
     </div>
   );
