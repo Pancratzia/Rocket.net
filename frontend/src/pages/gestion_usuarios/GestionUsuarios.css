@@ -20,15 +20,15 @@
 }
 
 .contenedor-busqueda{
-  margin-top: 80px;
+  padding: 20px;
   justify-content: right;
   align-items: right;
-  margin-left: 50px;
 
 }
 
 .boton-editar {
-  margin-left: 10px; 
+
+
 }
 
 .contenedor-gestion{
@@ -128,4 +128,3 @@
   .boton-editar {
     margin-left: 4px;
   }
-}

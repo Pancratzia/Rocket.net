@@ -4,91 +4,58 @@ import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
 import { useState } from 'react';
 
+
 function GestionUsuarios() {
 
-  const columnas = [
+   const columnas = [
+    { field: 'id', headerName: 'ID', width: 40 },
     {
-      field: 'foto_usuario',
-      headerName: 'Foto',
-      width: 80,
+      field: 'usuario',
+      headerName: 'Usuario',
+      width: 100,
+      editable: true,
     },
     {
-      field: 'usuario', //campo
-      headerName: 'Usuario',  //nombre de la columna
-      width: 90, // el ancho que ocupa
-    },
-
-    {
-      field: 'sede_departamento',
-      headerName: 'Departamento',
-      width: 150,
-    },
-
-    {
-      field: 'clave_usuario',
-      headerName: 'Clave',
-      width: 150,
-    },
-
-    {
-      field: 'correo_electronico',
-      headerName: 'Correo',
-      width: 150,
-    },
-
-    {
-      field: 'tipo_usuario',
-      headerName: 'Tipo',
-      width: 80,
-    },
-
-    {
-      field: 'nombre_usuario',
+      field: 'nombre',
       headerName: 'Nombre',
       width: 150,
+      editable: true,
     },
-
     {
-      field: 'apellido_usuario',
+      field: 'apellido',
       headerName: 'Apellido',
-      width: 150,
+      width: 110,
+      editable: true,
     },
-
     {
-      field: 'cedula_usuario',
-      headerName: 'Cedula',
-      width: 150,
+      field: 'pregunta',
+      headerName: 'Pregunta',
+      description: 'Esta es la pregunta de seguridad',
+      width: 160,
     },
-
     {
-      field: 'pregunta_usuario',
-      headerName: 'Pregunta de seguridad',
-      width: 190,
-    },
-
-    {
-      field: 'respuesta_usuario',
-      headerName: 'Respuesta de seguridad',
-      width: 190,
-    },
-
-    {
-      field: 'extension_usuario',
+      field: 'extensiontelefonica',
       headerName: 'Extension telefonica',
-      width: 180,
-    },
-
-    {
-      field: 'telefono_usuario',
-      headerName: ' Número telefonico',
-      width: 180,
+      width: 160,
     },
     {
-      field: 'accion_usuario',
-      headerName: 'Accion',
-      width: 100,
-    }
-  ]
+      field: 'telefono',
+      headerName: 'Telefono',
+      width: 120,
+      type:'number',
+    },
+    {
+      field: 'cedula',
+      headerName: 'Cedula',
+      width: 120,
+      type: 'number',
+    },
+    {
+      field: 'correo',
+      headerName: 'Correo',
+      width: 160,
+    },
+  ];
 
 
 
@@ -113,7 +80,7 @@ function GestionUsuarios() {
     { value: 'pregunta3', label: 'Pregunta 3' },
   ];
 
-
+ 
 
   return (
 
@@ -172,9 +139,8 @@ function GestionUsuarios() {
       />
 
 
-
-
       </div>
+
     </div>
 
   );
