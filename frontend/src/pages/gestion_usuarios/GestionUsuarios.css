@@ -20,17 +20,12 @@
 }
 
 .contenedor-busqueda{
-  margin-top: 80px;
+  padding: 20px;
   justify-content: right;
   align-items: right;
-  margin-left: 50px;
 
 }
 
 .boton-editar {
   margin-left: 10px; /* Ajusta el valor según el espacio de separación deseado */
-}
-
-.contenedor-gestion{
-
 }
