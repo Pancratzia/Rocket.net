@@ -1,28 +1,13 @@
 import React from 'react';
 import "./GestionUsuarios.css";
-import Tabla  from '../../components/Tabla/Tabla';
+import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
 import { useState } from 'react';
 
-function GestionUsuarios(){
 
+function GestionUsuarios() {
 
-  const [showAddModal, setShowAddModal] = useState(false);
-
-  const handleOpenAddModal = () => {
-    setShowAddModal(true);
-  };
-
-  const handleSave = () => {
-    // Lógica para guardar el usuario
-    setShowAddModal(false);
-  };
-
-  const handleCancel = () => {
-    setShowAddModal(false);
-  };
-
-  const columnas = [
+   const columnas = [
     { field: 'id', headerName: 'ID', width: 40 },
     {
       field: 'usuario',
@@ -71,25 +56,95 @@ function GestionUsuarios(){
       width: 160,
     },
   ];
-  
-  const filas = [
-    { id: 1, usuario: 'admin', nombre: 'Pedro', apellido: 'Tovar', pregunta: 'Animal favorito', extensiontelefonica: '22911191', telefono: '04121234567', cedula: 'V2012940', correo: 'pedro@rocket.net' },
+
+
+
+
+  const [estadoModal, cambiarEstadoModal] = useState(false);
+
+  const opcionesTipoUsuario = [
+    { value: 'admin', label: 'Administrador' },
+    { value: 'user', label: 'Usuario' },
+    { value: 'guest', label: 'Invitado' },
   ];
 
+  const opcionesSedeDepartamento = [
+    { value: 'departamento1', label: 'Departamento1' },
+    { value: 'departamento2', label: 'Departamento2' },
+    { value: 'departamento2', label: 'Departamento3' },
+  ];
+
+  const opcionesPreguntasSeguridad = [
+    { value: 'pregunta1', label: 'Pregunta 1' },
+    { value: 'pregunta2', label: 'Pregunta 2' },
+    { value: 'pregunta3', label: 'Pregunta 3' },
+  ];
+
+ 
+
   return (
-    <div className='contenedor-gestion'>
-      <div className='titulo'>
-        <h1>Gestion de usuarios</h1>
-        <hr/>
+
+    <div>
+
+
+
+
+
+      <div className='contenedor-gestion'>
+        <div className='titulo'>
+          <h1>Gestion de usuarios</h1>
+        </div>
+        <div className='contenedor-busqueda'>
+          <button className='boton' onClick={() => cambiarEstadoModal(!estadoModal)}>Agregar</button>
+
+        </div>
+
+
+        <Add
+          estado={estadoModal}
+          cambiarEstado={cambiarEstadoModal}
+          titulo="Agregar Usuario"
+          campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
+          if (idCampo === 'tipo_usuario') {
+            return {
+              campo,
+              idCampo,
+              typeCampo: 'select',
+              options: opcionesTipoUsuario,
+            };
+          } 
+
+          if (idCampo === 'sede_departamento') {
+            return {
+              campo,
+              idCampo,
+              typeCampo: 'select',
+              options: opcionesSedeDepartamento,
+            };
+          } 
+
+          if (idCampo === 'pregunta_usuario') {
+            return {
+              campo,
+              idCampo,
+              typeCampo: 'select',
+              options: opcionesPreguntasSeguridad,
+            };
+          } 
+          
+          else {
+            return { campo, idCampo, typeCampo };
+          }
+        })}
+      />
+
+
       </div>
-      <div className='contenedor-busqueda'>
-        <button className='boton' onClick={handleOpenAddModal}>Agregar</button>
-      {/*<button className='boton boton-editar' onClick={handleOpenAddModal}>Editar</button>*/}  
-      </div>
-      {showAddModal && <Add onSave={handleSave} onCancel={handleCancel} />}
-      <Tabla columns={columnas} rows={filas} actions={true}/>
+
     </div>
+
   );
+
 }
 
 export default GestionUsuarios;

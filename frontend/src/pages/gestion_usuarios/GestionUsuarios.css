@@ -27,5 +27,104 @@
 }
 
 .boton-editar {
-  margin-left: 10px; /* Ajusta el valor según el espacio de separación deseado */
+
+
 }
+
+.contenedor-gestion{
+
+}
+
+/* Anchura máxima de 1200px */
+@media (max-width: 1200px) {
+  .titulo h1 {
+    font-size: 40px;
+    margin: 3px 0;
+    padding-left: 6px;
+    
+  }
+
+  .boton {
+    font-size: 14px;
+    width: 20%;
+    
+  }
+
+  .contenedor-busqueda {
+    margin-top: 60px;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-left: 30px;
+  }
+
+  .boton-editar {
+    margin-left: 8px;
+  }
+}
+
+/* Anchura máxima de 768px */
+@media (max-width: 768px) {
+  .titulo h1 {
+    font-size: 30px;
+    margin: 2px 0;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .boton {
+    font-size: 12px;
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contenedor-busqueda {
+    margin-top: 40px;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .boton-editar {
+    margin-left: 6px;
+  }
+}
+
+/* Anchura máxima de 480px */
+@media (max-width: 480px) {
+  .titulo h1 {
+    font-size: 20px;
+    margin: 1px 0;
+    padding-left: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .boton {
+    font-size: 10px;
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contenedor-busqueda {
+    margin-top: 20px;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .boton-editar {
+    margin-left: 4px;
+  }
