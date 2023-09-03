@@ -120,14 +120,12 @@ routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdU
     correo
   } = req.body;
 
-  // Obtén el nombre del archivo cargado
+  // Obtener el nombre del archivo cargado
   const fileUsuario = req.file ? req.file.filename : null;
 
-  // Convierte a mayúsculas los campos que deben ser en mayúsculas
-  const nombreEnMayusculas = nombre.toUpperCase();
-  const apellidoEnMayusculas = apellido.toUpperCase();
-  const preguntaEnMayusculas = pregunta.toUpperCase();
-
+  // Convierte a mayúsculas
+  const camposAmayusculas = ['nombre', 'apellido', 'pregunta'];
+  const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
 
   // parametros para auditoria
   const operacion = req.method;
@@ -147,35 +145,40 @@ routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdU
 
     // Define el query SQL para actualizar el usuario
     const query = `
-       UPDATE usuarios 
-      SET 
-        nombre_usuario = $1,
-        id_sededepar = $2,
-        id_tipousuario = $3,
-        nombre = $4,
-        apellido = $5,
-        pregunta = $6,
-        respuesta = $7,
-        clave = $8,
-        foto_usuario = COALESCE($9, foto_usuario),
-        extension_telefonica = $10,
-        telefono = $11,
-        cedula = $12,
-        correo = $13
-      WHERE id_usuario = $14
-        AND NOT borrado
-        AND EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
-        AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
-      RETURNING *;
-    `;
+    UPDATE usuarios
+    SET
+      nombre_usuario = $1,
+      id_sededepar = $2,
+      id_tipousuario = $3,
+      nombre = $4,
+      apellido = $5,
+      pregunta = $6,
+      respuesta = $7,
+      clave = $8,
+      foto_usuario = COALESCE($9, foto_usuario),
+      extension_telefonica = $10,
+      telefono = $11,
+      cedula = $12,
+      correo = $13
+    WHERE id_usuario = $14
+      AND NOT borrado
+      AND EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
+      AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
+      AND NOT EXISTS (
+        SELECT 1 FROM usuarios
+        WHERE (nombre_usuario = $1 OR cedula = $12)
+        AND id_usuario <> $14
+      )
+    RETURNING *;
+  `;
 
     const values = [
       nombre_usuario,
       id_sededepar,
       id_tipousuario,
-      nombreEnMayusculas,
-      apellidoEnMayusculas,
-      preguntaEnMayusculas,
+      camposMayus.nombre,
+      camposMayus.apellido,
+      camposMayus.pregunta,
       respuestaEncriptada,
       claveEncriptada,
       fileUsuario,
