@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../styles/Panel.css"; // Importa el archivo CSS para los estilos
 import Mapa from "../Mapa/Mapa";
 
@@ -6,6 +6,7 @@ function Panel() {
 
 
   const [posicionActual, setPosicionActual] = useState(null);
+  const divisionIzquierdaRef = useRef(null);
 
   const manejarBuscarClick = () => {
     if (navigator.geolocation) {
@@ -14,6 +15,7 @@ function Panel() {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
+        divisionIzquierdaRef.current.scrollIntoView({ behavior: "smooth" });
       });
     } else {
       alert("Este navegador no soporta geolocalización");
@@ -23,7 +25,7 @@ function Panel() {
 
   return (
     <div className="panel">
-      <div className="division-izquierda">
+      <div ref={divisionIzquierdaRef} className="division-izquierda">
         <Mapa posicionActual={posicionActual} />
       </div>
       <div className="division-derecha">
@@ -43,7 +45,7 @@ function Panel() {
         <p className="texto-secundario">
           **Estas zonas de cobertura pueden sufrir cambios en el tiempo. Seguimos trabajando para conectar a nuestros clientes.
         </p>
-        <button className="boton-contactanos">Contactanos</button>
+        <a href="https://web.whatsapp.com/send?phone=584145272754"><button className="boton-contactanos">Contactanos</button></a>
       </div>
     </div>
   );
