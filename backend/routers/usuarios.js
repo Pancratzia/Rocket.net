@@ -123,7 +123,7 @@ routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdU
   // Obtener el nombre del archivo cargado
   const fileUsuario = req.file ? req.file.filename : null;
 
-  // Convierte a mayúsculas
+  // Conviertir a mayúsculas
   const camposAmayusculas = ['nombre', 'apellido', 'pregunta'];
   const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
 
@@ -142,8 +142,7 @@ routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdU
     // Encriptar la respuesta
     const respuestaEncriptada = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
 
-
-    // Define el query SQL para actualizar el usuario
+    // Query SQL para actualizar el usuario
     const query = `
     UPDATE usuarios
     SET
