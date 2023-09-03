@@ -25,6 +25,18 @@ function GestionUsuarios() {
     },
 
     {
+      field: 'clave_usuario',
+      headerName: 'Clave',
+      width: 150,
+    },
+
+    {
+      field: 'correo_electronico',
+      headerName: 'Correo',
+      width: 150,
+    },
+
+    {
       field: 'tipo_usuario',
       headerName: 'Tipo',
       width: 80,
@@ -43,14 +55,32 @@ function GestionUsuarios() {
     },
 
     {
+      field: 'cedula_usuario',
+      headerName: 'Cedula',
+      width: 150,
+    },
+
+    {
       field: 'pregunta_usuario',
       headerName: 'Pregunta de seguridad',
       width: 190,
     },
 
     {
+      field: 'respuesta_usuario',
+      headerName: 'Respuesta de seguridad',
+      width: 190,
+    },
+
+    {
       field: 'extension_usuario',
       headerName: 'Extension telefonica',
+      width: 180,
+    },
+
+    {
+      field: 'telefono_usuario',
+      headerName: ' Número telefonico',
       width: 180,
     },
     {
@@ -65,15 +95,31 @@ function GestionUsuarios() {
 
   const [estadoModal, cambiarEstadoModal] = useState(false);
 
+  const opcionesTipoUsuario = [
+    { value: 'admin', label: 'Administrador' },
+    { value: 'user', label: 'Usuario' },
+    { value: 'guest', label: 'Invitado' },
+  ];
+
+  const opcionesSedeDepartamento = [
+    { value: 'departamento1', label: 'Departamento1' },
+    { value: 'departamento2', label: 'Departamento2' },
+    { value: 'departamento2', label: 'Departamento3' },
+  ];
+
+  const opcionesPreguntasSeguridad = [
+    { value: 'pregunta1', label: 'Pregunta 1' },
+    { value: 'pregunta2', label: 'Pregunta 2' },
+    { value: 'pregunta3', label: 'Pregunta 3' },
+  ];
 
 
- 
 
   return (
 
     <div>
 
-      
+
 
 
 
@@ -83,63 +129,49 @@ function GestionUsuarios() {
         </div>
         <div className='contenedor-busqueda'>
           <button className='boton' onClick={() => cambiarEstadoModal(!estadoModal)}>Agregar</button>
-  
+
         </div>
 
-        <Add 
-        estado={estadoModal} 
-        cambiarEstado={cambiarEstadoModal}
-        titulo="Agregar Usuario"
 
-        campo1="Nombre:"
-        idCampo1="nombre"
-        typeCampo1="text"
+        <Add
+          estado={estadoModal}
+          cambiarEstado={cambiarEstadoModal}
+          titulo="Agregar Usuario"
+          campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
+          if (idCampo === 'tipo_usuario') {
+            return {
+              campo,
+              idCampo,
+              typeCampo: 'select',
+              options: opcionesTipoUsuario,
+            };
+          } 
 
-        campo2="Apellido:"
-        idCampo2="apellido"
-        typeCampo2="text"
+          if (idCampo === 'sede_departamento') {
+            return {
+              campo,
+              idCampo,
+              typeCampo: 'select',
+              options: opcionesSedeDepartamento,
+            };
+          } 
 
-        campo3="Extensión telefonica:"
-        idCampo3="extension"
-        typeCampo3="number"
+          if (idCampo === 'pregunta_usuario') {
+            return {
+              campo,
+              idCampo,
+              typeCampo: 'select',
+              options: opcionesPreguntasSeguridad,
+            };
+          } 
+          
+          else {
+            return { campo, idCampo, typeCampo };
+          }
+        })}
+      />
 
-        campo4="Número telefonico:"
-        idCampo4="telefono"
-        typeCampo4="number"
 
-        campo5="Cedula:"
-        idCampo5="nombre"
-        typeCampo5="number"
-
-        campo6="Correo:"
-        idCampo6="correo"
-        typeCampo6="email"
-
-        campo7="Clave:"
-        idCampo7="clave"
-        typeCampo7="varchar"
-
-        campo8="Tipo de Usuario:"
-        idCampo8="tipo"
-        typeCampo8=""
-
-        campo9="Departamento:"
-        idCampo9="departamento"
-        typeCampo9=""
-
-        campo10="Usuario:"
-        idCampo10="usuario"
-        typeCampo10=""
-
-        campo11="Pregunta:"
-        idCampo11="pregunta"
-        typeCampo11=""
-
-        campo12="Respuesta:"
-        idCampo12="respuesta"
-        typeCampo12="text"
-        
-    />
 
 
       </div>
