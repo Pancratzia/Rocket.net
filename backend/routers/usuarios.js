@@ -6,7 +6,6 @@ const pool = require('../database/db.js');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
-
 const { validarIdUsuario, validarActUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
 const { auditar, convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
 const { join, extname } = require('path');
