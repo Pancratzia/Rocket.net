@@ -223,40 +223,40 @@ function GestionCobertura() {
 
     // Contenido del modulo
     return(
-        <div className='contenedor-principal'>
-          <div className='titulo'>
-            <span>Gestion de cobertura</span>
+        <div className='contenedor-principal-cob'>
+          <div className='titulo-cobertura'>
+            <h1>Gestion de cobertura</h1>
           </div>
        
-          <div className='contenedor-izquierdo'>
+          <div className='contenedor-izquierdo-cob'>
             <div className='prueba'>
-              <input className='input' type='text' name='poligono' id='poligono' onChange={(e) => setPoligono(e.target.value)}/>
-              <button className='boton' onClick={crearPoligono}>Crear poligono</button>
+              <input className='input-cobertura' type='text' name='poligono' id='poligono' onChange={(e) => setPoligono(e.target.value)}/>
+              <button className='boton-cobertura' onClick={crearPoligono}>Crear poligono</button>
             </div>
             <div className='tabla-poligonos'>
               <Tabla columns={columnasPoligono} rows={filasPoligono} actions/> 
             </div>
             
-                <button className='boton'  onClick={() => cambiarEstadoModal(!estadoModal)}>prueba modal</button>
-                <button className='boton' onClick={() => cambiarEstadoModal2(!estadoModal2)}> prueba modal 2</button>
+                <button className='boton-cobertura'  onClick={() => cambiarEstadoModal(!estadoModal)}>prueba modal</button>
+                <button className='boton-cobtertura' onClick={() => cambiarEstadoModal2(!estadoModal2)}> prueba modal 2</button>
         </div>
 
 
-            <div className='contenedor-derecho'>
+            <div className='contenedor-derecho-cob'>
               <h3>Ingresar la latitud</h3>
                 <div className='prueba'>
                   <input className='input2' type='text' name='latitud' id='latitud' onChange={(e) => setLatitud(e.target.value)}/>
-                  <button className='boton' onClick={crearCoordenadas}>Agregar</button>
+                  <button className='boton-cobertura' onClick={crearCoordenadas}>Agregar</button>
                 </div>
               <h3>Ingresar la longitud</h3>
                 <div className='prueba'>
                   <input className='input2' type='text' name='longitud' id='longitud' onChange={(e) => setLongitud(e.target.value)}/>
-                  <button className='boton' onClick={crearCoordenadas}>Agregar</button>
+                  <button className='boton-cobertura' onClick={crearCoordenadas}>Agregar</button>
                 </div>
            
                 <div className = 'lista-btn'> 
                   <Lista  items = {items} label = 'Seleccionar poligono'/> 
-                  <button className='boton'>Crear punto</button> 
+                  <button className='boton-cobertura'>Crear punto</button> 
                 </div>
                
                 <div className='tabla-puntos'>

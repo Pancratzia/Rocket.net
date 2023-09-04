@@ -73,8 +73,7 @@ export default function Tabla(props) {
         fontSize: 16,
         fontFamily: 'Poppins',
         alignContent: 'center',
-        justifyContent: 'center',
-        borderColor: 'gray'
+        justifyContent: 'center'
       }}
         rows={rows}
         columns={columns}

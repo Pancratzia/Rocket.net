@@ -56,7 +56,8 @@ function GestionUsuarios() {
       width: 160,
     },
   ];
-
+  
+  const filas = []
 
 
 
@@ -86,16 +87,13 @@ function GestionUsuarios() {
 
     <div>
 
-
-
-
-
       <div className='contenedor-gestion'>
-        <div className='titulo'>
+        <div className='titulo-usuarios'>
           <h1>Gestion de usuarios</h1>
+          <hr/>
         </div>
         <div className='contenedor-busqueda'>
-          <button className='boton' onClick={() => cambiarEstadoModal(!estadoModal)}>Agregar</button>
+          <button className='boton-usuarios' onClick={() => cambiarEstadoModal(!estadoModal)}>Agregar</button>
 
         </div>
 
@@ -138,7 +136,7 @@ function GestionUsuarios() {
         })}
       />
 
-
+    <Tabla columns={columnas} rows={filas} actions={true}/>
       </div>
 
     </div>
