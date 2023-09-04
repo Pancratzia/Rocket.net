@@ -75,14 +75,13 @@ routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
 });
 
 
-//get all and order them from first to last
+//get all 
 
 routerPoligonos.get('/', async (req, res) => {
   try {
     const poligonos = await pool.query('SELECT * FROM poligonos ORDER BY id_poligono ASC');
 
     if (poligonos.rowCount === 0) {
-      // No se eliminó ningún polígono, ya que no se encontró en la base de datos
       return res.status(404).json({ error: 'No hay poligonos registrados' });
     }
     res.json(poligonos.rows);
@@ -100,7 +99,6 @@ routerPoligonos.get('/:id_poligono', validaIdPoligono, async (req, res) => {
     const poligono = await pool.query('SELECT * FROM poligonos WHERE id_poligono = $1', [id_poligono]);
 
     if (poligono.rowCount === 0) {
-      // No se eliminó ningún polígono, ya que no se encontró en la base de datos
       return res.status(404).json({ error: 'Polígono no encontrado' });
     }
     res.json(poligono.rows[0]);

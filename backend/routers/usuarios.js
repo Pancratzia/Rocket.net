@@ -5,6 +5,7 @@ const cors = require('cors');
 const pool = require('../database/db.js');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const fs = require('fs');
 
 
 const { validarIdUsuario, validarActUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
@@ -121,9 +122,15 @@ routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdU
     correo
   } = req.body;
 
-  // Obtener el nombre del archivo cargado
-  const fileUsuario = req.file ? req.file.filename : null;
 
+// Query SQL para obtener la foto
+ const queryImagenAnterior = 'SELECT foto_usuario FROM usuarios WHERE id_usuario = $1';
+ const resultImagenAnterior = await pool.query(queryImagenAnterior, [id_usuario]);
+
+ const imagenAnterior = resultImagenAnterior.rows.length > 0 ? resultImagenAnterior.rows[0].foto_usuario : null;
+
+ const fileUsuario = req.file ? req.file.filename : null;
+  
   // Conviertir a mayúsculas
   const camposAmayusculas = ['nombre', 'apellido', 'pregunta'];
   const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
@@ -142,6 +149,19 @@ routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdU
 
     // Encriptar la respuesta
     const respuestaEncriptada = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
+
+    // Eliminar imagen si es cambiada
+    if (fileUsuario && imagenAnterior) {
+      const pathImagenAnterior = join(CURRENT_DIR, '../cargas', imagenAnterior);
+
+      fs.unlink(pathImagenAnterior, (err) => {
+        if (err) {
+          console.error('Error al eliminar la imagen anterior:', err);
+        } else {
+          console.log('Imagen anterior eliminada con éxito');
+        }
+      });
+    }
 
     // Query SQL para actualizar el usuario
     const query = `
