@@ -9,16 +9,29 @@ function Panel() {
   const divisionIzquierdaRef = useRef(null);
 
   const manejarBuscarClick = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setPosicionActual({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
+    if (window.innerWidth <= 480) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setPosicionActual({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          divisionIzquierdaRef.current.scrollIntoView({ behavior: "smooth" });
         });
-        divisionIzquierdaRef.current.scrollIntoView({ behavior: "smooth" });
-      });
+      } else {
+        alert("Este navegador no soporta geolocalización");
+      }
     } else {
-      alert("Este navegador no soporta geolocalización");
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setPosicionActual({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        });
+      } else {
+        alert("Este navegador no soporta geolocalización");
+      }
     }
   };
   
