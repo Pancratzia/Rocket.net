@@ -2,13 +2,14 @@ import React from 'react';
 import "./GestionUsuarios.css";
 import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
+
 import { useState } from 'react';
 
 
 function GestionUsuarios() {
-  
 
-   const columnas = [
+
+  const columnas = [
     { field: 'id', headerName: 'ID', width: 40 },
     {
       field: 'usuario',
@@ -43,7 +44,7 @@ function GestionUsuarios() {
       field: 'telefono',
       headerName: 'Telefono',
       width: 120,
-      type:'number',
+      type: 'number',
     },
     {
       field: 'cedula',
@@ -59,8 +60,8 @@ function GestionUsuarios() {
   ];
 
   const [filas, setFilas] = useState([])
-  
- 
+
+
   const [estadoModal1, cambiarEstadoModal1] = useState(false);
 
   const opcionesTipoUsuario = [
@@ -85,7 +86,7 @@ function GestionUsuarios() {
     setFilas([...filas, nuevaFila]);
   };
 
- 
+
 
   return (
 
@@ -94,7 +95,7 @@ function GestionUsuarios() {
       <div className='contenedor-gestion'>
         <div className='titulo-usuarios'>
           <h1>Gestion de usuarios</h1>
-          <hr/>
+          <hr />
         </div>
         <div className='contenedor-busqueda'>
           <button className='boton-usuarios' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
@@ -107,46 +108,46 @@ function GestionUsuarios() {
           cambiarEstado={cambiarEstadoModal1}
           titulo="Agregar usuario"
           campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
-          if (idCampo === 'tipo_usuario') {
-            return {
-              campo,
-              idCampo,
-              typeCampo: 'select',
-              options: opcionesTipoUsuario,
-            };
-          } 
+            if (idCampo === 'tipo_usuario') {
+              return {
+                campo,
+                idCampo,
+                typeCampo: 'select',
+                options: opcionesTipoUsuario,
+              };
+            }
 
-          if (idCampo === 'sede_departamento') {
-            return {
-              campo,
-              idCampo,
-              typeCampo: 'select',
-              options: opcionesSedeDepartamento,
-            };
-          } 
+            if (idCampo === 'sede_departamento') {
+              return {
+                campo,
+                idCampo,
+                typeCampo: 'select',
+                options: opcionesSedeDepartamento,
+              };
+            }
 
-          if (idCampo === 'pregunta_usuario') {
-            return {
-              campo,
-              idCampo,
-              typeCampo: 'select',
-              options: opcionesPreguntasSeguridad,
-            };
-          } 
-          
-          else {
-            return { campo, idCampo, typeCampo };
-          }
-        })}
+            if (idCampo === 'pregunta_usuario') {
+              return {
+                campo,
+                idCampo,
+                typeCampo: 'select',
+                options: opcionesPreguntasSeguridad,
+              };
+            }
 
-        filas={filas}
-        setFilas={setFilas}
-        onGuardar={agregarFila}
-      
-      />
+            else {
+              return { campo, idCampo, typeCampo };
+            }
+          })}
 
-<Tabla columns={columnas} rows={filas} actions={true}/>
-{/*   */}
+          filas={filas}
+          setFilas={setFilas}
+          onGuardar={agregarFila}
+
+        />
+
+        <Tabla columns={columnas} rows={filas} actions={true} />
+        {/*   */}
       </div>
 
     </div>
