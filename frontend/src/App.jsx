@@ -8,6 +8,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/Navbar/Navbar';
 import EstadoRed from './pages/estado_de_red/EstadoRed';
 import GestionUsuarios from './pages/gestion_usuarios/GestionUsuarios';
+import GestionCobertura from './pages/gestion_cobertura/GestionCobertura';
 
 
 
@@ -65,6 +66,11 @@ function App() {
           path: '/gestion_usuarios',
 
         },
+
+        {
+          element: <GestionCobertura/>,
+          path: '/gestion_de_cobertura',
+        }
       ],
     },
 

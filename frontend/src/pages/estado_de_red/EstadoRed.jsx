@@ -1,11 +1,9 @@
 import React from 'react';
 import Tabla  from '../../components/Tabla/Tabla';
+import "../estado_de_red/EstadoRed.css";
 
 function  EstadoRed(){
 
-    const titulo = 'Estado de Red'; //titulo
-
-    //acá se definen las columnas como un array
     const columnas  = [
         {
         field: 'nombre_sede', //campo
@@ -27,7 +25,7 @@ function  EstadoRed(){
 
         {
         field: 'ip',
-        headerName: 'Direccion Ip',
+        headerName: 'Direccion IP',
         width: 250,
         },
 
@@ -44,15 +42,16 @@ function  EstadoRed(){
         { id: 2, nombre_sede: 'Sede 2', latitud: '12345', longitud: '67890' , ip: '192.168.1.2' , estado_conexion: 'Sin conexion'},
         { id: 3, nombre_sede: 'Sede 3', latitud: '12345', longitud: '67890' , ip: '192.168.1.3' , estado_conexion: 'Con conexion'}
     ]
+
     return(
         //div contenedor del componente tabla donde se le pasan las tres props (titulo, columnas y filas 
         <div className='contenedor'> 
-             <Tabla columns = {columnas}  rows = {filas} titulo = {titulo}/> 
+        <div className='titulo'>
+            <h1>Estado de Red</h1>
+        </div>
+             <Tabla columns={columnas} rows={filas}/> 
         </div>
     )
-
-
 }
-
 
 export default EstadoRed;

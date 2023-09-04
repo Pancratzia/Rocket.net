@@ -1,86 +1,64 @@
-import React from 'react';
+import React from "react";
+
 import "./Add.css";
 
-function Add(props) {
-  const { onSave, onCancel } = props;
+
+function Add({ estado, cambiarEstado, titulo, campos }) {
+
 
   return (
-    <div className="modal-container">
-      <div className="modal">
-        <h2>Agregar Usuario</h2>
+    <>
+      {estado &&
+        <div className="superposiciones">
+          <div className="contenedor-modal">
+            <div className="parte-arriba">
+              <div className="titulo">
+                <h3>{titulo}</h3>
+              </div>
+              <div>
+                <button className="boton-cerrar-primario" onClick={() => cambiarEstado(!estado)}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <form className="form-grid">
+              <div className='formulario-input'>
+                {campos.map(({ campo, idCampo, typeCampo, options }) => (
+                  <div key={idCampo}>
+                    <label htmlFor={idCampo}>{campo}</label>
+                    {typeCampo === 'select' ? (
+                      <select id={idCampo}>
+                        {options.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input id={idCampo} type={typeCampo} />
+                    )}
+                  </div>
+                ))}
+                </div>
+                <div className="botones">
+                  <div className='boton-guardar'>
+                    <button type="submit">Guardar</button>
+                  </div>
 
-        <form className="form-grid">
-          <div className='formulario-input'>
-            <div className="form-row">
-              <label htmlFor="nombre">Nombre: </label>
-              <input type="text" id="nombre" />
-            </div>
-          <div className="form-row">
-            <label htmlFor="apellido">Apellido:</label>
-            <input type="text" id="apellido" />
-          </div>
-          <div className="form-row">
-            <label htmlFor="extencionTelefonica">Extención telefonica:</label>
-            <input type="text" id="extencionTelefonica" />
-          </div>
-          <div className="form-row">
-            <label htmlFor="telefono">Número telefónico:</label>
-            <input type="number" id="telefono" />
-          </div>
-          <div className="form-row">
-            <label htmlFor="cedula">Cédula:</label>
-            <input type="number" id="cedula" />
-          </div>
-          <div className="form-row">
-            <label htmlFor="correo">Correo:</label>
-            <input type="email" id="correo" />
-          </div>
-          <div className="form-row">
-            <label htmlFor="clave">Clave:</label>
-            <input type="text" id="clave" />
-          </div>
-          <div className="form-row">
-            <label htmlFor="tipoUsuario">Tipo:</label>
-            <select id="tipoUsuario">
-              <option value="tipo1">Tipo 1</option>
-              <option value="tipo2">Tipo 2</option>
-            </select>
-          </div>
-          <div className="form-row">
-            <label htmlFor="departamento">Departamento:</label>
-            <select id="departamento">
-              <option value="tipo1">Departamento 1</option>
-              <option value="tipo2">Departamento 2</option>
-            </select>
-          </div>
-          <div className="form-row">
-            <label htmlFor="usuario">Usuario:</label>
-            <input type="text" id="usuario" />
-          </div>
-          <div className="form-row">
-            <label htmlFor="pregunta">Pregunta:</label>
-            <select id="pregunta">
-              <option value="pregunta1">Pregunta 1</option>
-              <option value="pregunta2">Pregunta 2</option>
-            </select>
-          </div>
-          <div className="form-row">
-            <label htmlFor="respuesta">Respuesta:</label>
-            <input type="text" id="respuesta" />
-          </div>
-          </div>
-          <div className="botones">
-            <div className='boton-guardar'>
-              <button type="submit" onClick={onSave}>Guardar</button>
-            </div>
+                  <div className="boton-cerrar" onClick={() => cambiarEstado(!estado)}>
+                    <button type="button">Cancelar</button>
+                  </div>
+                </div>
+                
+            </form>
 
-            <div className="boton-cerrar">
-              <button type="button" onClick={onCancel}>Cancelar</button>
-            </div>
           </div>
-        </form>
-      </div>
-    </div>
+
+        </div>
+      }
+    </>
   );
 }
 

@@ -58,9 +58,12 @@ function Sidebar() {
             <span>Gestion de Clientes</span>
           </li>
           <hr />
+
           <li>
+          <Link style={{ textDecoration: 'none' }} to="/gestion_de_cobertura">  
             <FaSatelliteDish className="icon" />
             <span>Gestion de Cobertura</span>
+          </Link> 
           </li>
           <hr />
           <li>
