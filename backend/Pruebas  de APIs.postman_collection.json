@@ -370,7 +370,7 @@
 			"response": []
 		},
 		{
-			"name": "PUT CE Usuarios",
+			"name": "PUT CE Usuario",
 			"request": {
 				"method": "PUT",
 				"header": [
