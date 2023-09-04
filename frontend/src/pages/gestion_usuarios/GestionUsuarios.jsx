@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 
 function GestionUsuarios() {
+  
 
    const columnas = [
     { field: 'id', headerName: 'ID', width: 40 },
@@ -56,11 +57,10 @@ function GestionUsuarios() {
       width: 160,
     },
   ];
+
+  const [filas, setFilas] = useState([])
   
-  const filas = []
-
-
-
+ 
   const [estadoModal, cambiarEstadoModal] = useState(false);
 
   const opcionesTipoUsuario = [
@@ -80,6 +80,10 @@ function GestionUsuarios() {
     { value: 'pregunta2', label: 'Pregunta 2' },
     { value: 'pregunta3', label: 'Pregunta 3' },
   ];
+
+  const agregarFila = (nuevaFila) => {
+    setFilas([...filas, nuevaFila]);
+  };
 
  
 
@@ -101,7 +105,7 @@ function GestionUsuarios() {
         <Add
           estado={estadoModal}
           cambiarEstado={cambiarEstadoModal}
-          titulo="Agregar Usuario"
+          titulo="Agregar usuario"
           campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
           if (idCampo === 'tipo_usuario') {
             return {
@@ -134,9 +138,15 @@ function GestionUsuarios() {
             return { campo, idCampo, typeCampo };
           }
         })}
+
+        filas={filas}
+        setFilas={setFilas}
+        onGuardar={agregarFila}
+      
       />
 
-    <Tabla columns={columnas} rows={filas} actions={true}/>
+<Tabla columns={columnas} rows={filas} actions={true}/>
+{/*   */}
       </div>
 
     </div>
