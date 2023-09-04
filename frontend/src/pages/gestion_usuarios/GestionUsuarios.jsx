@@ -61,7 +61,7 @@ function GestionUsuarios() {
   const [filas, setFilas] = useState([])
   
  
-  const [estadoModal, cambiarEstadoModal] = useState(false);
+  const [estadoModal1, cambiarEstadoModal1] = useState(false);
 
   const opcionesTipoUsuario = [
     { value: 'admin', label: 'Administrador' },
@@ -97,14 +97,14 @@ function GestionUsuarios() {
           <hr/>
         </div>
         <div className='contenedor-busqueda'>
-          <button className='boton-usuarios' onClick={() => cambiarEstadoModal(!estadoModal)}>Agregar</button>
+          <button className='boton-usuarios' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
 
         </div>
 
 
         <Add
-          estado={estadoModal}
-          cambiarEstado={cambiarEstadoModal}
+          estado={estadoModal1}
+          cambiarEstado={cambiarEstadoModal1}
           titulo="Agregar usuario"
           campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
           if (idCampo === 'tipo_usuario') {
