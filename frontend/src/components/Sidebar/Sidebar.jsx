@@ -14,7 +14,7 @@ import { FaWifi } from "react-icons/fa";
 import { FaComments } from "react-icons/fa";
 import { FaCog } from "react-icons/fa";
 import { FaDoorOpen } from "react-icons/fa";
-import { FaRocket } from "react-icons/fa";
+import { FaShuttleSpace } from "react-icons/fa6";
 import RocketAltLogo from "../../assets/img/rocket-alt.png";
 import { Link } from "react-router-dom";
 
@@ -54,8 +54,10 @@ function Sidebar() {
           </li>
           <hr />
           <li>
+          <Link style={{ textDecoration: 'none' }} to="/gestion_de_clientes">  
             <FaUsers className="icon" />
             <span>Gestion de Clientes</span>
+            </Link> 
           </li>
           <hr />
 
@@ -67,16 +69,26 @@ function Sidebar() {
           </li>
           <hr />
           <li>
+          <Link style={{ textDecoration: 'none' }} to="/gestion_de_sedes">  
             <FaBuilding className="icon" />
             <span>Gestion de Sedes</span>
+            </Link> 
           </li>
           <hr />
           <li>
+          <Link style={{ textDecoration: 'none' }} to="/gestion_de_planes">  
             <FaDiceD6 className="icon" />
             <span>Gestion de Planes</span>
+          </Link> 
           </li>
           <p className="title-dashboard">INFORMACION</p>
-       
+          
+          <li>
+          <Link style={{ textDecoration: 'none' }} to="/consulta_de_cobertura">  
+            <FaShuttleSpace className="icon" />
+            <span>Consulta de Cobertura</span>
+          </Link> 
+          </li> 
           <hr />
           <li>
             <FaClock className="icon" />

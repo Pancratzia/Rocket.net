@@ -9,6 +9,10 @@ import Navbar from './components/Navbar/Navbar';
 import EstadoRed from './pages/estado_de_red/EstadoRed';
 import GestionUsuarios from './pages/gestion_usuarios/GestionUsuarios';
 import GestionCobertura from './pages/gestion_cobertura/GestionCobertura';
+import GestionPlanes from './pages/gestion_planes/GestionPlanes';
+import GestionClientes from './pages/gestion_clientes/GestionClientes';
+import GestionSedes from './pages/gestion_sedes/GestionSedes';
+import ConsultaCobertura from './pages/consulta_cobertura/ConsultaCobertura';
 
 
 
@@ -70,6 +74,24 @@ function App() {
         {
           element: <GestionCobertura/>,
           path: '/gestion_de_cobertura',
+        },
+
+        {
+          element: <GestionPlanes/>,
+          path: '/gestion_de_planes',
+        },
+
+        {
+          element: <GestionClientes/>,
+          path: '/gestion_de_clientes',
+        },
+        {
+          element: <GestionSedes/>,
+          path: '/gestion_de_sedes',
+        },
+        {
+          element: <ConsultaCobertura/>,
+          path: '/consulta_de_cobertura',
         }
       ],
     },
