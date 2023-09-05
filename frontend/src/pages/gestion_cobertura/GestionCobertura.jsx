@@ -2,7 +2,6 @@ import React, { useState }  from 'react';
 import './GestionCobertura.css';
 import Lista from '../../components/Lista/Lista';
 import Tabla from '../../components/Tabla/Tabla';
-import Add from '../../components/Add/Add';
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -33,6 +32,8 @@ function GestionCobertura() {
                     
               }).then((result) => {
                     if (result.isConfirmed) {
+                      //añade filas a la tabla de poligono
+                      setFilasPoligono([...filasPoligono, { id: filasPoligono.length + 1, poligono }]);
                       swalWithBootstrapButtons.fire(
                       'Se ha agregado con exito', 
                       'el poligono',
@@ -113,6 +114,53 @@ function GestionCobertura() {
               }
             };
 
+
+  //Alertas para crear punto
+  const crearPunto = (event) => {
+    event.preventDefault();
+    //verifica que los campos de latitud,longitud y la  opcion de la lista no esten vacios
+    if (latitud.trim() !== '' && longitud.trim() !== '' && poligonoSeleccionado.trim() !== '') {
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: 'btn btn-success',
+          cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+      });
+  
+      swalWithBootstrapButtons.fire({
+        text: "¿Estás seguro de que deseas crear el punto?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+      }).then((result) => {
+        if (result.isConfirmed) {
+  // Agregar nuevo punto de tipo objeto a la tabla que contiene y concatenan la latitud y longitud ingresadas en un solo campo de la tabla
+          setFilasPunto([...filasPunto, { id: filasPunto.length + 1, punto: `${latitud} - ${longitud}`, poligono: poligonoSeleccionado }]);
+          swalWithBootstrapButtons.fire(
+            'Se ha agregado con éxito', 
+            'el punto',
+            'success'
+          );
+         
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire(
+          'Vaya! Hubo un error',
+          'en tu solicitud de crear el punto, vuelve a intentar más tarde',
+          'error'
+          );
+        }
+      });
+    } else {
+      // Mostrar mensaje de error si los campos están vacíos
+      MySwal.fire({
+        title: <strong>Error</strong>,
+        html: <i>Por favor, complete todos los campos</i>,
+        icon: 'error'
+      });
+    }
+  };          
   //Aca se define las columnas de las  2 tablas
     //columnas de la primera tabla
         const columnasPoligono  = [
@@ -148,16 +196,14 @@ function GestionCobertura() {
   //Aca se definen las filas de las tablas
            
     //filas de la primera tabla
-        const filasPoligono = [
-          { id: 1, poligono: 'Poligono 1'},
-          { id: 2, poligono: 'Poligono 2'}
-          ]
+        const [filasPoligono, setFilasPoligono] = useState ([
+          { id: 1, poligono: 'Poligono 1'}
+          ]);
 
     //filas de la segunda tabla
-        const filasPunto = [
-          { id: 1, punto: '123 - 456', poligono: 'Poligono 1'},
-          { id: 2, punto: '123 - 456', poligono: 'Poligono 2'}
-          ]
+        const [filasPunto, setFilasPunto] = useState([
+          { id: 1, punto: '123 - 456', poligono: 'Poligono 1'}
+          ]);
 
 
   //Aca se definen los items de la lista (select)
@@ -210,15 +256,14 @@ function GestionCobertura() {
             
           ]
     //Aca van las opciones del select para el modal 
-        const opcionesPoligono = [
+    const [poligonoSeleccionado, setPoligonoSeleccionado] = useState('');   //para el manejo de los estados
+    const opcionesPoligono = [
           { value: 'admin', label: 'Poligono 1' },
           { value: 'user', label: ' Poligono 2' }
              
           ];
 
-        //para manejar los estados del modal
-        const [estadoModal, cambiarEstadoModal] = useState(false);
-        const [estadoModal2, cambiarEstadoModal2] = useState(false);
+        
 
 
     // Contenido del modulo
@@ -229,34 +274,35 @@ function GestionCobertura() {
           </div>
        
           <div className='contenedor-izquierdo-cob'>
-            <div className='prueba'>
+              <div className='flex-cobertura'>
               <input className='input-cobertura' type='text' name='poligono' id='poligono' onChange={(e) => setPoligono(e.target.value)}/>
               <button className='boton-cobertura' onClick={crearPoligono}>Crear poligono</button>
-            </div>
+              </div>
+          
             <div className='tabla-poligonos'>
               <Tabla columns={columnasPoligono} rows={filasPoligono} actions/> 
             </div>
             
-                <button className='boton-cobertura'  onClick={() => cambiarEstadoModal(!estadoModal)}>prueba modal</button>
-                <button className='boton-cobtertura' onClick={() => cambiarEstadoModal2(!estadoModal2)}> prueba modal 2</button>
+               
         </div>
 
 
             <div className='contenedor-derecho-cob'>
               <h3>Ingresar la latitud</h3>
-                <div className='prueba'>
-                  <input className='input2' type='text' name='latitud' id='latitud' onChange={(e) => setLatitud(e.target.value)}/>
+                  <div className='flex-cobertura'>
+                  <input className='input-cobertura' type='text' name='latitud' id='latitud' onChange={(e) => setLatitud(e.target.value)}/>
                   <button className='boton-cobertura' onClick={crearCoordenadas}>Agregar</button>
-                </div>
+                  </div>
+                
               <h3>Ingresar la longitud</h3>
-                <div className='prueba'>
-                  <input className='input2' type='text' name='longitud' id='longitud' onChange={(e) => setLongitud(e.target.value)}/>
+                  <div className='flex-cobertura'>
+                  <input className='input-cobertura' type='text' name='longitud' id='longitud' onChange={(e) => setLongitud(e.target.value)}/>
                   <button className='boton-cobertura' onClick={crearCoordenadas}>Agregar</button>
-                </div>
+                  </div>
            
                 <div className = 'lista-btn'> 
-                  <Lista  items = {items} label = 'Seleccionar poligono'/> 
-                  <button className='boton-cobertura'>Crear punto</button> 
+                  <Lista  items = {items} label = 'Seleccionar poligono' value={poligonoSeleccionado} setValue={setPoligonoSeleccionado}/>  
+                  <button className='boton-cobertura' onClick={crearPunto}>Crear punto</button> 
                 </div>
                
                 <div className='tabla-puntos'>
@@ -264,36 +310,7 @@ function GestionCobertura() {
                 </div>
                 
     
-        <Add  
-            estado={estadoModal}
-            cambiarEstado={cambiarEstadoModal}
-            titulo="Editar Poligono"
-            campos={modalPoligono.map(({ headerName: campo, field: idCampo, typeCampo }) => {
-          
-              return { campo, idCampo, typeCampo };
-            
-          })}
-        /> 
-
-        <Add
-          estado={estadoModal2}
-          cambiarEstado={cambiarEstadoModal2}
-          titulo="Editar Punto"
-          campos={modalPunto.map(({ headerName: campo, field: idCampo, typeCampo }) => {
-            if (idCampo === 'poligono') {
-              return {
-                campo,
-                idCampo,
-                typeCampo: 'select',
-                options: opcionesPoligono
-            };
-          } 
-          else {
-            return { campo, idCampo, typeCampo };
-          }
-        })}
-        />
-
+        
           </div>
         </div>
         
