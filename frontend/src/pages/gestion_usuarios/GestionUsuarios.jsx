@@ -2,6 +2,7 @@ import React from 'react';
 import "./GestionUsuarios.css";
 import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
+import Editar from '../../components/Editar/Editar';
 
 import { useState } from 'react';
 
@@ -63,6 +64,7 @@ function GestionUsuarios() {
 
 
   const [estadoModal1, cambiarEstadoModal1] = useState(false);
+ 
 
   const opcionesTipoUsuario = [
     { value: 'admin', label: 'Administrador' },
@@ -86,7 +88,9 @@ function GestionUsuarios() {
     setFilas([...filas, nuevaFila]);
   };
 
+  const [filaSeleccionada, setFilaSeleccionada] = useState(null);
 
+  console.log('Fila seleccionada:', filaSeleccionada);
 
   return (
 
@@ -99,10 +103,15 @@ function GestionUsuarios() {
         </div>
         <div className='contenedor-busqueda'>
           <button className='boton-usuarios' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
+          <button className='boton-usuarios' onClick={() => cambiarEstadoModal2(!estadoModal2)}>Editar</button>
+
 
         </div>
 
-
+        
+        
+ 
+       
         <Add
           estado={estadoModal1}
           cambiarEstado={cambiarEstadoModal1}
@@ -146,7 +155,16 @@ function GestionUsuarios() {
 
         />
 
-        <Tabla columns={columnas} rows={filas} actions={true} />
+<Tabla
+  columns={columnas}
+  rows={filas}
+  actions={true}
+  onRowClick={(row) => {
+    console.log('Fila seleccionada:', row);
+    setFilaSeleccionada(row);
+  }}
+/>
+        
         {/*   */}
       </div>
 
