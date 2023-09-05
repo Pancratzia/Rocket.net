@@ -46,8 +46,8 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                     {typeCampo === 'select' ? (
                       <select id={idCampo}>
                         {options.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
+                          <option key={option} value={option}>
+                            {option}
                           </option>
                         ))}
                       </select>

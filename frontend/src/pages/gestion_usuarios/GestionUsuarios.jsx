@@ -35,7 +35,11 @@ function GestionUsuarios() {
       headerName: 'Pregunta',
       description: 'Esta es la pregunta de seguridad',
       width: 160,
-    },
+      type: 'select',
+      options: ['1', "2", "3"],
+     
+     },
+    
     {
       field: 'extensiontelefonica',
       headerName: 'Extension telefonica',
@@ -64,33 +68,13 @@ function GestionUsuarios() {
 
 
   const [estadoModal1, cambiarEstadoModal1] = useState(false);
- 
 
-  const opcionesTipoUsuario = [
-    { value: 'admin', label: 'Administrador' },
-    { value: 'user', label: 'Usuario' },
-    { value: 'guest', label: 'Invitado' },
-  ];
 
-  const opcionesSedeDepartamento = [
-    { value: 'departamento1', label: 'Departamento1' },
-    { value: 'departamento2', label: 'Departamento2' },
-    { value: 'departamento2', label: 'Departamento3' },
-  ];
-
-  const opcionesPreguntasSeguridad = [
-    { value: 'pregunta1', label: 'Pregunta 1' },
-    { value: 'pregunta2', label: 'Pregunta 2' },
-    { value: 'pregunta3', label: 'Pregunta 3' },
-  ];
 
   const agregarFila = (nuevaFila) => {
     setFilas([...filas, nuevaFila]);
   };
 
-  const [filaSeleccionada, setFilaSeleccionada] = useState(null);
-
-  console.log('Fila seleccionada:', filaSeleccionada);
 
   return (
 
@@ -103,7 +87,7 @@ function GestionUsuarios() {
         </div>
         <div className='contenedor-busqueda'>
           <button className='boton-usuarios' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
-          <button className='boton-usuarios' onClick={() => cambiarEstadoModal2(!estadoModal2)}>Editar</button>
+          
 
 
         </div>
@@ -116,36 +100,18 @@ function GestionUsuarios() {
           estado={estadoModal1}
           cambiarEstado={cambiarEstadoModal1}
           titulo="Agregar usuario"
-          campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
-            if (idCampo === 'tipo_usuario') {
+          campos={columnas.map(({ headerName: campo, field: idCampo, type, options }) => {
+            if (type === 'select') {
               return {
                 campo,
                 idCampo,
                 typeCampo: 'select',
-                options: opcionesTipoUsuario,
-              };
-            }
-
-            if (idCampo === 'sede_departamento') {
-              return {
-                campo,
-                idCampo,
-                typeCampo: 'select',
-                options: opcionesSedeDepartamento,
-              };
-            }
-
-            if (idCampo === 'pregunta_usuario') {
-              return {
-                campo,
-                idCampo,
-                typeCampo: 'select',
-                options: opcionesPreguntasSeguridad,
+                options: options,
               };
             }
 
             else {
-              return { campo, idCampo, typeCampo };
+              return { campo, idCampo, typeCampo: 'text' };
             }
           })}
 
@@ -159,10 +125,7 @@ function GestionUsuarios() {
   columns={columnas}
   rows={filas}
   actions={true}
-  onRowClick={(row) => {
-    console.log('Fila seleccionada:', row);
-    setFilaSeleccionada(row);
-  }}
+  
 />
         
         {/*   */}
