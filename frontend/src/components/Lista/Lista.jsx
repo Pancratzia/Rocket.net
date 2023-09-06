@@ -5,7 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import useTheme from '@mui/material/styles/useTheme'; //nueva importacion
 
-export default function Lista({ items, label}) {
+export default function Lista({ items, label, value, setValue}) {
   const [lista, setLista] = React.useState('');
 
   const handleChange = (event) => {
@@ -33,8 +33,8 @@ export default function Lista({ items, label}) {
         <Select
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
-          value={lista}
-          onChange={handleChange}
+          value={value}
+          onChange={(event) => setValue(event.target.value)} 
           sx={{
             backgroundColor: '#2cab73',
             fontFamily: 'Poppins',
@@ -49,14 +49,14 @@ export default function Lista({ items, label}) {
           <MenuItem sx=
           {{ color: 'black',
              fontFamily: 'Poppins',
-
+             [theme.breakpoints.down('480')]: { fontSize: '12px' }
             
           
           }} >
               <em>Ninguno</em>
           </MenuItem>
           {items.map(item => (
-            <MenuItem value={item.id} sx = {{ color: 'black', fontFamily: 'Poppins'}}>
+            <MenuItem key={item.id} value={item.name} sx = {{ color: 'black', fontFamily: 'Poppins', [theme.breakpoints.down('480')]: { fontSize: '12px' }  }}>
               {item.name}
             </MenuItem>
           ))}
