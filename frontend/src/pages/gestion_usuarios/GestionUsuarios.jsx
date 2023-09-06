@@ -11,7 +11,7 @@ function GestionUsuarios() {
 
 
   const columnas = [
-    { field: 'id', headerName: 'ID', width: 40 },
+    { field: 'id', headerName: 'ID', width: 40, editable: false },
     {
       field: 'usuario',
       headerName: 'Usuario',
