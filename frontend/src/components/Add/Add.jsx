@@ -37,7 +37,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                   onClick={() => cambiarEstado(!estado)}
                 >
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns="http://www.w3.org/2000/svg"ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
                     width="20"
                     height="20"
                     fill="currentColor"
@@ -57,13 +57,25 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                   <div key={idCampo}>
                     <label htmlFor={idCampo}>{campo}</label>
                     {typeCampo === "select" ? (
-                      <select id={idCampo}>
-                        {options.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
+                      <select
+                      id={idCampo}
+                      value={formData[idCampo] || ""}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          [idCampo]: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="" disabled>
+                        Selecciona una pregunta
+                      </option>
+                      {options.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
                     ) : (
                       <input
                         id={idCampo}
