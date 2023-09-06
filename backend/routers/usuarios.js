@@ -141,7 +141,6 @@ routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdU
 
   try {
 
-    // Crear frase de encriptación
     const fraseEncriptacion = crypto.randomBytes(64).toString('base64');
 
     // Encriptar la clave
@@ -150,7 +149,7 @@ routerUsuarios.put('/:id_usuario', multerCarga.single('fileUsuario'), validarIdU
     // Encriptar la respuesta
     const respuestaEncriptada = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
 
-    // Eliminar imagen si es cambiada
+    // Eliminar imagen 
     if (fileUsuario && imagenAnterior) {
       const pathImagenAnterior = join(CURRENT_DIR, '../cargas', imagenAnterior);
 
