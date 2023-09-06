@@ -1,10 +1,25 @@
 import React from "react";
+import { useState } from "react";
+
 
 import "./Add.css";
 
 
-function Add({ estado, cambiarEstado, titulo, campos }) {
+function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
 
+  const [formData, setFormData] = useState({});
+  const [filas, setFilas] = useState([]); //
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onGuardar(formData);
+    setFilas([...filas, formData]);
+    setFormData({});
+    cambiarEstado(false);
+  };
+
+
+  
 
   return (
     <>
@@ -12,18 +27,18 @@ function Add({ estado, cambiarEstado, titulo, campos }) {
         <div className="superposiciones">
           <div className="contenedor-modal">
             <div className="parte-arriba">
-              <div className="titulo">
+              <div className="titulo-modal">
                 <h3>{titulo}</h3>
               </div>
               <div>
                 <button className="boton-cerrar-primario" onClick={() => cambiarEstado(!estado)}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x" viewBox="0 0 16 16">
                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                   </svg>
                 </button>
               </div>
             </div>
-            <form className="form-grid">
+            <form className="form-grid" onSubmit={handleSubmit} >
               <div className='formulario-input'>
                 {campos.map(({ campo, idCampo, typeCampo, options }) => (
                   <div key={idCampo}>
@@ -31,13 +46,13 @@ function Add({ estado, cambiarEstado, titulo, campos }) {
                     {typeCampo === 'select' ? (
                       <select id={idCampo}>
                         {options.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
+                          <option key={option} value={option}>
+                            {option}
                           </option>
                         ))}
                       </select>
                     ) : (
-                      <input id={idCampo} type={typeCampo} />
+                      <input id={idCampo} type={typeCampo} value={formData[idCampo]} onChange={(e) => setFormData({ ...formData, [idCampo]: e.target.value })} />
                     )}
                   </div>
                 ))}

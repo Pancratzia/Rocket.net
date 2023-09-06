@@ -2,12 +2,15 @@ import React from 'react';
 import "./GestionUsuarios.css";
 import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
+import Editar from '../../components/Editar/Editar';
+
 import { useState } from 'react';
 
 
 function GestionUsuarios() {
 
-   const columnas = [
+
+  const columnas = [
     { field: 'id', headerName: 'ID', width: 40 },
     {
       field: 'usuario',
@@ -32,7 +35,11 @@ function GestionUsuarios() {
       headerName: 'Pregunta',
       description: 'Esta es la pregunta de seguridad',
       width: 160,
-    },
+      type: 'select',
+      options: ['1', "2", "3"],
+     
+     },
+    
     {
       field: 'extensiontelefonica',
       headerName: 'Extension telefonica',
@@ -42,7 +49,7 @@ function GestionUsuarios() {
       field: 'telefono',
       headerName: 'Telefono',
       width: 120,
-      type:'number',
+      type: 'number',
     },
     {
       field: 'cedula',
@@ -56,32 +63,18 @@ function GestionUsuarios() {
       width: 160,
     },
   ];
-  
-  const filas = []
+
+  const [filas, setFilas] = useState([])
+
+
+  const [estadoModal1, cambiarEstadoModal1] = useState(false);
 
 
 
-  const [estadoModal, cambiarEstadoModal] = useState(false);
+  const agregarFila = (nuevaFila) => {
+    setFilas([...filas, nuevaFila]);
+  };
 
-  const opcionesTipoUsuario = [
-    { value: 'admin', label: 'Administrador' },
-    { value: 'user', label: 'Usuario' },
-    { value: 'guest', label: 'Invitado' },
-  ];
-
-  const opcionesSedeDepartamento = [
-    { value: 'departamento1', label: 'Departamento1' },
-    { value: 'departamento2', label: 'Departamento2' },
-    { value: 'departamento2', label: 'Departamento3' },
-  ];
-
-  const opcionesPreguntasSeguridad = [
-    { value: 'pregunta1', label: 'Pregunta 1' },
-    { value: 'pregunta2', label: 'Pregunta 2' },
-    { value: 'pregunta3', label: 'Pregunta 3' },
-  ];
-
- 
 
   return (
 
@@ -90,53 +83,52 @@ function GestionUsuarios() {
       <div className='contenedor-gestion'>
         <div className='titulo-usuarios'>
           <h1>Gestion de usuarios</h1>
-          <hr/>
+          <hr />
         </div>
         <div className='contenedor-busqueda'>
-          <button className='boton-usuarios' onClick={() => cambiarEstadoModal(!estadoModal)}>Agregar</button>
+          <button className='boton-usuarios' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
+          
+
 
         </div>
 
-
+        
+        
+ 
+       
         <Add
-          estado={estadoModal}
-          cambiarEstado={cambiarEstadoModal}
-          titulo="Agregar Usuario"
-          campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
-          if (idCampo === 'tipo_usuario') {
-            return {
-              campo,
-              idCampo,
-              typeCampo: 'select',
-              options: opcionesTipoUsuario,
-            };
-          } 
+          estado={estadoModal1}
+          cambiarEstado={cambiarEstadoModal1}
+          titulo="Agregar usuario"
+          campos={columnas.map(({ headerName: campo, field: idCampo, type, options }) => {
+            if (type === 'select') {
+              return {
+                campo,
+                idCampo,
+                typeCampo: 'select',
+                options: options,
+              };
+            }
 
-          if (idCampo === 'sede_departamento') {
-            return {
-              campo,
-              idCampo,
-              typeCampo: 'select',
-              options: opcionesSedeDepartamento,
-            };
-          } 
+            else {
+              return { campo, idCampo, typeCampo: 'text' };
+            }
+          })}
 
-          if (idCampo === 'pregunta_usuario') {
-            return {
-              campo,
-              idCampo,
-              typeCampo: 'select',
-              options: opcionesPreguntasSeguridad,
-            };
-          } 
-          
-          else {
-            return { campo, idCampo, typeCampo };
-          }
-        })}
-      />
+          filas={filas}
+          setFilas={setFilas}
+          onGuardar={agregarFila}
 
-    <Tabla columns={columnas} rows={filas} actions={true}/>
+        />
+
+<Tabla
+  columns={columnas}
+  rows={filas}
+  actions={true}
+  
+/>
+        
+        {/*   */}
       </div>
 
     </div>

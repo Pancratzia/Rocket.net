@@ -2,9 +2,15 @@ import * as React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import "../Tabla/Tabla.scss";
+import Editar from '../Editar/Editar';
+import { useState } from 'react';
 
 export default function Tabla(props) {
+  const [mostrarModal, setMostrarModal] = useState(false);
 
+  const handleEditarClick = () => {
+    setMostrarModal(true); // Mostrar el modal al hacer clic en el botón de editar
+  };
   let {rows, columns, actions} = props;
 
   if (actions) {
@@ -16,7 +22,7 @@ export default function Tabla(props) {
         renderCell: (params) => {
           return (
             <div className="action-column">
-              <a href="#" id="edit">
+              <a href="#" id="edit" onClick={handleEditarClick}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="icon icon-tabler icon-tabler-edit"
@@ -65,6 +71,7 @@ export default function Tabla(props) {
   }
   
   return (
+    <>
     <Box sx ={{ height: '100%', width: '100%' }}>
       
       <DataGrid
@@ -96,6 +103,47 @@ export default function Tabla(props) {
           },
         }}
       />
-    </Box>
+     </Box>
+      
+      {mostrarModal && (
+        <Editar
+          estado={mostrarModal}
+          cambiarEstado={setMostrarModal}
+          campos={rows.map(({ headerName: campo, field: idCampo, typeCampo }) => {
+            if (idCampo === 'tipo_usuario') {
+              return {
+                campo,
+                idCampo,
+                typeCampo: 'select',
+                options: opcionesTipoUsuario,
+              };
+            }
+
+            if (idCampo === 'sede_departamento') {
+              return {
+                campo,
+                idCampo,
+                typeCampo: 'select',
+                options: opcionesSedeDepartamento,
+              };
+            }
+
+            if (idCampo === 'pregunta_usuario') {
+              return {
+                campo,
+                idCampo,
+                typeCampo: 'select',
+                options: opcionesPreguntasSeguridad,
+              };
+            }
+
+            else {
+              return { campo, idCampo, typeCampo };
+            }
+          })}
+          // Resto de las props que necesites pasar
+        />
+      )}
+    </>
   );
 }

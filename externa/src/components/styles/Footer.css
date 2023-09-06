@@ -83,7 +83,8 @@
 
   .parte-izquierda,
   .parte-derecha,
-  .parte-centro {
+  .parte-centro,
+  .texto-derechos {
     padding: 10px; 
     text-align: center; 
   }
