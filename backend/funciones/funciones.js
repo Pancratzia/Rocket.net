@@ -1,7 +1,6 @@
 const { DateTime } = require('luxon');
 const db = require('../database/db.js');
 
-// const { validateAudit } = require('../validaciones/validAudit.js');
 
 function obtenerFechayHora(seleccion) {
   const zonaHoraria = 'America/Caracas';
@@ -53,6 +52,7 @@ function errorHandler(err, req, res, next) {
     res.status(500).json({ error: 'Ha ocurrido un error inesperado.' }); // Error genérico
   }
 }
+
 
 
 
