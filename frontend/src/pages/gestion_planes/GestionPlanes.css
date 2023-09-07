@@ -1,0 +1,27 @@
+.titulo-planes h1{
+    font: 'Poppins';
+    font-size: 60 px;
+    padding-left: 8px;
+    margin: 5px 0;
+  }
+
+.boton-planes{
+    text-align:center;
+    font-size: 16px;
+    padding: 5px;
+    color: white;
+    width:15%;
+    background-color: #2cab74ee;
+    border: none;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    margin: 10px auto 0;
+    
+}
+
+  .contenedor-busqueda{
+    padding: 20px;
+    justify-content: right;
+    align-items: right;
+  
+}

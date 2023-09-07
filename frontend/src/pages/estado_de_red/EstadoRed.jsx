@@ -45,11 +45,12 @@ function  EstadoRed(){
 
     return(
         //div contenedor del componente tabla donde se le pasan las tres props (titulo, columnas y filas 
-        <div className='contenedor'> 
-        <div className='titulo'>
+        <div className='contenedor-red'> 
+        <div className='titulo-red'>
             <h1>Estado de Red</h1>
+        <hr/>
         </div>
-             <Tabla columns={columnas} rows={filas}/> 
+        <Tabla columns={columnas} rows={filas}/> 
         </div>
     )
 }

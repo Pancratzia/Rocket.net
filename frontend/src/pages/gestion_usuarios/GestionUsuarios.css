@@ -1,11 +1,11 @@
-.titulo h1{
+.titulo-usuarios h1{
   font: 'Poppins';
   font-size: 60 px;
   margin: 5px 0;
   padding-left: 8px;
 }
 
-.boton{
+.boton-usuarios{
   text-align:center;
   font-size: 16px;
   padding: 5px;
@@ -26,105 +26,59 @@
 
 }
 
-.boton-editar {
 
-
-}
-
-.contenedor-gestion{
-
-}
 
 /* Anchura máxima de 1200px */
 @media (max-width: 1200px) {
-  .titulo h1 {
-    font-size: 40px;
-    margin: 3px 0;
-    padding-left: 6px;
+  .titulo-usuarios h1 {
     
   }
 
-  .boton {
-    font-size: 14px;
-    width: 20%;
+  .boton-usuarios {
+    width: 25%
     
   }
 
   .contenedor-busqueda {
-    margin-top: 60px;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin-left: 30px;
+    display: block;
   }
 
-  .boton-editar {
-    margin-left: 8px;
-  }
+
 }
 
 /* Anchura máxima de 768px */
 @media (max-width: 768px) {
-  .titulo h1 {
+  .titulo-usuarios h1 {
+    align-items: left;
     font-size: 30px;
-    margin: 2px 0;
-    padding-left: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  .boton {
-    font-size: 12px;
-    width: 25%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .boton-usuarios {
+    width: 30%;
   }
 
   .contenedor-busqueda {
-    margin-top: 40px;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin-left: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: left;
   }
 
-  .boton-editar {
-    margin-left: 6px;
-  }
+
 }
 
 /* Anchura máxima de 480px */
 @media (max-width: 480px) {
-  .titulo h1 {
+  .titulo-usuarios h1 {
     font-size: 20px;
-    margin: 1px 0;
-    padding-left: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
   }
 
-  .boton {
-    font-size: 10px;
-    width: 30%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .boton-usuarios {
+    width: 35%;
+    height: 60%;
+
   }
 
   .contenedor-busqueda {
-    margin-top: 20px;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
   }
 
-  .boton-editar {
-    margin-left: 4px;
-  }
+}
