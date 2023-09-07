@@ -2,7 +2,7 @@ import React from 'react';
 import "./GestionUsuarios.css";
 import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
-import Editar from '../../components/Editar/Editar';
+
 
 import { useState } from 'react';
 
@@ -64,13 +64,22 @@ function GestionUsuarios() {
     },
   ];
 
-  const [filas, setFilas] = useState([])
+  const [filas, setFilas] = useState([]) //esto es del modal agregar
+  const [estadoModal1, cambiarEstadoModal1] = useState(false); //esto es del modal de agregar
 
+  const [showModal, setShowModal] = useState(false);  //Aca manejamos los estados del modal editar
 
-  const [estadoModal1, cambiarEstadoModal1] = useState(false);
+  //handleEditClick nos permite mostrar el modal de la fila seleccionada para el editar
+  const handleEditClick = (row) => {
+  
+    // Mostrar el componente Add
+    setShowModal(true); //hace visible el modal 
+ 
+};
 
-
-
+const [camposEditados, setCamposEditados] = useState({});// aca estaba definiendo para la actualizacion de la fila de la tabla 
+ 
+//esto es para el agregado de las filas con el modal
   const agregarFila = (nuevaFila) => {
     setFilas([...filas, nuevaFila]);
   };
@@ -85,13 +94,24 @@ function GestionUsuarios() {
           <h1>Gestion de usuarios</h1>
           <hr />
         </div>
-        <div className='contenedor-busqueda'>
+        <div className='contenedor-busqueda'> 
           <button className='boton-usuarios' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
           
-
-
         </div>
-
+        <Add
+            estado={showModal}
+            cambiarEstado={setShowModal}
+            titulo="Editar Usuario" //este es el modelo del  componente modal para el editado difiere en algunos detalles con el
+            campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
+            return { campo, idCampo, typeCampo };
+              })}
+            camposEditados={camposEditados}
+            onSave={(camposEditadosLocal) => {
+           
+           setShowModal(false);        
+           onChange={handleChange};
+          }}
+          />
         
         
  
@@ -114,7 +134,7 @@ function GestionUsuarios() {
               return { campo, idCampo, typeCampo: 'text' };
             }
           })}
-
+          
           filas={filas}
           setFilas={setFilas}
           onGuardar={agregarFila}
@@ -124,8 +144,8 @@ function GestionUsuarios() {
 <Tabla
   columns={columnas}
   rows={filas}
-  actions={true}
-  
+  actions  
+  handleEditClick={handleEditClick}
 />
         
         {/*   */}
