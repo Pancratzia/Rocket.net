@@ -1,0 +1,84 @@
+.titulo-usuarios h1{
+  font: 'Poppins';
+  font-size: 60 px;
+  margin: 5px 0;
+  padding-left: 8px;
+}
+
+.boton-usuarios{
+  text-align:center;
+  font-size: 16px;
+  padding: 5px;
+  color: white;
+  width:15%;
+  background-color: #2cab74ee;
+  border: none;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  margin: 10px auto 0;
+  
+}
+
+.contenedor-busqueda{
+  padding: 20px;
+  justify-content: right;
+  align-items: right;
+
+}
+
+
+
+/* Anchura máxima de 1200px */
+@media (max-width: 1200px) {
+  .titulo-usuarios h1 {
+    
+  }
+
+  .boton-usuarios {
+    width: 25%
+    
+  }
+
+  .contenedor-busqueda {
+    display: block;
+  }
+
+
+}
+
+/* Anchura máxima de 768px */
+@media (max-width: 768px) {
+  .titulo-usuarios h1 {
+    align-items: left;
+    font-size: 30px;
+  }
+
+  .boton-usuarios {
+    width: 30%;
+  }
+
+  .contenedor-busqueda {
+    align-items: left;
+  }
+
+
+}
+
+/* Anchura máxima de 480px */
+@media (max-width: 480px) {
+  .titulo-usuarios h1 {
+    font-size: 20px;
+
+  }
+
+  .boton-usuarios {
+    width: 35%;
+    height: 60%;
+
+  }
+
+  .contenedor-busqueda {
+
+  }
+
+}
