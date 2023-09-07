@@ -200,7 +200,7 @@ routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarId
    
   } catch (error) {
     console.error('Error al actualizar el usuario:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error al actualizar el usuario' });
   }
 });
 
