@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import "./Add.css";
 
+
+
 function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
   const [formData, setFormData] = useState({});
   const [filas, setFilas] = useState([]);
@@ -19,6 +21,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
     cambiarEstado(false);
   };
 
+  
   // Filtrar los campos para excluir el campo ID
   const camposFiltrados = campos.filter(({ idCampo }) => idCampo !== 'id');
 
@@ -37,7 +40,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                   onClick={() => cambiarEstado(!estado)}
                 >
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+                    xmlns="http://www.w3.org/2000/svg"
                     width="20"
                     height="20"
                     fill="currentColor"
@@ -68,7 +71,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                       }
                     >
                       <option value="" disabled>
-                        Selecciona una pregunta
+                        Seleccione
                       </option>
                       {options.map((option) => (
                         <option key={option} value={option}>
@@ -96,7 +99,6 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                 <div className="boton-guardar">
                   <button type="submit">Guardar</button>
                 </div>
-
                 <div
                   className="boton-cerrar"
                   onClick={() => cambiarEstado(!estado)}

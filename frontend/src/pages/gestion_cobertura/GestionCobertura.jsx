@@ -2,6 +2,7 @@ import React, { useState }  from 'react';
 import './GestionCobertura.css';
 import Lista from '../../components/Lista/Lista';
 import Tabla from '../../components/Tabla/Tabla';
+import Add from '../../components/Add/Add';
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -9,7 +10,7 @@ import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
 function GestionCobertura() {
-  
+
 // Alertas para crear poligono 
   const [poligono, setPoligono] = useState('');   
   const crearPoligono = (event) => {
@@ -64,7 +65,6 @@ function GestionCobertura() {
       //Alertas para latitud y longitud
           const [latitud, setLatitud ] = useState('');   
           const [longitud, setLongitud ] = useState('');   
-
           const swalWithBootstrapButtons = Swal.mixin({
               customClass: {
               confirmButton: 'btn btn-success',
@@ -136,7 +136,7 @@ function GestionCobertura() {
         cancelButtonText: 'No',
       }).then((result) => {
         if (result.isConfirmed) {
-  // Agregar nuevo punto de tipo objeto a la tabla que contiene y concatenan la latitud y longitud ingresadas en un solo campo de la tabla
+  // Aqui se Agrega nuevo punto de tipo objeto a la tabla que contiene y concatenan la latitud y longitud ingresadas en un solo campo de la tabla
           setFilasPunto([...filasPunto, { id: filasPunto.length + 1, punto: `${latitud} - ${longitud}`, poligono: poligonoSeleccionado }]);
           swalWithBootstrapButtons.fire(
             'Se ha agregado con éxito', 
@@ -212,7 +212,7 @@ function GestionCobertura() {
           {id: '2' , name: 'Poligono 2'}
           ]
             
-  //Modales del modulo 
+///////////Modales del modulo se definen las props/////////////////
     //modal 1: Editar poligono
         const modalPoligono = [
           {
@@ -251,11 +251,13 @@ function GestionCobertura() {
             field: 'poligono',
             headerName: 'Poligono',
             width: 100,
+            type: 'select', //para el tipo de input
+            options: ['Poligono 1', 'Poligono 2', ' Poligono 3'], //esto es para los que son tipo select se deben añadir estos campos con las opciones
             editable: true,
           }
             
           ]
-    //Aca van las opciones del select para el modal 
+    //Aca van las opciones del select (lista) para el modal 
     const [poligonoSeleccionado, setPoligonoSeleccionado] = useState('');   //para el manejo de los estados
     const opcionesPoligono = [
           { value: 'admin', label: 'Poligono 1' },
@@ -263,9 +265,21 @@ function GestionCobertura() {
              
           ];
 
-        
+        //TODO LO DE EDITAR DE LA TABLA
+
+    const [showModal, setShowModal] = useState(false);  //Para manejar estados del modal 1
+    const [showModal2, setShowModal2] = useState(false);  //Para manejar estados del modal 2
 
 
+    //para mostrar el modal al presionar el icono de editar de la tabla
+    const handleEditClick = (row) => {
+  
+    setShowModal(true); // mostrar modal 1
+    setShowModal2(true); // mostrar modal 2 
+   
+};
+    
+ 
     // Contenido del modulo
     return(
         <div className='contenedor-principal-cob'>
@@ -280,7 +294,7 @@ function GestionCobertura() {
               </div>
           
             <div className='tabla-poligonos'>
-              <Tabla columns={columnasPoligono} rows={filasPoligono} actions/> 
+              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditClick={handleEditClick}/> 
             </div>
             
                
@@ -305,13 +319,53 @@ function GestionCobertura() {
                   <button className='boton-cobertura' onClick={crearPunto}>Crear punto</button> 
                 </div>
                
-                <div className='tabla-puntos'>
-                <Tabla columns={columnasPunto} rows={filasPunto} actions/>
+                <div className='tabla-puntos'> 
+                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditClick={handleEditClick}/>
                 </div>
                 
-    
-        
+             
           </div>
+          <Add
+          estado={showModal}
+          cambiarEstado={setShowModal}
+          titulo="Editar Poligono"
+          campos={modalPoligono.map(({ headerName: campo, field: idCampo, type, options }) => {
+            if (type === 'select') {
+              return {
+                campo,
+                idCampo,
+                typeCampo: 'select',
+                options: options,
+              };
+            }
+
+            else {
+              return { campo, idCampo, typeCampo: 'text' };
+            }
+          })}
+          />
+
+        <Add
+          estado={showModal2}
+          cambiarEstado={setShowModal2}
+          titulo="Editar Puntos y Poligono"
+          campos={modalPunto.map(({ headerName: campo, field: idCampo, type, options }) => {
+            if (type === 'select') {
+              return {
+                campo,
+                idCampo,
+                typeCampo: 'select',
+                options: options,
+              };
+            }
+
+            else {
+              return { campo, idCampo, typeCampo: 'text' };
+            }
+          })}
+          />
+
+          
         </div>
         
     )
