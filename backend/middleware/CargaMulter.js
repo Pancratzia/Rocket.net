@@ -28,4 +28,4 @@ const CargaArchivo = multer({
   }
 });
 
-module.exports = {CargaArchivo};
+module.exports = {CargaArchivo, CURRENT_DIR};

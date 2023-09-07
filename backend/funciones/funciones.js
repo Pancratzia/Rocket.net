@@ -43,13 +43,12 @@ function convertirMayusculas(campos, datos) {
 }
 
 function errorHandler(err, req, res, next) {
-  console.error(err.stack); // Registra el error en la consola (opcional)
+  console.error(err.stack); 
 
-  // Verifica si el error es una instancia de Error y tiene un mensaje personalizado
   if (err instanceof Error && err.message) {
-    res.status(400).json({ error: err.message }); // Envia el mensaje de error en formato JSON
+    res.status(400).json({ error: err.message });
   } else {
-    res.status(500).json({ error: 'Ha ocurrido un error inesperado.' }); // Error genérico
+    res.status(500).json({ error: 'Ha ocurrido un error inesperado.' });
   }
 }
 
