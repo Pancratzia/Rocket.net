@@ -4,11 +4,11 @@
 		"name": "Pruebas  de APIs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "29047754",
-		"_collection_link": "https://interstellar-spaceship-404941.postman.co/workspace/Team-Workspace~f0d8a6aa-dad6-42cc-8386-949c495a880c/collection/29047754-d0755917-f9e2-404d-ac51-cacf1dc918c8?action=share&source=collection_link&creator=29047754"
+		"_collection_link": "https://interstellar-spaceship-404941.postman.co/workspace/My-Workspace~0e3bb313-61b9-4eaa-8c82-33b803f11983/collection/29047754-d0755917-f9e2-404d-ac51-cacf1dc918c8?action=share&source=collection_link&creator=29047754"
 	},
 	"item": [
 		{
-			"name": "POST JV puntos",
+			"name": "S1 JV puntos",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {}
 			},
@@ -23,19 +23,19 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id_poligono\" : 1,    \r\n    \"latitud\" : 10.9981,\r\n    \"longitud\" : -69.9994\r\n}",
+					"raw": "{\r\n    \"id_poligono\" : ,\r\n    \"latitud\" : 10.9981,\r\n    \"longitud\" : -69.9994\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:3000/api/puntos/"
+				"url": "http://localhost:3000/api/puntos"
 			},
 			"response": []
 		},
 		{
-			"name": "PATCH JP usuarios",
+			"name": "S1  JP puntos",
 			"event": [
 				{
 					"listen": "test",
@@ -99,12 +99,12 @@
 						}
 					}
 				},
-				"url": "http://localhost:3000/api/usuario/1"
+				"url": "http://localhost:3000/api/puntos/1"
 			},
 			"response": []
 		},
 		{
-			"name": "Delete MT puntos",
+			"name": "S1  MT puntos",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -119,7 +119,7 @@
 			"response": []
 		},
 		{
-			"name": "GET JV puntos",
+			"name": "S1  CE puntos",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -128,16 +128,7 @@
 			"response": []
 		},
 		{
-			"name": "GET CE puntos",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": "http://localhost:3000/api/puntos/"
-			},
-			"response": []
-		},
-		{
-			"name": "Post MT Poligono",
+			"name": "S1  MT Poligono",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -161,7 +152,7 @@
 			"response": []
 		},
 		{
-			"name": "PUT GE  poligonos",
+			"name": "S1  GE  poligonos",
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -185,7 +176,7 @@
 			"response": []
 		},
 		{
-			"name": "DELETE CE poligono",
+			"name": "S1  CE poligono",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -200,7 +191,7 @@
 			"response": []
 		},
 		{
-			"name": "GET CE poligonos",
+			"name": "S1  CE poligonos",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -209,7 +200,7 @@
 			"response": []
 		},
 		{
-			"name": "GET JP puntos y poligonos",
+			"name": "S1  JP puntos y poligonos",
 			"event": [
 				{
 					"listen": "test",
@@ -270,7 +261,7 @@
 			"response": []
 		},
 		{
-			"name": "GET GE auditoria",
+			"name": "S1  GE auditoria",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -279,7 +270,7 @@
 			"response": []
 		},
 		{
-			"name": "POST JV usuario",
+			"name": "S2 JV usuario",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -300,7 +291,7 @@
 					"formdata": [
 						{
 							"key": "nombre_usuario",
-							"value": "userEstandar",
+							"value": "adminUser",
 							"type": "text"
 						},
 						{
@@ -341,21 +332,21 @@
 						{
 							"key": "fileUsuario",
 							"type": "file",
-							"src": "/E:/Pictures/sent ws/IMG-20171210-WA0027.jpg"
+							"src": "/C:/Users/jerus/OneDrive/Fotos/FOTO CARNET.PNG"
 						},
 						{
 							"key": "extension_telefonica",
-							"value": "041400",
+							"value": "025198",
 							"type": "text"
 						},
 						{
 							"key": "telefono",
-							"value": "04145561100",
+							"value": "041432800",
 							"type": "text"
 						},
 						{
 							"key": "cedula",
-							"value": "2700000",
+							"value": "22211198",
 							"type": "text"
 						},
 						{
@@ -365,12 +356,12 @@
 						}
 					]
 				},
-				"url": "http://localhost:3000/api/usuario"
+				"url": "http://localhost:3000/api/usuarios"
 			},
 			"response": []
 		},
 		{
-			"name": "PUT CE Usuarios",
+			"name": "S2 CE Usuarios",
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -385,7 +376,7 @@
 					"formdata": [
 						{
 							"key": "nombre_usuario",
-							"value": "Calowo12",
+							"value": "usernormal",
 							"type": "text"
 						},
 						{
@@ -410,37 +401,37 @@
 						},
 						{
 							"key": "pregunta",
-							"value": "mama?",
+							"value": "¿Comida favorita?",
 							"type": "text"
 						},
 						{
 							"key": "respuesta",
-							"value": "chao!",
+							"value": "arroz",
 							"type": "text"
 						},
 						{
 							"key": "clave",
-							"value": "1234",
+							"value": "123455",
 							"type": "text"
 						},
 						{
 							"key": "fileUsuario",
 							"type": "file",
-							"src": "/E:/Pictures/sent ws/IMG-20171213-WA0009.jpg"
+							"src": "/C:/Users/jerus/OneDrive/Fotos/FOTO CARNET.PNG"
 						},
 						{
 							"key": "extension_telefonica",
-							"value": "0424",
+							"value": "025788",
 							"type": "text"
 						},
 						{
 							"key": "telefono",
-							"value": "154263200",
+							"value": "04141234999",
 							"type": "text"
 						},
 						{
 							"key": "cedula",
-							"value": "21000000",
+							"value": "0326579",
 							"type": "text"
 						},
 						{
@@ -450,12 +441,12 @@
 						}
 					]
 				},
-				"url": "http://localhost:3000/api/usuario/1"
+				"url": "http://localhost:3000/api/usuarios/2"
 			},
 			"response": []
 		},
 		{
-			"name": "PATH JP Eliminar usuario",
+			"name": "S2 JP Eliminar usuario",
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -465,12 +456,12 @@
 						"type": "text"
 					}
 				],
-				"url": "http://localhost:3000/api/usuario/1"
+				"url": "http://localhost:3000/api/usuarios/3"
 			},
 			"response": []
 		},
 		{
-			"name": "Get MT Usuarios",
+			"name": "S2 MT Usuarios",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -480,21 +471,21 @@
 						"type": "text"
 					}
 				],
-				"url": "http://localhost:3000/api/usuario"
+				"url": "http://localhost:3000/api/usuarios"
 			},
 			"response": []
 		},
 		{
-			"name": "Get MT Usuario",
+			"name": "S2 MT Usuario",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:3000/api/usuario/1"
+				"url": "http://localhost:3000/api/usuarios/1"
 			},
 			"response": []
 		},
 		{
-			"name": "GET GE sedes",
+			"name": "S2 GE sedes",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -503,11 +494,11 @@
 			"response": []
 		},
 		{
-			"name": "GET GE a sede",
+			"name": "S2 GE sede",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "localhost:3000/api/sedes/1"
+				"url": "localhost:3000/api/sedes/2"
 			},
 			"response": []
 		}
