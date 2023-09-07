@@ -32,13 +32,13 @@ export default function Footer() {
 
                                 <div className='contenedor-logo'><img src={logo} alt="" /></div>
                                 <div className='iconos-contenedor'>
-                                    <TiSocialFacebook className='icono' />
-                                    <BiLogoLinkedin className='icono' />
-                                    <BiLogoTwitter className='icono' />
-                                    <AiOutlineInstagram className='icono' />
+                                   <a href="https://www.facebook.com"> <TiSocialFacebook className='icono' /></a>
+                                   <a href="https://ve.linkedin.com"> <BiLogoLinkedin className='icono' /></a>
+                                   <a href="https://www.twitter.com"> <BiLogoTwitter className='icono' /></a>
+                                   <a href="https://www.instagram.com">  <AiOutlineInstagram className='icono' /></a>
                                 </div>
                                 <div className='boton-footer-contenedor'>
-                                    <button className='boton-footer'>CONTACTANOS</button>
+                                  <a href="https://web.whatsapp.com/send?phone=584145272754"><button className='boton-footer'>CONTACTANOS</button> </a>
                                 </div>
                             </div>
 
@@ -46,9 +46,9 @@ export default function Footer() {
                           
                                 <div className='contenido-contacto'>
 
-                                    <p className='texto-contacto'>    {<AiOutlinePhone className='icono' />} +58 414 527-2754</p>
-                                    <p className='texto-contacto'>    {<AiOutlineMail className='icono' />} rocket-net@gmail.com</p>
-                                    <p className='texto-contacto'>    {<TbBrandGoogleMaps className='icono' />}Zona este, Barquisimeto</p>
+                                    <a className='texto-contacto' href='https://web.whatsapp.com/send?phone=584145272754'>    {<AiOutlinePhone className='icono' href=''/>} +58 000 000-0000</a>
+                                    <a className='texto-contacto' href='mailto:rocketnet@gmail.com? subject=Quiero contratar sus servicios'>    {<AiOutlineMail className='icono' />} rocket-net@gmail.com</a>
+                                    <a className='texto-contacto' href='https://www.google.com/maps/@39.550051,-105.782067,6z?hl=es'>    {<TbBrandGoogleMaps className='icono' />}Zona este, Barquisimeto</a>
                                 </div>
                             </div>
 

@@ -6,6 +6,13 @@ import Recuperar_Password from './pages/recuperar_password/Recuperar_Password';
 import Panel_Lateral from './components/Panel_Lateral/Panel_Lateral';
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/Navbar/Navbar';
+import EstadoRed from './pages/estado_de_red/EstadoRed';
+import GestionUsuarios from './pages/gestion_usuarios/GestionUsuarios';
+import GestionCobertura from './pages/gestion_cobertura/GestionCobertura';
+import GestionPlanes from './pages/gestion_planes/GestionPlanes';
+import GestionClientes from './pages/gestion_clientes/GestionClientes';
+import GestionSedes from './pages/gestion_sedes/GestionSedes';
+import ConsultaCobertura from './pages/consulta_cobertura/ConsultaCobertura';
 
 
 
@@ -24,6 +31,7 @@ function App() {
         <div className="contenedor-panel">
         <Panel_Lateral />
         <Outlet />
+
         </div>
       </div>
     );
@@ -36,6 +44,7 @@ function App() {
       <div className="derecha"> 
         <Navbar />
         <Outlet />
+        
         </div> 
       </div>
     );
@@ -52,8 +61,38 @@ function App() {
         }
         ,
         {
-          // Aquí se agregan las rutas para el dashboard
+          element: <EstadoRed/>,
+          path: '/estado_de_red',
+
         },
+        {
+          element: <GestionUsuarios/>,
+          path: '/gestion_usuarios',
+
+        },
+
+        {
+          element: <GestionCobertura/>,
+          path: '/gestion_de_cobertura',
+        },
+
+        {
+          element: <GestionPlanes/>,
+          path: '/gestion_de_planes',
+        },
+
+        {
+          element: <GestionClientes/>,
+          path: '/gestion_de_clientes',
+        },
+        {
+          element: <GestionSedes/>,
+          path: '/gestion_de_sedes',
+        },
+        {
+          element: <ConsultaCobertura/>,
+          path: '/consulta_de_cobertura',
+        }
       ],
     },
 
