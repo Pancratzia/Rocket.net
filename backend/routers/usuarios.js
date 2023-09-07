@@ -165,9 +165,9 @@ routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarId
 
       auditar(operacion, id_usuarioAuditoria);
 
-      if (imagenAnterior) {
+      if (fileUsuario && imagenAnterior) {
         const pathImagenAnterior = join(CURRENT_DIR, '../cargas', imagenAnterior);
-  
+
         fs.unlink(pathImagenAnterior, (err) => {
           if (err) {
             console.error('Error al eliminar la imagen anterior:', err);
