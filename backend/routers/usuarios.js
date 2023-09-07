@@ -239,7 +239,7 @@ routerUsuarios.patch('/:id_usuario', validarIdUsuario, async (req, res) => {
 
 routerUsuarios.get('/', async (req, res) => {
   try {
-    const usuarios = await pool.query('SELECT nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica, telefono, cedula, correo FROM usuarios WHERE borrado = false ORDER BY id_usuario ASC');
+    const usuarios = await pool.query('SELECT id_usuario, nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica, telefono, cedula, correo FROM usuarios WHERE borrado = false ORDER BY id_usuario ASC');
     res.json(usuarios.rows);
 
   } catch (error) {
@@ -252,7 +252,7 @@ routerUsuarios.get('/', async (req, res) => {
 routerUsuarios.get('/:id_usuario', async (req, res) => {
   try {
     const { id_usuario } = req.params;
-    const usuarios = await pool.query('SELECT nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica telefono, cedula, correo FROM usuarios WHERE id_usuario = $1 AND borrado = false', [id_usuario]);
+    const usuarios = await pool.query('SELECT id_usuario, nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica telefono, cedula, correo FROM usuarios WHERE id_usuario = $1 AND borrado = false', [id_usuario]);
     if (usuarios.rowCount === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
