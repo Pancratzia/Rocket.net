@@ -3,20 +3,17 @@ const { validarResultados } = require('../helpers/validarHelper')
 
 const validarIdUsuario = [
   check('id_usuario')
-    .exists().withMessage({ error: 'El campo id_usuario no existe' })
-    .isNumeric().withMessage({ error: 'El campo id_usuario debe ser numérico' })
+    .exists()
+    .isNumeric()
     .not()
-    .isEmpty().withMessage({ error: 'El campo id_usuario no puede estar vacío' })
+    .isEmpty()
     .custom((value, { req }) => {
       let patron = /^$|^\s+$/;
 
       if (patron.test(value)) {
         return false
       } return true
-    }).withMessage({ error: 'El campo id_usuario no puede contener espacios vacios' }),
-  (req, res, next) => {
-    validarResultados(req, res, next)
-  }
+    })
 ]
 
 const validarUsuario = [

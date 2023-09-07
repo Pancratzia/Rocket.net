@@ -108,6 +108,10 @@ routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarId
     const claveEncriptada = await bcrypt.hash(clave + fraseEncriptacion, 12);
     const respuestaEncriptada = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
 
+    const errores = validationResult(req);
+
+    if (errores.isEmpty()) {
+
     // Query SQL para actualizar el usuario
     const query = `
     UPDATE usuarios
@@ -157,7 +161,24 @@ routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarId
 
     const actualizarUsuario = await pool.query(query, values);
     
-    if (actualizarUsuario.rowCount === 0) {
+    if (actualizarUsuario.rowCount > 0) {
+
+      auditar(operacion, id_usuarioAuditoria);
+
+      if (imagenAnterior) {
+        const pathImagenAnterior = join(CURRENT_DIR, '../cargas', imagenAnterior);
+  
+        fs.unlink(pathImagenAnterior, (err) => {
+          if (err) {
+            console.error('Error al eliminar la imagen anterior:', err);
+          } else {
+            console.log('Imagen anterior eliminada con éxito');
+          }
+        });
+      }
+
+      return res.status(200).json({ mensaje: 'Usuario actualizado exitosamente' });
+    } else {
       if (fileUsuario) {
         const pathImagenNueva = join(CURRENT_DIR, '../cargas', fileUsuario);
     
@@ -169,24 +190,14 @@ routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarId
           }
         });
       }
-      return res.status(400).json({ error: 'Error al actualizar el usuario.' });
+
+      return res.status(400).json({ error: 'Error al crear el usuario' });
     }
-
-    auditar(operacion, id_usuarioAuditoria);
-
-    if (imagenAnterior) {
-      const pathImagenAnterior = join(CURRENT_DIR, '../cargas', imagenAnterior);
-
-      fs.unlink(pathImagenAnterior, (err) => {
-        if (err) {
-          console.error('Error al eliminar la imagen anterior:', err);
-        } else {
-          console.log('Imagen anterior eliminada con éxito');
-        }
-      });
+   } else {
+      fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: 'Datos incorrectos' });
     }
-
-    res.json({ mensaje: 'Usuario actualizado correctamente' });
+   
   } catch (error) {
     console.error('Error al actualizar el usuario:', error);
     res.status(500).json({ error: error.message });
