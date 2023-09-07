@@ -43,7 +43,7 @@ Este proyecto tiene como objetivo desarrollar un software de gestión integral p
 | Nombre          | Rol                   |
 |-----------------|-----------------------|
 | [María Castillo](https://github.com/marfcastillo "Profile")  | Líder de Frontend   |
-| [Moisés Villarroel](https://github.com/MoisesV2605 "Profile")  | Developer   |
+| [Moisés Villarroel](https://github.com/MoisesV2605 "Profile")  | RETIRADO   |
 | [Rosibel Cordero ](https://github.com/none "Profile")  | Developer  |
 | [Víctor Pérez](https://github.com/Victorgpm97 "Profile")  | RETIRADO   |
 | [Luis Pernalete](https://github.com/Alejandro19977 "Profile")  | RETIRADO  |

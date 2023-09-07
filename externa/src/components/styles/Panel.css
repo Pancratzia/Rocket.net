@@ -93,6 +93,17 @@ input {
   /* Ajusta el margen inferior de los botones según tus necesidades */
 }
 
+@media (max-width: 1200px) {
+  .texto-principal {
+    font-size: 20px;
+  }
+
+  .texto-secundario {
+    width: 100%;
+    padding: 20px;
+  }
+}
+
 @media (max-width: 768px) {
   .panel {
     display: grid;
@@ -108,4 +119,35 @@ input {
     padding: 20px;
   }
 
+}
+
+/* Media query para anchos de pantalla de hasta 480px */
+@media (max-width: 480px) {
+  .texto-principal {
+    font-size: 20px;
+  }
+
+
+  
+  
+
+  .texto-secundario {
+    font-size: 12px;
+  }
+
+  input {
+    width: 150px;
+  }
+
+  .boton-buscador {
+    width: 100px;
+  }
+
+  .boton-contactanos {
+    width: 150px;
+  }
+
+  img {
+    width: 150px;
+  }
 }

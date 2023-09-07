@@ -76,16 +76,25 @@
                 cursor: default ; //propiedad para que no aparezca el puntero en el titulo
             }
 
+            
+
             li{
                 display: flex;
                 align-items: center;
                 padding: 6px;
                 cursor: pointer;
+                
+
 
                 &:hover{
                     background-color:#299E6A;
+                    
 
                 }
+
+                
+
+                
                 span{
                     font-size: 15px;
                     font-weight:normal;
@@ -98,7 +107,10 @@
                     color:#032240;
 
                 }
+
+                
             }
+            
         }
     }
 }

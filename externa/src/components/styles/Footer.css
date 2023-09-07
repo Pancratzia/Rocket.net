@@ -19,7 +19,18 @@
   
   }
 
+.contenido-contacto{
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  color: white;
 
+}
+
+.contenido-contacto a{
+  color: white;
+}
 
   .parte-izquierda,   .parte-derecha, .parte-centro{
     color: white;
@@ -72,7 +83,8 @@
 
   .parte-izquierda,
   .parte-derecha,
-  .parte-centro {
+  .parte-centro,
+  .texto-derechos {
     padding: 10px; 
     text-align: center; 
   }
