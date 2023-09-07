@@ -10,11 +10,30 @@ export default function Tabla(props) {
   const [mostrarModal, setMostrarModal] = useState(false);
 
   //handleEditarClick debe estar como props en todas las renderizaciones del componente tabla 
-  //para poder abrir el modal
+  //para poder abrir el moda
   const handleEditClick = (row) => {
     setMostrarModal(true); // Mostrar el modal al hacer clic en el botón de editar
+
     
   };
+
+  const handleDeleteRow = (id, rows) => {
+    callback: () => {
+      rows = [...this.state.rows];
+      rows.splice(rows.id, 1); //
+      this.setState({ rows: rows });
+
+      React.useEffect(() => {
+        document.getSelection(null)
+        
+      })
+      
+    }
+
+    return console.log(id);
+    
+  }
+
   let {rows, columns, actions} = props;
 
   if (actions) {
@@ -26,7 +45,7 @@ export default function Tabla(props) {
         renderCell: (params) => {
           return (
             <div className="action-column">
-                <a href="#" id="edit" onClick={() => props.handleEditClick(params.row)}> 
+                <a href="#" id="edit" onClick={() => props.handleEditClick(params.rows)}> 
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="icon icon-tabler icon-tabler-edit"
@@ -45,7 +64,7 @@ export default function Tabla(props) {
                   <path d="M16 5l3 3" />
                 </svg>
               </a>
-              <a href="#" id="delete">
+              <a href="#" id="delete" onClick={() => handleDeleteRow(rows)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="icon icon-tabler icon-tabler-trash"

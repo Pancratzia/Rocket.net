@@ -1,7 +1,34 @@
 .contenedor-cobertura{
     width: 100%;
     height: 770px;
+    margin: 5px;
+    position: relative;
 }
 
-.contenedor-cobertura-principal{
-}
+.contenedor-cobertura-principal{}
+
+@media screen and (max-width: 1200px) {
+
+    .contenedor-cobertura {
+    width: 95%;
+    height: 760px;
+    }
+    
+  }
+  
+  @media screen and (max-width: 768px) {
+  
+    .contenedor-cobertura{
+    width: 100%;
+    height: 700px;
+    margin-left: 0
+    }
+  }
+  
+  
+  @media screen and (max-width: 480px) {
+
+    .contenedor-cobertura{
+    
+    }
+  }
