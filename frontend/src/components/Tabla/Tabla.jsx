@@ -7,34 +7,24 @@ import "../Tabla/Tabla.scss";
 import { useState } from 'react';
 
 export default function Tabla(props) {
+
+  let {rows, columns, actions, handleDeleteRow} = props;
+  const [filas, setFilas] = useState(rows)
   const [mostrarModal, setMostrarModal] = useState(false);
 
-  //handleEditarClick debe estar como props en todas las renderizaciones del componente tabla 
-  //para poder abrir el moda
   const handleEditClick = (row) => {
-    setMostrarModal(true); // Mostrar el modal al hacer clic en el botón de editar
-
-    
+    setMostrarModal(true);
   };
 
-  const handleDeleteRow = (id, rows) => {
-    callback: () => {
-      rows = [...this.state.rows];
-      rows.splice(rows.id, 1); //
-      this.setState({ rows: rows });
+  const handleDeleteClick = (row) => {
+    const nuevasFilas = filas.filter((fila) => fila.id !== row.id);
+    setFilas(nuevasFilas);
+    handleDeleteRow(row.id);
+  };
 
-      React.useEffect(() => {
-        document.getSelection(null)
-        
-      })
-      
-    }
-
-    return console.log(id);
-    
-  }
-
-  let {rows, columns, actions} = props;
+  React.useEffect(()=> {
+    setFilas(rows);
+  },[rows]);
 
   if (actions) {
     const actionColumn = [
@@ -64,7 +54,7 @@ export default function Tabla(props) {
                   <path d="M16 5l3 3" />
                 </svg>
               </a>
-              <a href="#" id="delete" onClick={() => handleDeleteRow(rows)}>
+              <a href="#" id="delete" onClick={() => handleDeleteClick(params.row)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="icon icon-tabler icon-tabler-trash"
@@ -105,7 +95,7 @@ export default function Tabla(props) {
         alignContent: 'center',
         justifyContent: 'center'
       }}
-        rows={rows}
+        rows={filas}
         columns={columns}
         initialState={{
           filter:{
