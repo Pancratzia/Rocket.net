@@ -273,11 +273,9 @@ function GestionCobertura() {
 
     //para mostrar el modal al presionar el icono de editar de la tabla
     const handleEditClick = (row) => {
-  
-    setShowModal(true); // mostrar modal 1
-    setShowModal2(true); // mostrar modal 2 
-   
-};
+
+      
+    }
     
  
     // Contenido del modulo
