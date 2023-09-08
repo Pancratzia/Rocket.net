@@ -17,28 +17,24 @@ function GestionUsuarios() {
       field: 'usuario',
       headerName: 'Usuario',
       width: 100,
-      editable: true,
     },
     {
       field: 'nombre',
       headerName: 'Nombre',
       width: 150,
-      editable: true,
     },
     {
       field: 'apellido',
       headerName: 'Apellido',
       width: 110,
-      editable: true,
     },
     {
-      field: 'pregunta',
-      headerName: 'Pregunta',
+      field: 'sedepartamento',
+      headerName: 'Sede - Departamento',
       description: 'Esta es la pregunta de seguridad',
       width: 160,
       type: 'select',
-      options: ['1', "2", "3"],
-     
+      options: ['RRHH - Barquisimeto', "2", "3"],
      },
     {
       field: 'extensiontelefonica',
@@ -60,6 +56,21 @@ function GestionUsuarios() {
     {
       field: 'correo',
       headerName: 'Correo',
+      width: 160,
+    },
+    {
+      field: 'password',
+      headerName: 'Contrasena',
+      width: 140,
+    },
+    {
+      field: 'pregunta',
+      headerName: 'Pregunta',
+      width: 130,
+    },
+    {
+      field: 'answer',
+      headerName: 'Respuesta',
       width: 160,
     },
   ];
@@ -96,12 +107,16 @@ function GestionUsuarios() {
   const handleEditClick = (row) => {
     // Mostrar el componente Add
     setShowModal(true); //hace visible el modal 
+
  
   };
 
-  const handleDeleteRow = (idCampo) => {
-    
-  };
+  const handleDeleteRow = (id) => {
+    console.log("borrandofila" + id + "en gestion de usuarios");
+    const nuevasFilas = filas.filter((fila) => fila.id !== id);
+    setFilas(NuevasFilas);
+  }
+
 
 const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
  
@@ -142,7 +157,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
             estado={showModal}
             cambiarEstado={setShowModal}
             titulo="Editar Usuario" //este es el modelo del  componente modal para el editado difiere en algunos detalles con el
-            campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
+            campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => { //El problema esta aqui 
             return { campo, idCampo, typeCampo };
               })}
             camposEditados={camposEditados}

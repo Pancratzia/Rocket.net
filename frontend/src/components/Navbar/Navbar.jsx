@@ -1,5 +1,5 @@
 import React from 'react';
-import "./navbar.scss";
+import "./Navbar.scss";
 import Desplegable from '../Desplegable/Desplegable';
 
 function Navbar(){
