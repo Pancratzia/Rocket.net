@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import "./GestionUsuarios.css";
 import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
 import Swal from "sweetalert2";
-import { useState } from 'react';
-
 
 
 function GestionUsuarios() {
 
+  const [usuarios, setUsuarios] = useState([]);
 
   const columnas = [
     { field: 'id', headerName: 'ID', width: 40, editable: false },
@@ -71,6 +71,28 @@ function GestionUsuarios() {
 
   const [showModal, setShowModal] = useState(false);  //Aca manejamos los estados del modal editar
 
+  useEffect(() => {
+    axios.get('http://localhost:3000/api/usuario')
+      .then(response => {
+        const usuariosConId = response.data.map(usuario => ({
+          id: usuario.id_usuario,
+          usuario: usuario.nombre_usuario,
+          nombre: usuario.nombre,
+          apellido: usuario.apellido,
+          pregunta: usuario.pregunta,
+          extensiontelefonica: usuario.extension_telefonica,
+          telefono: usuario.telefono,
+          cedula: usuario.cedula,
+          correo: usuario.correo,
+        }));
+        setUsuarios(usuariosConId);
+        setFilas(usuariosConId);
+      })
+      .catch(error => {
+        console.error('Error al obtener usuarios:', error);
+      });
+  }, []);
+
   //handleEditClick nos permite mostrar el modal de la fila seleccionada para el editar
   const handleEditClick = (row) => {
     // Mostrar el componente Add
@@ -86,7 +108,21 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
  
 //esto es para el agregado de las filas con el modal
   const agregarFila = (nuevaFila) => {
-    setFilas([...filas, nuevaFila]);
+    axios.post('http://localhost:3000/api/usuario', nuevaFila)
+    .then(response => {
+      if (response.status === 201) {
+        setFilas([...filas, nuevaFila]);
+        cambiarEstadoModal1(false);
+        Swal.fire('Usuario creado', 'El usuario se ha creado correctamente', 'success');
+      } else {
+        Swal.fire('Error', 'No se pudo crear el usuario', 'error');
+      }
+    }) 
+    .catch(error => {
+      // Maneja errores de la solicitud si es necesario
+      console.error('Error al crear el usuario:', error);
+      Swal.fire('Error', 'Ocurrió un error al crear el usuario', 'error');
+    });
   };
 
 
