@@ -1,14 +1,13 @@
 .segunda-barra-superior {
     background-image: url('../Images/fondo.jpeg');
-    height: 150px; /* Ajusta la altura de la segunda barra superior según tus necesidades */
+    height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white; /* Ajusta el color del texto según tus necesidades */
+    color: white; 
     
     
-    width: 100%; /* Asegúrate de que la barra ocupe el 100% del ancho de la página */
-
+    width: 100%; 
   }
 
   .titulo{
@@ -17,8 +16,36 @@
     font-weight: 900;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 1200px) {
+    .segunda-barra-superior {
+      /* Estilos específicos para anchos de pantalla de hasta 1200px */
+      height: 120px;
+    }
     .titulo {
+      /* Estilos específicos para anchos de pantalla de hasta 1200px */
+      font-size: 50px;
+    }
+  }
+
+ 
+
+
+  @media (max-width: 768px) {
+    .segunda-barra-superior {
+      background-image: url('../Images/fondo.jpeg');
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white; /* Ajusta el color del texto según tus necesidades */
+      
+      
+      width: 100%; /* Asegúrate de que la barra ocupe el 100% del ancho de la página */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .titulo {
+   
       font-size: 50px; /* Tamaño de fuente para pantallas más pequeñas */
       display: flex;
       justify-content: center;
@@ -26,10 +53,15 @@
       align-items: center;
     }
   }
-  
-  @media (max-width: 768px) {
+
+  @media (max-width: 480px) {
+    .segunda-barra-superior {
+
+      height: 80px;
+    }
     .titulo {
-      font-size: 50px; /* Tamaño de fuente para pantallas más pequeñas */
+      margin-top: 10px;
+      font-size: 30px;
       display: flex;
       justify-content: center;
       text-align: center;

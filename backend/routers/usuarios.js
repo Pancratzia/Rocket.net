@@ -10,7 +10,7 @@ const { validationResult } = require('express-validator')
 
 const { validarIdUsuario, validarActUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
 const { auditar, convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
-const { CargaArchivo } = require('../middleware/CargaMulter.js')
+const { CargaArchivo, CURRENT_DIR } = require('../middleware/CargaMulter.js')
 const { join } = require('path');
 
 const routerUsuarios = express.Router();
@@ -86,22 +86,9 @@ routerUsuarios.post('/', CargaArchivo.single('fileUsuario'), validarUsuario, asy
 routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarIdUsuario, validarActUsuario, validarUsuario, async (req, res) => {
   const { id_usuario } = req.params;
   const {
-    nombre_usuario,
-    id_sededepar,
-    id_tipousuario,
-    nombre,
-    apellido,
-    pregunta,
-    respuesta,
-    clave,
-    extension_telefonica,
-    telefono,
-    cedula,
-    correo
+    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta,clave, extension_telefonica, telefono, cedula, correo
   } = req.body;
 
-
-  // Query SQL para obtener la foto
   const queryImagenAnterior = 'SELECT foto_usuario FROM usuarios WHERE id_usuario = $1';
   const resultImagenAnterior = await pool.query(queryImagenAnterior, [id_usuario]);
 
@@ -109,37 +96,21 @@ routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarId
 
   const fileUsuario = req.file ? req.file.filename : null;
 
-  // Conviertir a mayúsculas
   const camposAmayusculas = ['nombre', 'apellido', 'pregunta'];
   const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
 
-  // parametros para auditoria
   const operacion = req.method;
   const id_usuarioAuditoria = req.headers['id_usuario'];
 
   try {
 
-    // Crear frase de encriptación
     const fraseEncriptacion = crypto.randomBytes(64).toString('base64');
-
-    // Encriptar la clave
     const claveEncriptada = await bcrypt.hash(clave + fraseEncriptacion, 12);
-
-    // Encriptar la respuesta
     const respuestaEncriptada = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
 
-    // Eliminar imagen si es cambiada
-    if (fileUsuario && imagenAnterior) {
-      const pathImagenAnterior = join(CURRENT_DIR, '../cargas', imagenAnterior);
+    const errores = validationResult(req);
 
-      fs.unlink(pathImagenAnterior, (err) => {
-        if (err) {
-          console.error('Error al eliminar la imagen anterior:', err);
-        } else {
-          console.log('Imagen anterior eliminada con éxito');
-        }
-      });
-    }
+    if (errores.isEmpty()) {
 
     // Query SQL para actualizar el usuario
     const query = `
@@ -188,20 +159,48 @@ routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarId
 
     ];
 
-    // Ejecuta el query de actualización
     const actualizarUsuario = await pool.query(query, values);
+    
+    if (actualizarUsuario.rowCount > 0) {
 
-    if (actualizarUsuario.rowCount === 0) {
-      return res.status(400).json({ error: 'Error al actualizar el usuario.' });
+      auditar(operacion, id_usuarioAuditoria);
+
+      if (fileUsuario && imagenAnterior) {
+        const pathImagenAnterior = join(CURRENT_DIR, '../cargas', imagenAnterior);
+
+        fs.unlink(pathImagenAnterior, (err) => {
+          if (err) {
+            console.error('Error al eliminar la imagen anterior:', err);
+          } else {
+            console.log('Imagen anterior eliminada con éxito');
+          }
+        });
+      }
+
+      return res.status(200).json({ mensaje: 'Usuario actualizado exitosamente' });
+    } else {
+      if (fileUsuario) {
+        const pathImagenNueva = join(CURRENT_DIR, '../cargas', fileUsuario);
+    
+        fs.unlink(pathImagenNueva, (err) => {
+          if (err) {
+            console.error('Error al eliminar la imagen nueva:', err);
+          } else {
+            console.log('Imagen nueva eliminada debido al error');
+          }
+        });
+      }
+
+      return res.status(400).json({ error: 'Error al crear el usuario' });
     }
-
-    // Realiza la auditoría si es necesario
-    auditar(operacion, id_usuarioAuditoria);
-
-    res.json({ mensaje: 'Usuario actualizado correctamente' });
+   } else {
+      fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: 'Datos incorrectos' });
+    }
+   
   } catch (error) {
     console.error('Error al actualizar el usuario:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Error al actualizar el usuario' });
   }
 });
 
@@ -240,7 +239,7 @@ routerUsuarios.patch('/:id_usuario', validarIdUsuario, async (req, res) => {
 
 routerUsuarios.get('/', async (req, res) => {
   try {
-    const usuarios = await pool.query('SELECT nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica, telefono, cedula, correo FROM usuarios WHERE borrado = false ORDER BY id_usuario ASC');
+    const usuarios = await pool.query('SELECT id_usuario, nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica, telefono, cedula, correo FROM usuarios WHERE borrado = false ORDER BY id_usuario ASC');
     res.json(usuarios.rows);
 
   } catch (error) {
@@ -253,7 +252,7 @@ routerUsuarios.get('/', async (req, res) => {
 routerUsuarios.get('/:id_usuario', async (req, res) => {
   try {
     const { id_usuario } = req.params;
-    const usuarios = await pool.query('SELECT nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica telefono, cedula, correo FROM usuarios WHERE id_usuario = $1 AND borrado = false', [id_usuario]);
+    const usuarios = await pool.query('SELECT id_usuario, nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, foto_usuario, extension_telefonica telefono, cedula, correo FROM usuarios WHERE id_usuario = $1 AND borrado = false', [id_usuario]);
     if (usuarios.rowCount === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
