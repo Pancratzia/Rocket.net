@@ -40,7 +40,6 @@ function GestionUsuarios() {
       options: ['1', "2", "3"],
      
      },
-    
     {
       field: 'extensiontelefonica',
       headerName: 'Extension telefonica',
