@@ -501,6 +501,15 @@
 				"url": "localhost:3000/api/sedes/2"
 			},
 			"response": []
+		},
+		{
+			"name": "S2 JV sedes_departamentos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/api/sedesdepartamentos"
+			},
+			"response": []
 		}
 	]
 }
