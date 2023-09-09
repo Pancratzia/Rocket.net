@@ -3,9 +3,19 @@
   font-size: 60 px;
   padding-left: 8px;
   margin: 5px 0;
+  
+  
 }
+
+.linea-cobertura{
+  width: 1000%; 
+  
+}
+
+
 .contenedor-principal-cob{
   display: grid;
+
 }
 
 .contenedor-izquierdo-cob{
@@ -188,5 +198,20 @@ h3{
     margin-top: 2%;
     margin-bottom: 3%;
   }
+  h3{
+    font-size: 15px;
+
+  }
+ 
+  .input-cobertura{
+    font-size: 15px;
+    height: 30px;
+  }
+
+  .boton-cobertura{
+    font-size: 15px;
+  }
   
+  
+ 
 }

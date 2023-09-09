@@ -73,48 +73,6 @@ function GestionCobertura() {
                 buttonsStyling: false
               })
 
-          const crearCoordenadas = (event) => {
-            event.preventDefault(); 
-            //condicional para los campos de latitud y longitud
-           if (latitud.trim() !== "" && longitud.trim() !== "") {
-                swalWithBootstrapButtons.fire({
-                    text: "Estas seguro de que deseas agregar la latitud y longitud?",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Si',
-                    cancelButtonText: 'No',
-                 
-                    
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                     swalWithBootstrapButtons.fire(
-                      'Se ha agregado con exito el', 
-                      'la latitud y longitud',
-                      'success'
-                      )
-                    } else if (
-                      result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                      swalWithBootstrapButtons.fire(
-                 
-                      'Vaya! Hubo un error',
-                      'en tu solicitud de agregar la latitud y longitud, vuelve a intentar mas tarde',
-                      'error'
-                       
-                      )
-                    }
-                  })
-              } else {
-                // Mostrar mensaje de error si los campos están vacíos
-                MySwal.fire({
-                  title: <strong>Error</strong>,
-                  html: <i>Por favor, complete todos los campos</i>,
-                  icon: 'error'
-                });
-              }
-            };
-
-
   //Alertas para crear punto
   const crearPunto = (event) => {
     event.preventDefault();
@@ -272,17 +230,30 @@ function GestionCobertura() {
 
 
     //para mostrar el modal al presionar el icono de editar de la tabla
-    const handleEditClick = (row) => {
-
-      
+  
+  //constante para el editar de la tabla tiene como parametro row que es la fila seleccionada. 
+  //aca con el setShowModal mostramos el modal 1 que corresponde a la tabla de poligonos
+    const handleEditClick1 = (row) => {
+      setShowModal(true);
+  };
+  //handle edit click 2 para mostrar el modal 2 de la tabla puntos-poligono se pasan como props en el componente tabla 
+  const handleEditClick2 = (row) => {
+      setShowModal2(true);
+  };
+    //para eliminar la fila seleccionada
+    const handleDeleteRow = (id) => {
+      console.log("borrandofila" + id + "en gestion de usuarios");
+      const nuevasFilas = filas.filter((fila) => fila.id !== id);
+      setFilas(NuevasFilas);
     }
-    
  
     // Contenido del modulo
     return(
+          
         <div className='contenedor-principal-cob'>
           <div className='titulo-cobertura'>
             <h1>Gestion de cobertura</h1>
+            <hr  className='linea-cobertura'/> 
           </div>
        
           <div className='contenedor-izquierdo-cob'>
@@ -292,7 +263,7 @@ function GestionCobertura() {
               </div>
           
             <div className='tabla-poligonos'>
-              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditClick={handleEditClick}/> 
+              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditClick={handleEditClick1}  handleDeleteRow = {handleDeleteRow}/> 
             </div>
             
                
@@ -303,13 +274,13 @@ function GestionCobertura() {
               <h3>Ingresar la latitud</h3>
                   <div className='flex-cobertura'>
                   <input className='input-cobertura' type='text' name='latitud' id='latitud' onChange={(e) => setLatitud(e.target.value)}/>
-                  <button className='boton-cobertura' onClick={crearCoordenadas}>Agregar</button>
+                  
                   </div>
                 
               <h3>Ingresar la longitud</h3>
                   <div className='flex-cobertura'>
                   <input className='input-cobertura' type='text' name='longitud' id='longitud' onChange={(e) => setLongitud(e.target.value)}/>
-                  <button className='boton-cobertura' onClick={crearCoordenadas}>Agregar</button>
+                  
                   </div>
            
                 <div className = 'lista-btn'> 
@@ -318,7 +289,7 @@ function GestionCobertura() {
                 </div>
                
                 <div className='tabla-puntos'> 
-                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditClick={handleEditClick}/>
+                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditClick={handleEditClick2}  handleDeleteRow = {handleDeleteRow}/>
                 </div>
                 
              
