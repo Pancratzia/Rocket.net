@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
 import Tabla  from '../../components/Tabla/Tabla';
 import "../estado_de_red/EstadoRed.css";
 
@@ -35,13 +35,50 @@ function  EstadoRed(){
         width: 250,
          }
     ]
-
-    //Aca se definen las filas o los registro de la tabla
-    const filas = [
-        { id: 1, nombre_sede: 'Sede 1', latitud: '12345', longitud: '67890' , ip: '192.168.1.1' , estado_conexion: 'Con conexion'},
-        { id: 2, nombre_sede: 'Sede 2', latitud: '12345', longitud: '67890' , ip: '192.168.1.2' , estado_conexion: 'Sin conexion'},
-        { id: 3, nombre_sede: 'Sede 3', latitud: '12345', longitud: '67890' , ip: '192.168.1.3' , estado_conexion: 'Con conexion'}
-    ]
+    function useFetchData() {
+      // La función `useFetchData()` es una función asíncrona
+    
+      async function fetchData() {
+        // Realiza la petición fetch a la API
+        const response = await fetch("http://localhost:3000/api/sedes");
+    
+        // Comprueba si la respuesta es correcta
+        if (response.status === 200) {
+          // Decodifica el cuerpo de la respuesta como JSON
+          const data = await response.json();
+    
+          // Crea un array de objetos con los datos de la API
+          let id = 0;
+          const filas = data.map((sede) => ({
+            id: id++,
+            nombre_sede: sede.nombre_sede,
+            latitud: sede.latitud,
+            longitud: sede.longitud,
+            ip: sede.ip,
+            estado_conexion: "Con conexión"
+          }));
+    
+          // Devuelve el array de objetos
+          return filas;
+        } else {
+          // La respuesta no es correcta
+          // Devuelve un error
+          throw new Error("Error al obtener los datos de la API");
+        }
+      };
+    
+      // Devuelve la promesa de la función `fetchData()`
+      return fetchData();
+    }
+    const [filas, setFilas] = useState([]);
+    const fetchData = useFetchData();
+    useEffect(() => {
+      // Cuando la promesa esté resuelta
+      fetchData.then((data) => {
+        // Establece el valor de la variable `filas` con los datos de la API
+        setFilas(data);
+      });
+    }, [fetchData]);
 
     return(
         //div contenedor del componente tabla donde se le pasan las tres props (titulo, columnas y filas 
