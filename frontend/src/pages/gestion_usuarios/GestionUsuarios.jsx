@@ -19,7 +19,7 @@ function GestionUsuarios() {
       .then(response => {
         if (response.status === 200) {
           const opciones = response.data.map(opcion => ({
-            value: opcion.id_sede_departamento,
+            value: opcion.sd.id_sede_departamento,
             label: opcion.Sede_Departamento,
           }));
           console.log('Opciones obtenidas de la API:', opciones);
@@ -158,32 +158,20 @@ useEffect(() => {
   };
 
   const handleDeleteClick = (idUsuario) => {
-    Swal.fire({  // mensaje de confirmacion
-      title: '¿Estás seguro?',
-      text: '¡No podrás revertir esto!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Si el usuario confirma la eliminación, se realiza la solicitud PATCH
-        axios.patch(`http://localhost:3000/api/usuarios/${idUsuario}`)
-          .then(response => {
-            if (response.status === 200) {
-              obtenerUsuarios(); 
-              Swal.fire('Eliminado', 'El usuario ha sido eliminado correctamente', 'success');
-            } else {
-              Swal.fire('Error', 'No se pudo eliminar el usuario', 'error');
-            }
-          })
-          .catch(error => {
-            console.error('Error al eliminar el usuario:', error);
-            Swal.fire('Error', 'Ocurrió un error al eliminar el usuario', 'error');
-          });
-      }
-    });
+    // Realiza la solicitud PATCH para eliminar el usuario
+    axios.patch(`http://localhost:3000/api/usuarios/${idUsuario}`)
+      .then(response => {
+        if (response.status === 200) {
+          obtenerUsuarios(); 
+        } else {
+          console.error('Error al eliminar el usuario:', response);
+        }
+      })
+      .catch(error => {
+        console.error('Error al eliminar el usuario:', error);
+      });
   };
+  
   
 
   const handleDeleteRow = (id) => {
@@ -211,7 +199,6 @@ const agregarUsuario = (nuevoUsuario) => {
   formData.append('id_sededepar', nuevoUsuario.id_sededepar);
   formData.append('clave', nuevoUsuario.clave);
   formData.append('respuesta', nuevoUsuario.respuesta);
-  formData.append('fileUsuario', new File(['user.png'], 'user.png'));
 
   fetch(nuevaImagen)
     .then((response) => response.blob())
@@ -242,9 +229,7 @@ const agregarUsuario = (nuevoUsuario) => {
  
 //esto es para el agregado de las filas con el modal
   const agregarFila = (nuevaFila) => {
-    
-    setCamposEditados({}); // Restablece los campos editados
-    cambiarEstadoModal1(true); // Abre el modal de agregar usuario
+    setFilas([...filas, nuevaFila]);
   };
 
 
@@ -258,7 +243,7 @@ const agregarUsuario = (nuevoUsuario) => {
           <hr />
         </div>
         <div className='contenedor-busqueda'> 
-          <button className='boton-usuarios' onClick={agregarFila}>Agregar</button>
+          <button className='boton-usuarios' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
 
           
         </div>
@@ -301,10 +286,9 @@ const agregarUsuario = (nuevoUsuario) => {
           
           filas={filas}
           setFilas={setFilas}
-          onGuardar={(nuevoUsuario) => {
-            agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
-            cambiarEstadoModal1(false); // Cierra el modal
-          }}
+          onGuardar={agregarFila} //=> {
+            //agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
+          
         />
 
 <Tabla
