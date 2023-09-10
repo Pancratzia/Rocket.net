@@ -62,10 +62,7 @@ function GestionUsuarios() {
       description: 'Esta es la pregunta de seguridad',
       width: 160,
       type: 'select',
-      options: sedeDepartamentoOptions.map(opcion => ({
-        value: opcion.value,
-        label: opcion.label,
-      })),
+      options: sedeDepartamentoOptions,
      },
     {
       field: 'extensiontelefonica',
@@ -183,10 +180,16 @@ useEffect(() => {
 
 
 const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
+ 
+//esto es para el agregado de las filas con el modal
+  const agregarFila = (nuevaFila) => {
+    setFilas([...filas, nuevaFila]);
+  };
 
-const agregarUsuario = (nuevoUsuario) => {
+
+  const agregarUsuario = (nuevoUsuario) => {
   const formData = new FormData();
-  const nuevaImagen = '../../public/imagetest/user.png';
+  const nuevaImagen = '/imagetest/user.png'; // Asegúrate de que esta ruta sea accesible desde tu servidor
 
   formData.append('nombre_usuario', nuevoUsuario.nombre_usuario);
   formData.append('nombre', nuevoUsuario.nombre);
@@ -199,40 +202,30 @@ const agregarUsuario = (nuevoUsuario) => {
   formData.append('id_sededepar', nuevoUsuario.id_sededepar);
   formData.append('clave', nuevoUsuario.clave);
   formData.append('respuesta', nuevoUsuario.respuesta);
+  formData.append('fileUsuario', nuevaImagen);
 
-  fetch(nuevaImagen)
-    .then((response) => response.blob())
-    .then((blob) => {
-      const archivo = new File([blob], 'user.png', { type: 'image/png' });
-      formData.append('fileUsuario', archivo);
-
-      axios.post('http://localhost:3000/api/usuarios', formData)
-        .then(response => {
-          if (response.status === 201) {
-            const usuarioCreado = response.data;
-            setUsuarios([...usuarios, usuarioCreado]); 
-            setFilas([...filas, usuarioCreado]); 
-            cambiarEstadoModal1(false); 
-            Swal.fire('Usuario creado', 'El usuario se ha creado correctamente', 'success');
-          } else {
-            Swal.fire('Error', 'No se pudo crear el usuario', 'error');
-          }
-        })
-        .catch(error => {
-          console.error('Error al crear el usuario:', error);
-          Swal.fire('Error', 'Ocurrió un error al crear el usuario', 'error');
-        });
+  axios.post('http://localhost:3000/api/usuarios', formData)
+    .then(response => {
+      console.log('Respuesta de la solicitud:', response);
+      if (response.status === 201) {
+        const usuarioCreado = response.data;
+        setUsuarios([...usuarios, usuarioCreado]); 
+        setFilas([...filas, usuarioCreado]); 
+        cambiarEstadoModal1(false); 
+        console.log('Usuario creado:', usuarioCreado);
+      } else {
+        console.error('Error al crear el usuario:', response);
+      }
+    })
+    .catch(error => {
+      console.error('Error al crear el usuario:', error);
+      if (error.response) {
+        console.log('Respuesta de error:', error.response.data);
+      }
     });
 };
 
-
- 
-//esto es para el agregado de las filas con el modal
-  const agregarFila = (nuevaFila) => {
-    setFilas([...filas, nuevaFila]);
-  };
-
-
+  
   return (
 
     <div>
@@ -286,8 +279,10 @@ const agregarUsuario = (nuevoUsuario) => {
           
           filas={filas}
           setFilas={setFilas}
-          onGuardar={agregarFila} //=> {
-            //agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
+          onGuardar={(nuevoUsuario) => {
+            agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
+            agregarFila(nuevoUsuario); // Agrega la fila a la tabla local
+          }}
           
         />
 
