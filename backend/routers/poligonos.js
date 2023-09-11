@@ -31,11 +31,12 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
           return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-      const nuevoPoligono= await pool.query('INSERT INTO public. "poligonos" (nombre_poligono, id_usuario) VALUES($1, $2) RETURNING *', [nombre_poligono, id_usuario]);
-
+        const nuevoPoligono = await pool.query('INSERT INTO public."poligonos" (nombre_poligono, id_usuario) VALUES($1, $2) RETURNING id_poligono', [nombre_poligono, id_usuario]);
+        const idPoligonoGenerado = nuevoPoligono.rows[0].id_poligono;
+      
       auditar(operacion,id_usuarioAuditoria);
 
-      return res.status(200).json({ mensaje: 'Poligono creado exitosamente' });
+      return res.status(200).json({ mensaje: 'Poligono creado exitosamente', id_poligono: idPoligonoGenerado });
     } catch (err) {
         console.error(err.message);
     }
@@ -109,7 +110,7 @@ routerPoligonos.get('/:id_poligono', validaIdPoligono, async (req, res) => {
 
 //delete a poligono, 
 
-routerPoligonos.delete('/:id_poligono', validaIdPoligono, async (req, res) => {
+routerPoligonos.patch('/:id_poligono', validaIdPoligono, async (req, res) => {
   try {
       const { id_poligono } = req.params;
       
