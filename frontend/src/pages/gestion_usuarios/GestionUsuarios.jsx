@@ -267,10 +267,10 @@ const agregarUsuario = (nuevoUsuario) => {
         
  
        
-        <Modal
+        <Add
           estado={estadoModal1}
           cambiarEstado={cambiarEstadoModal1}
-          titulo="Agregar usuario"
+          titulo="Agregar Usuario"
           campos={todasLasColumnas.map(({ headerName: campo, field: idCampo, type, options }) => {
             if (type === 'select' ) {
               return {
