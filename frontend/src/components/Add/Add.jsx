@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
-import "./Modal.css";
+import "./Add.css";
 
 
 
@@ -79,8 +79,8 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar, filaExistente})
                         Seleccione
                       </option>
                       {options.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
+                        <option key={option.vale} value={option.value}>
+                          {option.label}
                         </option>
                       ))}
                     </select>
