@@ -31,12 +31,15 @@ routerPuntos.post('/', validaPuntos, async (req, res) => {
       return res.status(404).json({ error: 'Polígono no encontrado' });
     }
 
-    await pool.query("INSERT INTO puntos (id_poligono,latitud,longitud) VALUES($1,$2,$3) RETURNING *",
-      [id_poligono, latitud, longitud]);
+    const nuevoPunto = await pool.query('INSERT INTO puntos (id_poligono,latitud,longitud) VALUES($1,$2,$3) RETURNING id_punto', [id_poligono, latitud, longitud]);
+    const idPuntoGenerado = nuevoPunto.rows[0].id_punto;
 
     auditar(operacion, id_usuarioAuditoria);
 
-    return res.status(200).json({ mensaje: 'Punto creado exitosamente' });
+
+   
+    return res.status(200).json({ mensaje: 'Punto creado exitosamente', id_punto: idPuntoGenerado });
+
 
   } catch (err) {
     console.error(err.message);
@@ -78,7 +81,7 @@ routerPuntos.put('/:id_punto', validaPuntos, async (req, res) => {
 
 
 //delete
-routerPuntos.delete('/:id_punto', validaidPuntos, async (req, res) => {
+routerPuntos.patch('/:id_punto', validaidPuntos, async (req, res) => {
   try {
     const { id_punto } = req.params;
     const operacion = req.method;
