@@ -5,6 +5,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  
+}
+
+.logo2 {
+  display: none;
+  max-width: 100%;
 }
 
 .logo {
@@ -22,5 +28,10 @@
 
   .logo {
     max-height: 150px;
+  }
+
+  .logo2 {
+    display:block;
+    max-height: 100px;
   }
 }

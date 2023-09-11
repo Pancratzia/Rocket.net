@@ -26,6 +26,9 @@
 
 }
 
+.contenedor-tabla{
+  width: auto;
+}
 
 
 /* Anchura máxima de 1200px */
@@ -59,6 +62,10 @@
 
   .contenedor-busqueda {
     align-items: left;
+  }
+
+  .contenedor-tabla{
+    padding-right:30px;
   }
 
 

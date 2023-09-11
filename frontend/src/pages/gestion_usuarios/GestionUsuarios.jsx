@@ -19,8 +19,8 @@ function GestionUsuarios() {
       .then(response => {
         if (response.status === 200) {
           const opciones = response.data.map(opcion => ({
-            value: opcion.sd.id_sede_departamento,
-            label: opcion.Sede_Departamento,
+            value: opcion.id_sede_departamento,
+            label: opcion.sede_departamento,
           }));
           console.log('Opciones obtenidas de la API:', opciones);
           setSedeDepartamentoOptions(opciones);
@@ -30,14 +30,14 @@ function GestionUsuarios() {
       })  
       .catch(error => {
         console.error('Error al obtener las opciones de sedepartamento:', error);
-      });
-  };
+        });
+      };
   
   
   useEffect(() => {
     obtenerSedepartamentoOptions();
   }, []);
-
+ 
   const columnas = [
     { field: 'id', headerName: 'ID', width: 40, editable: false },
 
@@ -62,10 +62,7 @@ function GestionUsuarios() {
       description: 'Esta es la pregunta de seguridad',
       width: 160,
       type: 'select',
-      options: sedeDepartamentoOptions.map(opcion => ({
-        value: opcion.value,
-        label: opcion.label,
-      })),
+      options: sedeDepartamentoOptions,
      },
     {
       field: 'extensiontelefonica',
@@ -95,6 +92,27 @@ function GestionUsuarios() {
       headerName: 'Pregunta',
       width: 130,
     },
+    {
+      field: 'tipousuario',
+      headerName: 'Tipo de usuario',
+      description: 'Esta es el tipo de usuario',
+      width: 160,
+      type: 'select',
+      options: [
+        {
+          value: 1,
+          label: 'Jefes de Sedes',
+        },
+        {
+          value: 2,
+          label: 'Usuarios Creación de Archivos',
+        },
+        {
+          value: 3,
+          label: 'Usuarios solo lectura',
+        }
+      ]
+     },
    
   ];
 
@@ -115,8 +133,7 @@ function GestionUsuarios() {
 
   const [filas, setFilas] = useState([]) //esto es del modal agregar
   const [estadoModal1, cambiarEstadoModal1] = useState(false); //esto es del modal de agregar
-  const [setCampos] = useState(false);
-
+  const [filaEditar, setFilaEditar] = useState(null);
   const [showModal, setShowModal] = useState(false);  //Aca manejamos los estados del modal editar
 
   // Función para obtener los usuarios desde la API
@@ -133,7 +150,8 @@ function GestionUsuarios() {
         telefono: usuario.telefono,
         cedula: usuario.cedula,
         correo: usuario.correo,
-        sedepartamento: usuario.id_sededepar
+        sedepartamento: usuario.id_sededepar,
+        tipousuario: usuario.id_tipousuario
       }));
       setUsuarios(usuariosConId);
       setFilas(usuariosConId);
@@ -150,11 +168,10 @@ useEffect(() => {
 
 
   //handleEditClick nos permite mostrar el modal de la fila seleccionada para el editar
-  const handleEditClick = (row) => {
-    // Mostrar el componente Add
-    setShowModal(true); //hace visible el modal 
-
- 
+  const handleEditRow = (id) => {
+    console.log("selecciono la fila con" + id + "en gestion de usuarios");
+    setCamposEditados(filas.id);
+    setShowModal(true);
   };
 
   const handleDeleteClick = (idUsuario) => {
@@ -178,61 +195,60 @@ useEffect(() => {
     console.log("borrandofila" + id + "en gestion de usuarios");
     const nuevasFilas = filas.filter((fila) => fila.id !== id);
     setFilas(nuevasFilas);
-    handleDeleteClick(id);
   }
 
 
 const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
-
-const agregarUsuario = (nuevoUsuario) => {
-  const formData = new FormData();
-  const nuevaImagen = '../../public/imagetest/user.png';
-
-  formData.append('nombre_usuario', nuevoUsuario.nombre_usuario);
-  formData.append('nombre', nuevoUsuario.nombre);
-  formData.append('apellido', nuevoUsuario.apellido);
-  formData.append('pregunta', nuevoUsuario.pregunta);
-  formData.append('extension_telefonica', nuevoUsuario.extension_telefonica);
-  formData.append('telefono', nuevoUsuario.telefono);
-  formData.append('cedula', nuevoUsuario.cedula);
-  formData.append('correo', nuevoUsuario.correo);
-  formData.append('id_sededepar', nuevoUsuario.id_sededepar);
-  formData.append('clave', nuevoUsuario.clave);
-  formData.append('respuesta', nuevoUsuario.respuesta);
-
-  fetch(nuevaImagen)
-    .then((response) => response.blob())
-    .then((blob) => {
-      const archivo = new File([blob], 'user.png', { type: 'image/png' });
-      formData.append('fileUsuario', archivo);
-
-      axios.post('http://localhost:3000/api/usuarios', formData)
-        .then(response => {
-          if (response.status === 201) {
-            const usuarioCreado = response.data;
-            setUsuarios([...usuarios, usuarioCreado]); 
-            setFilas([...filas, usuarioCreado]); 
-            cambiarEstadoModal1(false); 
-            Swal.fire('Usuario creado', 'El usuario se ha creado correctamente', 'success');
-          } else {
-            Swal.fire('Error', 'No se pudo crear el usuario', 'error');
-          }
-        })
-        .catch(error => {
-          console.error('Error al crear el usuario:', error);
-          Swal.fire('Error', 'Ocurrió un error al crear el usuario', 'error');
-        });
-    });
-};
-
-
  
+  const handleChange = (event) => {
+    const {id, value} = event.target;
+    setCamposEditados({...camposEditados, [id]: value})
+  }
+
 //esto es para el agregado de las filas con el modal
   const agregarFila = (nuevaFila) => {
     setFilas([...filas, nuevaFila]);
   };
 
 
+  const agregarUsuario = (nuevoUsuario) => {
+  const formData = new FormData();
+  const nuevaImagen = new File([], 'user.png', { type: 'image/png' });
+
+  formData.append('nombre_usuario', nuevoUsuario.usuario);
+  formData.append('nombre', nuevoUsuario.nombre);
+  formData.append('apellido', nuevoUsuario.apellido);
+  formData.append('pregunta', nuevoUsuario.pregunta);
+  formData.append('extension_telefonica', nuevoUsuario.extensiontelefonica);
+  formData.append('telefono', nuevoUsuario.telefono);
+  formData.append('cedula', nuevoUsuario.cedula);
+  formData.append('correo', nuevoUsuario.correo);
+  formData.append('id_sededepar', nuevoUsuario.sedepartamento);
+  formData.append('clave', nuevoUsuario.clave);
+  formData.append('respuesta', nuevoUsuario.respuesta);
+  formData.append('id_tipousuario', nuevoUsuario.tipousuario);
+  formData.append('fileUsuario', nuevaImagen);
+
+  axios.post('http://localhost:3000/api/usuarios', formData)
+    .then(response => {
+      console.log('Respuesta de la solicitud:', response);
+      if (response.status === 200) {
+        const usuarioCreado = response.data;
+        cambiarEstadoModal1(false); 
+        console.log('Usuario creado:', usuarioCreado);
+      } else {
+        console.error('Error al crear el usuario:', response);
+      }
+    })
+    .catch(error => {
+      console.error('Error al crear el usuario:', error);
+      if (error.response) {
+        console.log('Respuesta de error:', error.response.data);
+      }
+    });
+};
+
+  
   return (
 
     <div>
@@ -252,9 +268,9 @@ const agregarUsuario = (nuevoUsuario) => {
             cambiarEstado={setShowModal}
             titulo="Editar Usuario" //este es el modelo del  componente modal para el editado difiere en algunos detalles con el
             campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => { //El problema esta aqui 
-            return { campo, idCampo, typeCampo };
+            return { campo, idCampo, typeCampo};
               })}
-            camposEditados={camposEditados}
+            camposEditados = {camposEditados}
             onSave={(camposEditadosLocal) => {
            
            setShowModal(false);        
@@ -286,20 +302,20 @@ const agregarUsuario = (nuevoUsuario) => {
           
           filas={filas}
           setFilas={setFilas}
-          onGuardar={agregarFila} //=> {
-            //agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
+          onGuardar={(nuevoUsuario) => {
+            agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
+          }}
           
         />
-
-<Tabla
-  columns={columnas}
-  rows={filas}
-  actions  
-  handleEditClick={handleEditClick}
-  handleDeleteRow = {handleDeleteRow}
-/>
-        
-        {/*   */}
+        <div className='contenedor-tabla'>
+        <Tabla
+          columns={columnas}
+          rows={filas}
+          actions  
+          handleEditRow={handleEditRow}
+          handleDeleteRow = {handleDeleteRow}
+        />
+        </div>
       </div>
 
     </div>
