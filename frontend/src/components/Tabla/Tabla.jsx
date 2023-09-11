@@ -8,12 +8,13 @@ import { useState } from 'react';
 
 export default function Tabla(props) {
 
-  let {rows, columns, actions, handleDeleteRow} = props;
+  let {rows, columns, actions, handleDeleteRow, handleEditRow} = props;
   const [filas, setFilas] = useState(rows)
-  const [mostrarModal, setMostrarModal] = useState(false);
 
   const handleEditClick = (row) => {
-    setMostrarModal(true);
+  const filasEditadas = filas.filter((fila) => fila.id == row.id);
+  setFilas(filasEditadas);
+  handleEditRow(row.id);
   };
 
   const handleDeleteClick = (row) => {
@@ -35,7 +36,7 @@ export default function Tabla(props) {
         renderCell: (params) => {
           return (
             <div className="action-column">
-                <a href="#" id="edit" onClick={() => props.handleEditClick(params.rows)}> 
+                <a href="#" id="edit" onClick={() => handleEditClick(params.row)}> 
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="icon icon-tabler icon-tabler-edit"
@@ -93,7 +94,8 @@ export default function Tabla(props) {
         fontSize: 16,
         fontFamily: 'Poppins',
         alignContent: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderColor: 'darkgrey'
       }}
         rows={filas}
         columns={columns}
