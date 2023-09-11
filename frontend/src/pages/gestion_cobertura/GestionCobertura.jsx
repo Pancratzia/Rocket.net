@@ -256,7 +256,6 @@ function GestionCobertura() {
     if (isNaN(latitudNum) || isNaN(longitudNum)) {
       // Mostrar un mensaje de error si las entradas no son números válidos
       console.error('Latitud y longitud deben ser números válidos.');
-      // Puedes mostrar una notificación de error aquí si lo deseas.
       return;
     }
   
@@ -270,13 +269,12 @@ function GestionCobertura() {
       const nuevoPunto = {
         latitud: latitudNum,
         longitud: longitudNum,
-        id_poligono: idPoligonoSeleccionado, // Usar el id_poligono
-        // Otras propiedades del punto, si las tienes
+        id_poligono: idPoligonoSeleccionado, 
       };
     // Enviar el objeto al servidor para crear el punto
     console.log('Datos del nuevo punto:', nuevoPunto);
       
-    // Realizar la solicitud POST a tu API de puntos
+    // Realizar la solicitud POST a la API de puntos
     axios.post('http://localhost:3000/api/puntos', nuevoPunto)
     .then((response) => {
       if (response.status === 200) {
@@ -285,7 +283,7 @@ function GestionCobertura() {
   
         // Crear una nueva fila de punto con el id del punto creado
         const nuevaFilaPunto = {
-          id: nuevoIdPunto, // Utiliza el id_punto devuelto por el servidor
+          id: nuevoIdPunto, 
           punto: `${latitud} - ${longitud}`,
           poligono: poligonoSeleccionado,
         };
@@ -310,7 +308,7 @@ function GestionCobertura() {
       console.log('Detalles del error:', error.response);
     });
   }
-  };  
+  };   
 
 
   const handleDeleteRow2 = (idPunto) => {
