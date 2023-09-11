@@ -2,7 +2,7 @@ import React, { useState }  from 'react';
 import './GestionCobertura.css';
 import Lista from '../../components/Lista/Lista';
 import Tabla from '../../components/Tabla/Tabla';
-import Add from '../../components/Add/Add';
+import Modal from '../../components/Modal/Modal';
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -225,14 +225,16 @@ function GestionCobertura() {
 
         //TODO LO DE EDITAR DE LA TABLA
 
-    const [showModal, setShowModal] = useState(false);  //Para manejar estados del modal 1
-    const [showModal2, setShowModal2] = useState(false);  //Para manejar estados del modal 2
+  const [camposEditar, setCamposEditar] = useState(false); 
+  const [showModal, setShowModal] = useState(false);  //Para manejar estados del modal 1
+  const [showModal2, setShowModal2] = useState(false);  //Para manejar estados del modal 2
 
 
     //para mostrar el modal al presionar el icono de editar de la tabla
   
   //constante para el editar de la tabla tiene como parametro row que es la fila seleccionada. 
   //aca con el setShowModal mostramos el modal 1 que corresponde a la tabla de poligonos
+
     const handleEditClick1 = (row) => {
       setShowModal(true);
   };
@@ -240,12 +242,20 @@ function GestionCobertura() {
   const handleEditClick2 = (row) => {
       setShowModal2(true);
   };
+
     //para eliminar la fila seleccionada
-    const handleDeleteRow = (id) => {
-      console.log("borrandofila" + id + "en gestion de usuarios");
-      const nuevasFilas = filas.filter((fila) => fila.id !== id);
-      setFilas(NuevasFilas);
+    const handleDeleteRow1 = (id) => {
+      console.log("borrandofila" + id + "poligono");
+      const nuevasFilas = filasPoligono.filter((fila) => fila.id !== id);
+      setFilasPoligono(nuevasFilas);
     }
+
+    const handleDeleteRow2 = (id) => {
+      console.log("borrandofila" + id + "poligono");
+      const nuevasFilas = filasPunto.filter((fila) => fila.id !== id);
+      setFilasPunto(nuevasFilas);
+    }
+    
  
     // Contenido del modulo
     return(
@@ -263,7 +273,7 @@ function GestionCobertura() {
               </div>
           
             <div className='tabla-poligonos'>
-              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditClick={handleEditClick1}  handleDeleteRow = {handleDeleteRow}/> 
+              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditClick={handleEditClick1}  handleDeleteRow = {handleDeleteRow1}/> 
             </div>
             
                
@@ -289,16 +299,16 @@ function GestionCobertura() {
                 </div>
                
                 <div className='tabla-puntos'> 
-                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditClick={handleEditClick2}  handleDeleteRow = {handleDeleteRow}/>
+                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditClick={handleEditClick2}  handleDeleteRow = {handleDeleteRow2}/>
                 </div>
                 
              
           </div>
-          <Add
+          <Modal
           estado={showModal}
           cambiarEstado={setShowModal}
           titulo="Editar Poligono"
-          campos={modalPoligono.map(({ headerName: campo, field: idCampo, type, options }) => {
+          campos={modalPoligono.map(({ defaultValue: campo, field: idCampo, type, options }) => {
             if (type === 'select') {
               return {
                 campo,
@@ -314,10 +324,10 @@ function GestionCobertura() {
           })}
           />
 
-        <Add
+        <Modal
           estado={showModal2}
           cambiarEstado={setShowModal2}
-          titulo="Editar Puntos y Poligono"
+          titulo="Editar Puntos y Poligono"s
           campos={modalPunto.map(({ headerName: campo, field: idCampo, type, options }) => {
             if (type === 'select') {
               return {

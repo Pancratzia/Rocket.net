@@ -1,7 +1,7 @@
 import React from 'react';
 import "./GestionUsuarios.css";
 import Tabla from '../../components/Tabla/Tabla';
-import Add from '../../components/Add/Add';
+import Modal from '../../components/Modal/Modal';
 import Swal from "sweetalert2";
 import { useState } from 'react';
 
@@ -78,27 +78,30 @@ function GestionUsuarios() {
 
   const [filas, setFilas] = useState([]) //esto es del modal agregar
   const [estadoModal1, cambiarEstadoModal1] = useState(false); //esto es del modal de agregar
-  const [setCampos] = useState(false);
-
+  const [filaEditar, setFilaEditar] = useState(null);
   const [showModal, setShowModal] = useState(false);  //Aca manejamos los estados del modal editar
 
   //handleEditClick nos permite mostrar el modal de la fila seleccionada para el editar
-  const handleEditClick = (row) => {
-    // Mostrar el componente Add
-    setShowModal(true); //hace visible el modal 
-
- 
+  const handleEditRow = (id) => {
+    console.log("selecciono la fila con" + id + "en gestion de usuarios");
+    setCamposEditados(filas.id);
+    setShowModal(true);
   };
 
   const handleDeleteRow = (id) => {
     console.log("borrandofila" + id + "en gestion de usuarios");
     const nuevasFilas = filas.filter((fila) => fila.id !== id);
-    setFilas(NuevasFilas);
+    setFilas(nuevasFilas);
   }
 
 
 const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
  
+  const handleChange = (event) => {
+    const {id, value} = event.target;
+    setCamposEditados({...camposEditados, [id]: value})
+  }
+
 //esto es para el agregado de las filas con el modal
   const agregarFila = (nuevaFila) => {
     setFilas([...filas, nuevaFila]);
@@ -118,14 +121,15 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
           <button className='boton-usuarios' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
           
         </div>
-        <Add
+        <Modal
             estado={showModal}
             cambiarEstado={setShowModal}
             titulo="Editar Usuario" //este es el modelo del  componente modal para el editado difiere en algunos detalles con el
+            filaExistente={handleEditRow}
             campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => { //El problema esta aqui 
-            return { campo, idCampo, typeCampo };
+            return { campo, idCampo, typeCampo};
               })}
-            camposEditados={camposEditados}
+            camposEditados = {camposEditados}
             onSave={(camposEditadosLocal) => {
            
            setShowModal(false);        
@@ -136,7 +140,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
         
  
        
-        <Add
+        <Modal
           estado={estadoModal1}
           cambiarEstado={cambiarEstadoModal1}
           titulo="Agregar usuario"
@@ -160,16 +164,15 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
           onGuardar={agregarFila}
 
         />
-
-<Tabla
-  columns={columnas}
-  rows={filas}
-  actions  
-  handleEditClick={handleEditClick}
-  handleDeleteRow = {handleDeleteRow}
-/>
-        
-        {/*   */}
+        <div className='contenedor-tabla'>
+        <Tabla
+          columns={columnas}
+          rows={filas}
+          actions  
+          handleEditRow={handleEditRow}
+          handleDeleteRow = {handleDeleteRow}
+        />
+        </div>
       </div>
 
     </div>

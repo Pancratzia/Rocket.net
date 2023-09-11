@@ -1,3 +1,7 @@
+.titulo-cobertura{
+grid-column: 1/3;
+}
+
 .titulo-cobertura h1{
   font: 'Poppins';
   font-size: 60 px;
@@ -60,7 +64,7 @@
   color: white;
   cursor: pointer;
   width: auto;
-  height: auto;      
+  height: 50px;      
   margin-left: 5%;
 }
   
@@ -91,7 +95,8 @@ h3{
   display: flex;
   margin-top: 5%;
   margin-left: 5%;
-  
+  justify-content: center;
+  text-align: center;
 }
   
 .tabla-puntos{

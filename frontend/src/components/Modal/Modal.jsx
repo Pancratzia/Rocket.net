@@ -2,13 +2,21 @@ import React from "react";
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
-import "./Add.css";
+import "./Modal.css";
 
 
 
-function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
+function Add({ estado, cambiarEstado, titulo, campos, onGuardar, filaExistente}) {
   const [formData, setFormData] = useState({});
   const [filas, setFilas] = useState([]);
+
+  if (filaExistente = true) {
+    filaExistente = filas.id;
+  }else {
+    filaExistente == false;
+    filas = [];
+  }
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +29,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
     cambiarEstado(false);
   };
 
-  
+
   // Filtrar los campos para excluir el campo ID
   const camposFiltrados = campos.filter(({ idCampo }) => idCampo !== 'id');
 
@@ -54,7 +62,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                 </button>
               </div>
             </div>
-            <form className="form-grid" onSubmit={handleSubmit}>
+            <form className="form-grid" onSubmit={handleSubmit} >
               <div className="formulario-input">
                 {camposFiltrados.map(({ campo, idCampo, typeCampo, options }) => (
                   <div key={idCampo}>
@@ -93,7 +101,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                       />
                     )}
                   </div>
-                ))}
+                ))} 
               </div>
               <div className="botones">
                 <div className="boton-guardar">
