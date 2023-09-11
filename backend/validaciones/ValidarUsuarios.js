@@ -1,23 +1,19 @@
-const { validationResult, check } = require('express-validator') //TODO <---
+const { validationResult, check } = require('express-validator') 
 const { validarResultados } = require('../helpers/validarHelper')
-const pool = require('../database/db.js');
 
 const validarIdUsuario = [
   check('id_usuario')
-    .exists().withMessage({ error: 'El campo id_usuario no existe' })
-    .isNumeric().withMessage({ error: 'El campo id_usuario debe ser numérico' })
+    .exists()
+    .isNumeric()
     .not()
-    .isEmpty().withMessage({ error: 'El campo id_usuario no puede estar vacío' })
+    .isEmpty()
     .custom((value, { req }) => {
       let patron = /^$|^\s+$/;
 
       if (patron.test(value)) {
         return false
       } return true
-    }).withMessage({ error: 'El campo id_usuario no puede contener espacios vacios' }),
-  (req, res, next) => {
-    validarResultados(req, res, next)
-  }
+    })
 ]
 
 const validarUsuario = [
@@ -78,21 +74,7 @@ const validarUsuario = [
     .matches(/^[0-9]+$/)
     .isLength({ max: 20 })
     .not()
-    .isEmpty(),
-  check('correo')
-    .isLength({ max: 255 })
-    .matches(/^[\w-.]+@[\w-_]+\.[A-Za-z]{2,4}$/)
-    .not()
-    .isEmpty(),
-  (req, res, next) => {
-    const errores = validationResult(req);
-
-    if (!errores.isEmpty()) {
-      return res.status(400).json({ error: 'Datos incorrectos' });
-    }
-
-    next();
-  }
+    .isEmpty()
 ];
 
 const validarActUsuario = [
