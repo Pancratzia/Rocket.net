@@ -248,20 +248,33 @@ function GestionCobertura() {
               obtenerPuntos();
             }, []);
   //Alertas para crear punto
+
   const crearPunto = () => {
+    const latitudNum = parseFloat(latitud);
+    const longitudNum = parseFloat(longitud);
   
-    // Crear un objeto que represente el nuevo punto
-    const nuevoPunto = {
-      latitud: latitud,
-      longitud: longitud,
-      id_poligono: poligonoSeleccionado,
-      // Otras propiedades del punto, si las tienes
-    };
+    if (isNaN(latitudNum) || isNaN(longitudNum)) {
+      // Mostrar un mensaje de error si las entradas no son números válidos
+      console.error('Latitud y longitud deben ser números válidos.');
+      return;
+    }
   
+    const nombrePoligonoSeleccionado = poligonoSeleccionado;
+    
+    // Buscar el id_poligono correspondiente al nombre seleccionado
+    const idPoligonoSeleccionado = poligonos.find((poligono) => poligono.nombre_poligono === nombrePoligonoSeleccionado)?.id;
+  
+    if (idPoligonoSeleccionado) {
+      // Crear el objeto para el nuevo punto
+      const nuevoPunto = {
+        latitud: latitudNum,
+        longitud: longitudNum,
+        id_poligono: idPoligonoSeleccionado, 
+      };
     // Enviar el objeto al servidor para crear el punto
     console.log('Datos del nuevo punto:', nuevoPunto);
-  
-    // Realizar la solicitud POST a tu API de puntos
+      
+    // Realizar la solicitud POST a la API de puntos
     axios.post('http://localhost:3000/api/puntos', nuevoPunto)
     .then((response) => {
       if (response.status === 200) {
@@ -270,7 +283,7 @@ function GestionCobertura() {
   
         // Crear una nueva fila de punto con el id del punto creado
         const nuevaFilaPunto = {
-          id: nuevoIdPunto, // Utiliza el id_punto devuelto por el servidor
+          id: nuevoIdPunto, 
           punto: `${latitud} - ${longitud}`,
           poligono: poligonoSeleccionado,
         };
@@ -291,8 +304,13 @@ function GestionCobertura() {
     .catch((error) => {
       console.error('Error al crear el punto:', error);
       Swal.fire('Error', 'Ocurrió un error al crear el punto', 'error');
+      // Agregar esta línea para mostrar detalles del error en la consola
+      console.log('Detalles del error:', error.response);
     });
-  };  
+  }
+  };   
+
+
   const handleDeleteRow2 = (idPunto) => {
     axios.patch(`http://localhost:3000/api/puntos/${idPunto}`)
       .then((response) => {
@@ -314,6 +332,7 @@ function GestionCobertura() {
         // Muestra un mensaje de error en la consola
         console.error('Error al eliminar el punto:', error);
       });
+    
   };
   
 
@@ -363,10 +382,10 @@ function GestionCobertura() {
 
   //Aca se definen los items de la lista (select)
               //Aca se definen los items de la lista (select)
-        const  items =  [ 
-          {id: '1' , name: '1'},
-          {id: '2' , name: '2'}
-          ]
+              const items = nombresPoligonos.map((nombre) => ({
+                id: nombre,
+                name: nombre,
+              }));
             
 ///////////Modales del modulo se definen las props/////////////////
     //modal 1: Editar poligono
