@@ -1,7 +1,7 @@
 import React from 'react';
 import "./GestionUsuarios.css";
 import Tabla from '../../components/Tabla/Tabla';
-import Modal from '../../components/Modal/Modal';
+import Add from '../../components/Add/Add';
 import Swal from "sweetalert2";
 import { useState } from 'react';
 
@@ -121,7 +121,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
           <button className='boton-usuarios' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
           
         </div>
-        <Modal
+        <Add
             estado={showModal}
             cambiarEstado={setShowModal}
             titulo="Editar Usuario" //este es el modelo del  componente modal para el editado difiere en algunos detalles con el

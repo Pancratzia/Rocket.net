@@ -2,7 +2,7 @@ import React, { useState }  from 'react';
 import './GestionCobertura.css';
 import Lista from '../../components/Lista/Lista';
 import Tabla from '../../components/Tabla/Tabla';
-import Modal from '../../components/Modal/Modal';
+import Add from '../../components/Add/Add';
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -306,7 +306,7 @@ function GestionCobertura() {
                 
              
           </div>
-          <Modal
+          <Add
           estado={showModal}
           cambiarEstado={setShowModal}
           titulo="Editar Poligono"
@@ -326,7 +326,7 @@ function GestionCobertura() {
           })}
           />
 
-        <Modal
+        <Add
           estado={showModal2}
           cambiarEstado={setShowModal2}
           titulo="Editar Puntos y Poligono"s
