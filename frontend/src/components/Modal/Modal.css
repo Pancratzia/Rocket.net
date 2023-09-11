@@ -119,7 +119,7 @@ width: 100%;
   }
 
   .contenedor-modal{
-    padding-top: 100px;
+    height:max-content;
   }
 
 }
@@ -130,7 +130,7 @@ width: 100%;
   }
 
   .contenedor-modal{
-    padding-top: 600px;
+    height:fit-content;
   }
 }
 

@@ -11,10 +11,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar, filaExistente})
   const [filas, setFilas] = useState([]);
 
   if (filaExistente = true) {
-    filaExistente = filas.id;
   }else {
-    filaExistente == false;
-    filas = [];
   }
   
 

@@ -125,7 +125,6 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
             estado={showModal}
             cambiarEstado={setShowModal}
             titulo="Editar Usuario" //este es el modelo del  componente modal para el editado difiere en algunos detalles con el
-            filaExistente={handleEditRow}
             campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => { //El problema esta aqui 
             return { campo, idCampo, typeCampo};
               })}

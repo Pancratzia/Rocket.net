@@ -235,12 +235,14 @@ function GestionCobertura() {
   //constante para el editar de la tabla tiene como parametro row que es la fila seleccionada. 
   //aca con el setShowModal mostramos el modal 1 que corresponde a la tabla de poligonos
 
-    const handleEditClick1 = (row) => {
+  const handleEditRow = (id) => {
+      console.log("selecciono la fila con" + id + "en gestion de usuarios");
       setShowModal(true);
   };
   //handle edit click 2 para mostrar el modal 2 de la tabla puntos-poligono se pasan como props en el componente tabla 
-  const handleEditClick2 = (row) => {
-      setShowModal2(true);
+  const handleEditRow2 = (id) => {
+    console.log("selecciono la fila con" + id + "en gestion de usuarios");
+    setShowModal2(true);
   };
 
     //para eliminar la fila seleccionada
@@ -273,7 +275,7 @@ function GestionCobertura() {
               </div>
           
             <div className='tabla-poligonos'>
-              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditClick={handleEditClick1}  handleDeleteRow = {handleDeleteRow1}/> 
+              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditRow={handleEditRow}  handleDeleteRow = {handleDeleteRow1}/> 
             </div>
             
                
@@ -299,7 +301,7 @@ function GestionCobertura() {
                 </div>
                
                 <div className='tabla-puntos'> 
-                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditClick={handleEditClick2}  handleDeleteRow = {handleDeleteRow2}/>
+                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditRow={handleEditRow2}  handleDeleteRow = {handleDeleteRow2}/>
                 </div>
                 
              
