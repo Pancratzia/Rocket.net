@@ -19,8 +19,8 @@ function GestionUsuarios() {
       .then(response => {
         if (response.status === 200) {
           const opciones = response.data.map(opcion => ({
-            value: opcion.sd.id_sede_departamento,
-            label: opcion.Sede_Departamento,
+            value: opcion.id_sede_departamento,
+            label: opcion.sede_departamento,
           }));
           console.log('Opciones obtenidas de la API:', opciones);
           setSedeDepartamentoOptions(opciones);
@@ -30,14 +30,14 @@ function GestionUsuarios() {
       })  
       .catch(error => {
         console.error('Error al obtener las opciones de sedepartamento:', error);
-      });
-  };
+        });
+      };
   
   
   useEffect(() => {
     obtenerSedepartamentoOptions();
   }, []);
-
+ 
   const columnas = [
     { field: 'id', headerName: 'ID', width: 40, editable: false },
 
@@ -92,6 +92,27 @@ function GestionUsuarios() {
       headerName: 'Pregunta',
       width: 130,
     },
+    {
+      field: 'tipousuario',
+      headerName: 'Tipo de usuario',
+      description: 'Esta es el tipo de usuario',
+      width: 160,
+      type: 'select',
+      options: [
+        {
+          value: 1,
+          label: 'Jefes de Sedes',
+        },
+        {
+          value: 2,
+          label: 'Usuarios Creación de Archivos',
+        },
+        {
+          value: 3,
+          label: 'Usuarios solo lectura',
+        }
+      ]
+     },
    
   ];
 
@@ -130,7 +151,8 @@ function GestionUsuarios() {
         telefono: usuario.telefono,
         cedula: usuario.cedula,
         correo: usuario.correo,
-        sedepartamento: usuario.id_sededepar
+        sedepartamento: usuario.id_sededepar,
+        tipousuario: usuario.id_tipousuario
       }));
       setUsuarios(usuariosConId);
       setFilas(usuariosConId);
@@ -189,19 +211,20 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
 
   const agregarUsuario = (nuevoUsuario) => {
   const formData = new FormData();
-  const nuevaImagen = '/imagetest/user.png'; // Asegúrate de que esta ruta sea accesible desde tu servidor
+  const nuevaImagen = new File([], 'user.png', { type: 'image/png' });
 
-  formData.append('nombre_usuario', nuevoUsuario.nombre_usuario);
+  formData.append('nombre_usuario', nuevoUsuario.usuario);
   formData.append('nombre', nuevoUsuario.nombre);
   formData.append('apellido', nuevoUsuario.apellido);
   formData.append('pregunta', nuevoUsuario.pregunta);
-  formData.append('extension_telefonica', nuevoUsuario.extension_telefonica);
+  formData.append('extension_telefonica', nuevoUsuario.extensiontelefonica);
   formData.append('telefono', nuevoUsuario.telefono);
   formData.append('cedula', nuevoUsuario.cedula);
   formData.append('correo', nuevoUsuario.correo);
-  formData.append('id_sededepar', nuevoUsuario.id_sededepar);
+  formData.append('id_sededepar', nuevoUsuario.sedepartamento);
   formData.append('clave', nuevoUsuario.clave);
   formData.append('respuesta', nuevoUsuario.respuesta);
+  formData.append('id_tipousuario', nuevoUsuario.tipousuario);
   formData.append('fileUsuario', nuevaImagen);
 
   axios.post('http://localhost:3000/api/usuarios', formData)

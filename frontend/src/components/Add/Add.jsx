@@ -74,8 +74,8 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                         Seleccione
                       </option>
                       {options.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
+                        <option key={option.vale} value={option.value}>
+                          {option.label}
                         </option>
                       ))}
                     </select>
