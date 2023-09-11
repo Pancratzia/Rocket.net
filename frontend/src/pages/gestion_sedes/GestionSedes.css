@@ -19,9 +19,68 @@
     
 }
 
-  .contenedor-busqueda{
+.contenedor-busqueda{
     padding: 20px;
     justify-content: right;
     align-items: right;
   
+}
+
+.contenedor-tabla{
+  width: auto;
+}
+
+
+
+@media (max-width: 1200px) {s
+  
+  .boton-sedes {
+    width: 25%
+    
+  }
+
+  .contenedor-busqueda {
+    display: block;
+  }
+
+
+}
+
+
+@media (max-width: 768px) {
+  .titulo-sedes h1 {
+    align-items: left;
+    font-size: 30px;
+  }
+
+  .boton-sedes {
+    width: 30%;
+  }
+
+  .contenedor-busqueda {
+    align-items: left;
+  }
+
+  .contenedor-tabla{
+    padding-right:30px;
+  }
+
+
+
+}
+
+
+@media (max-width: 480px) {
+  .titulo-sedes h1 {
+    font-size: 20px;
+
+  }
+
+  .boton-sedes {
+    width: 35%;
+    height: 60%;
+
+  }
+
+
 }

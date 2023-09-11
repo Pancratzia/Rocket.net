@@ -297,7 +297,7 @@ function GestionCobertura() {
            
                 <div className = 'lista-btn'> 
                   <Lista  items = {items} label = 'Seleccionar poligono' value={poligonoSeleccionado} setValue={setPoligonoSeleccionado}/>  
-                  <button className='boton-cobertura' onClick={crearPunto}>Crear punto</button> 
+                  <button className='boton-cobertura2' onClick={crearPunto}>Crear punto</button> 
                 </div>
                
                 <div className='tabla-puntos'> 
