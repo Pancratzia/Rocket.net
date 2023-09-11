@@ -73,48 +73,6 @@ function GestionCobertura() {
                 buttonsStyling: false
               })
 
-          const crearCoordenadas = (event) => {
-            event.preventDefault(); 
-            //condicional para los campos de latitud y longitud
-           if (latitud.trim() !== "" && longitud.trim() !== "") {
-                swalWithBootstrapButtons.fire({
-                    text: "Estas seguro de que deseas agregar la latitud y longitud?",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Si',
-                    cancelButtonText: 'No',
-                 
-                    
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                     swalWithBootstrapButtons.fire(
-                      'Se ha agregado con exito el', 
-                      'la latitud y longitud',
-                      'success'
-                      )
-                    } else if (
-                      result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                      swalWithBootstrapButtons.fire(
-                 
-                      'Vaya! Hubo un error',
-                      'en tu solicitud de agregar la latitud y longitud, vuelve a intentar mas tarde',
-                      'error'
-                       
-                      )
-                    }
-                  })
-              } else {
-                // Mostrar mensaje de error si los campos están vacíos
-                MySwal.fire({
-                  title: <strong>Error</strong>,
-                  html: <i>Por favor, complete todos los campos</i>,
-                  icon: 'error'
-                });
-              }
-            };
-
-
   //Alertas para crear punto
   const crearPunto = (event) => {
     event.preventDefault();
@@ -267,22 +225,47 @@ function GestionCobertura() {
 
         //TODO LO DE EDITAR DE LA TABLA
 
-    const [showModal, setShowModal] = useState(false);  //Para manejar estados del modal 1
-    const [showModal2, setShowModal2] = useState(false);  //Para manejar estados del modal 2
+  const [camposEditar, setCamposEditar] = useState(false); 
+  const [showModal, setShowModal] = useState(false);  //Para manejar estados del modal 1
+  const [showModal2, setShowModal2] = useState(false);  //Para manejar estados del modal 2
 
 
     //para mostrar el modal al presionar el icono de editar de la tabla
-    const handleEditClick = (row) => {
+  
+  //constante para el editar de la tabla tiene como parametro row que es la fila seleccionada. 
+  //aca con el setShowModal mostramos el modal 1 que corresponde a la tabla de poligonos
 
-      
+  const handleEditRow = (id) => {
+      console.log("selecciono la fila con" + id + "en gestion de usuarios");
+      setShowModal(true);
+  };
+  //handle edit click 2 para mostrar el modal 2 de la tabla puntos-poligono se pasan como props en el componente tabla 
+  const handleEditRow2 = (id) => {
+    console.log("selecciono la fila con" + id + "en gestion de usuarios");
+    setShowModal2(true);
+  };
+
+    //para eliminar la fila seleccionada
+    const handleDeleteRow1 = (id) => {
+      console.log("borrandofila" + id + "poligono");
+      const nuevasFilas = filasPoligono.filter((fila) => fila.id !== id);
+      setFilasPoligono(nuevasFilas);
+    }
+
+    const handleDeleteRow2 = (id) => {
+      console.log("borrandofila" + id + "poligono");
+      const nuevasFilas = filasPunto.filter((fila) => fila.id !== id);
+      setFilasPunto(nuevasFilas);
     }
     
  
     // Contenido del modulo
     return(
+          
         <div className='contenedor-principal-cob'>
           <div className='titulo-cobertura'>
             <h1>Gestion de cobertura</h1>
+            <hr  className='linea-cobertura'/> 
           </div>
        
           <div className='contenedor-izquierdo-cob'>
@@ -292,7 +275,7 @@ function GestionCobertura() {
               </div>
           
             <div className='tabla-poligonos'>
-              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditClick={handleEditClick}/> 
+              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditRow={handleEditRow}  handleDeleteRow = {handleDeleteRow1}/> 
             </div>
             
                
@@ -303,13 +286,13 @@ function GestionCobertura() {
               <h3>Ingresar la latitud</h3>
                   <div className='flex-cobertura'>
                   <input className='input-cobertura' type='text' name='latitud' id='latitud' onChange={(e) => setLatitud(e.target.value)}/>
-                  <button className='boton-cobertura' onClick={crearCoordenadas}>Agregar</button>
+                  
                   </div>
                 
               <h3>Ingresar la longitud</h3>
                   <div className='flex-cobertura'>
                   <input className='input-cobertura' type='text' name='longitud' id='longitud' onChange={(e) => setLongitud(e.target.value)}/>
-                  <button className='boton-cobertura' onClick={crearCoordenadas}>Agregar</button>
+                  
                   </div>
            
                 <div className = 'lista-btn'> 
@@ -318,7 +301,7 @@ function GestionCobertura() {
                 </div>
                
                 <div className='tabla-puntos'> 
-                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditClick={handleEditClick}/>
+                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditRow={handleEditRow2}  handleDeleteRow = {handleDeleteRow2}/>
                 </div>
                 
              
@@ -327,7 +310,7 @@ function GestionCobertura() {
           estado={showModal}
           cambiarEstado={setShowModal}
           titulo="Editar Poligono"
-          campos={modalPoligono.map(({ headerName: campo, field: idCampo, type, options }) => {
+          campos={modalPoligono.map(({ defaultValue: campo, field: idCampo, type, options }) => {
             if (type === 'select') {
               return {
                 campo,
@@ -346,7 +329,7 @@ function GestionCobertura() {
         <Add
           estado={showModal2}
           cambiarEstado={setShowModal2}
-          titulo="Editar Puntos y Poligono"
+          titulo="Editar Puntos y Poligono"s
           campos={modalPunto.map(({ headerName: campo, field: idCampo, type, options }) => {
             if (type === 'select') {
               return {

@@ -91,26 +91,32 @@ function Sidebar() {
           </li> 
           <hr />
           <li>
+          <Link style={{ textDecoration: 'none' }} to="/auditorias">  
             <FaClock className="icon" />
             <span>Auditorias</span>
+            </Link> 
           </li>
           <hr />
           <li>
-            <FaPoll className="icon" />
-            <span>Reportes</span>
+          <Link style={{ textDecoration: 'none' }} to="/reportes">  
+          <FaPoll className="icon" />
+          <span>Reportes</span>
+          </Link> 
           </li>
           <hr />
           <li>
-            <FaFolder className="icon" />
-            <span>Archivos</span>
+          <Link style={{ textDecoration: 'none' }} to="/archivos">  
+          <FaFolder className="icon" />
+          <span>Archivos</span>
+          </Link>
           </li>
 
           <hr />
           <li>
-            <Link style={{ textDecoration: 'none' }} to="/estado_de_red">
-              <FaWifi className="icon" />
-              <span>Estado de Red</span>
-            </Link>
+          <Link style={{ textDecoration: 'none' }} to="/estado_de_red">
+          <FaWifi className="icon" />
+          <span>Estado de Red</span>
+          </Link>
           </li>
 
           <p className="title-dashboard">USUARIO</p>

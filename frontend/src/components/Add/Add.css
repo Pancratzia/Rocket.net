@@ -41,6 +41,10 @@
 
 }
 
+.boton-cerrar-primario:hover{
+  cursor: pointer;
+}
+
 .parte-arriba{
 display: flex;
 align-items: center;
@@ -107,12 +111,26 @@ width: 100%;
 @media screen and (max-width: 768px) {
   .formulario-input {
     grid-template-columns: 1fr 1fr;
+    
   }
+
+  .superposiciones{
+    overflow-y: scroll;
+  }
+
+  .contenedor-modal{
+    height:max-content;
+  }
+
 }
 
 @media screen and (max-width: 480px) {
   .formulario-input {
     grid-template-columns: 1fr;
+  }
+
+  .contenedor-modal{
+    height:fit-content;
   }
 }
 
