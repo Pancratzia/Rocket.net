@@ -232,10 +232,8 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
   axios.post('http://localhost:3000/api/usuarios', formData)
     .then(response => {
       console.log('Respuesta de la solicitud:', response);
-      if (response.status === 201) {
+      if (response.status === 200) {
         const usuarioCreado = response.data;
-        setUsuarios([...usuarios, usuarioCreado]); 
-        setFilas([...filas, usuarioCreado]); 
         cambiarEstadoModal1(false); 
         console.log('Usuario creado:', usuarioCreado);
       } else {
@@ -283,7 +281,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
         
  
        
-        <Modal
+        <Add
           estado={estadoModal1}
           cambiarEstado={cambiarEstadoModal1}
           titulo="Agregar usuario"
@@ -306,7 +304,6 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
           setFilas={setFilas}
           onGuardar={(nuevoUsuario) => {
             agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
-            agregarFila(nuevoUsuario); // Agrega la fila a la tabla local
           }}
           
         />
