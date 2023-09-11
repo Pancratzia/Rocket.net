@@ -19,8 +19,8 @@ function GestionUsuarios() {
       .then(response => {
         if (response.status === 200) {
           const opciones = response.data.map(opcion => ({
-            value: opcion.sd.id_sede_departamento,
-            label: opcion.Sede_Departamento,
+            value: opcion.id_sede_departamento,
+            label: opcion.sede_departamento,
           }));
           console.log('Opciones obtenidas de la API:', opciones);
           setSedeDepartamentoOptions(opciones);
@@ -30,14 +30,14 @@ function GestionUsuarios() {
       })  
       .catch(error => {
         console.error('Error al obtener las opciones de sedepartamento:', error);
-      });
-  };
+        });
+      };
   
   
   useEffect(() => {
     obtenerSedepartamentoOptions();
   }, []);
-
+ 
   const columnas = [
     { field: 'id', headerName: 'ID', width: 40, editable: false },
 
@@ -62,10 +62,7 @@ function GestionUsuarios() {
       description: 'Esta es la pregunta de seguridad',
       width: 160,
       type: 'select',
-      options: sedeDepartamentoOptions.map(opcion => ({
-        value: opcion.value,
-        label: opcion.label,
-      })),
+      options: sedeDepartamentoOptions,
      },
     {
       field: 'extensiontelefonica',
@@ -95,6 +92,27 @@ function GestionUsuarios() {
       headerName: 'Pregunta',
       width: 130,
     },
+    {
+      field: 'tipousuario',
+      headerName: 'Tipo de usuario',
+      description: 'Esta es el tipo de usuario',
+      width: 160,
+      type: 'select',
+      options: [
+        {
+          value: 1,
+          label: 'Jefes de Sedes',
+        },
+        {
+          value: 2,
+          label: 'Usuarios Creación de Archivos',
+        },
+        {
+          value: 3,
+          label: 'Usuarios solo lectura',
+        }
+      ]
+     },
    
   ];
 
@@ -132,7 +150,8 @@ function GestionUsuarios() {
         telefono: usuario.telefono,
         cedula: usuario.cedula,
         correo: usuario.correo,
-        sedepartamento: usuario.id_sededepar
+        sedepartamento: usuario.id_sededepar,
+        tipousuario: usuario.id_tipousuario
       }));
       setUsuarios(usuariosConId);
       setFilas(usuariosConId);
@@ -180,49 +199,6 @@ useEffect(() => {
 
 
 const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
-
-const agregarUsuario = (nuevoUsuario) => {
-  const formData = new FormData();
-  const nuevaImagen = '../../public/imagetest/user.png';
-
-  formData.append('nombre_usuario', nuevoUsuario.nombre_usuario);
-  formData.append('nombre', nuevoUsuario.nombre);
-  formData.append('apellido', nuevoUsuario.apellido);
-  formData.append('pregunta', nuevoUsuario.pregunta);
-  formData.append('extension_telefonica', nuevoUsuario.extension_telefonica);
-  formData.append('telefono', nuevoUsuario.telefono);
-  formData.append('cedula', nuevoUsuario.cedula);
-  formData.append('correo', nuevoUsuario.correo);
-  formData.append('id_sededepar', nuevoUsuario.id_sededepar);
-  formData.append('clave', nuevoUsuario.clave);
-  formData.append('respuesta', nuevoUsuario.respuesta);
-
-  fetch(nuevaImagen)
-    .then((response) => response.blob())
-    .then((blob) => {
-      const archivo = new File([blob], 'user.png', { type: 'image/png' });
-      formData.append('fileUsuario', archivo);
-
-      axios.post('http://localhost:3000/api/usuarios', formData)
-        .then(response => {
-          if (response.status === 201) {
-            const usuarioCreado = response.data;
-            setUsuarios([...usuarios, usuarioCreado]); 
-            setFilas([...filas, usuarioCreado]); 
-            cambiarEstadoModal1(false); 
-            Swal.fire('Usuario creado', 'El usuario se ha creado correctamente', 'success');
-          } else {
-            Swal.fire('Error', 'No se pudo crear el usuario', 'error');
-          }
-        })
-        .catch(error => {
-          console.error('Error al crear el usuario:', error);
-          Swal.fire('Error', 'Ocurrió un error al crear el usuario', 'error');
-        });
-    });
-};
-
-
  
   const handleChange = (event) => {
     const {id, value} = event.target;
@@ -235,6 +211,44 @@ const agregarUsuario = (nuevoUsuario) => {
   };
 
 
+  const agregarUsuario = (nuevoUsuario) => {
+  const formData = new FormData();
+  const nuevaImagen = new File([], 'user.png', { type: 'image/png' });
+
+  formData.append('nombre_usuario', nuevoUsuario.usuario);
+  formData.append('nombre', nuevoUsuario.nombre);
+  formData.append('apellido', nuevoUsuario.apellido);
+  formData.append('pregunta', nuevoUsuario.pregunta);
+  formData.append('extension_telefonica', nuevoUsuario.extensiontelefonica);
+  formData.append('telefono', nuevoUsuario.telefono);
+  formData.append('cedula', nuevoUsuario.cedula);
+  formData.append('correo', nuevoUsuario.correo);
+  formData.append('id_sededepar', nuevoUsuario.sedepartamento);
+  formData.append('clave', nuevoUsuario.clave);
+  formData.append('respuesta', nuevoUsuario.respuesta);
+  formData.append('id_tipousuario', nuevoUsuario.tipousuario);
+  formData.append('fileUsuario', nuevaImagen);
+
+  axios.post('http://localhost:3000/api/usuarios', formData)
+    .then(response => {
+      console.log('Respuesta de la solicitud:', response);
+      if (response.status === 200) {
+        const usuarioCreado = response.data;
+        cambiarEstadoModal1(false); 
+        console.log('Usuario creado:', usuarioCreado);
+      } else {
+        console.error('Error al crear el usuario:', response);
+      }
+    })
+    .catch(error => {
+      console.error('Error al crear el usuario:', error);
+      if (error.response) {
+        console.log('Respuesta de error:', error.response.data);
+      }
+    });
+};
+
+  
   return (
 
     <div>
@@ -288,8 +302,9 @@ const agregarUsuario = (nuevoUsuario) => {
           
           filas={filas}
           setFilas={setFilas}
-          onGuardar={agregarFila} //=> {
-            //agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
+          onGuardar={(nuevoUsuario) => {
+            agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
+          }}
           
         />
         <div className='contenedor-tabla'>
