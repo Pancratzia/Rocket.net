@@ -281,7 +281,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
         
  
        
-        <Add
+        <Modal
           estado={estadoModal1}
           cambiarEstado={cambiarEstadoModal1}
           titulo="Agregar usuario"
