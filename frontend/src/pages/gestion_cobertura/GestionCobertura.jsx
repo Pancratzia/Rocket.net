@@ -438,21 +438,7 @@ function GestionCobertura() {
     console.log("selecciono la fila con" + id + "en gestion de usuarios");
     setShowModal2(true);
   };
-
-    //para eliminar la fila seleccionada
-    const handleDeleteRow1 = (id) => {
-      console.log("borrandofila" + id + "poligono");
-      const nuevasFilas = filasPoligono.filter((fila) => fila.id !== id);
-      setFilasPoligono(nuevasFilas);
-    }
-
-    const handleDeleteRow2 = (id) => {
-      console.log("borrandofila" + id + "poligono");
-      const nuevasFilas = filasPunto.filter((fila) => fila.id !== id);
-      setFilasPunto(nuevasFilas);
-    }
-    
- 
+     
     // Contenido del modulo
     return(
           
