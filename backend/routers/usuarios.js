@@ -204,6 +204,9 @@ routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarId
   }
 });
 
+//MODIFICAR USUARIO PATCH (PENDIENTE POR CREAR)
+
+
 routerUsuarios.use(errorHandler);
 
 // Eliminar Usuario

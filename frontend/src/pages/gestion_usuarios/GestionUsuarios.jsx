@@ -39,95 +39,106 @@ function GestionUsuarios() {
   }, []);
  
   const columnas = [
-    { field: 'id', headerName: 'ID', width: 40, editable: false },
+    { field: "id", headerName: "ID", width: 40, editable: false },
 
     {
-      field: 'usuario',
-      headerName: 'Usuario',
+      field: "usuario",
+      headerName: "Usuario",
       width: 100,
+      editable: true,
     },
     {
-      field: 'nombre',
-      headerName: 'Nombre',
+      field: "nombre",
+      headerName: "Nombre",
       width: 150,
+      editable: true,
     },
     {
-      field: 'apellido',
-      headerName: 'Apellido',
+      field: "apellido",
+      headerName: "Apellido",
       width: 110,
+      editable: true,
     },
     {
-      field: 'sedepartamento',
-      headerName: 'Sede - Departamento',
-      description: 'Esta es la pregunta de seguridad',
+      field: "sedepartamento",
+      headerName: "Sede - Departamento",
+      description: "Esta es la pregunta de seguridad",
       width: 160,
-      type: 'select',
+      type: "select",
       options: sedeDepartamentoOptions,
-     },
+      editable: true,
+    },
     {
-      field: 'extensiontelefonica',
-      headerName: 'Extension telefonica',
+      field: "extensiontelefonica",
+      headerName: "Extension telefonica",
       width: 160,
+      editable: true,
     },
     {
-      field: 'telefono',
-      headerName: 'Telefono',
+      field: "telefono",
+      headerName: "Telefono",
       width: 120,
-      type: 'number',
+      type: "number",
+      editable: true,
     },
     {
-      field: 'cedula',
-      headerName: 'Cedula',
+      field: "cedula",
+      headerName: "Cedula",
       width: 120,
-      type: 'number',
+      type: "number",
+      editable: true,
     },
     {
-      field: 'correo',
-      headerName: 'Correo',
+      field: "correo",
+      headerName: "Correo",
       width: 160,
+      editable: true,
     },
 
     {
-      field: 'pregunta',
-      headerName: 'Pregunta',
+      field: "pregunta",
+      headerName: "Pregunta",
       width: 130,
+      editable: true,
     },
     {
-      field: 'tipousuario',
-      headerName: 'Tipo de usuario',
-      description: 'Esta es el tipo de usuario',
+      field: "tipousuario",
+      headerName: "Tipo de usuario",
+      description: "Esta es el tipo de usuario",
       width: 160,
-      type: 'select',
+      type: "select",
+      editable: true,
       options: [
         {
           value: 1,
-          label: 'Jefes de Sedes',
+          label: "Jefes de Sedes",
         },
         {
           value: 2,
-          label: 'Usuarios Creación de Archivos',
+          label: "Usuarios Creación de Archivos",
         },
         {
           value: 3,
-          label: 'Usuarios solo lectura',
-        }
-      ]
-     },
-   
+          label: "Usuarios solo lectura",
+        },
+      ],
+    },
   ];
 
   const seguridad = [
     {
-      field: 'clave',
-      headerName: 'Clave',
+      field: "clave",
+      headerName: "Clave",
       width: 140,
+      editable: true,
     },
     {
-      field: 'respuesta',
-      headerName: 'Respuesta',
+      field: "respuesta",
+      headerName: "Respuesta",
       width: 160,
+      editable: true,
     },
-  ];
+  ]; 
 
   const todasLasColumnas = [...columnas, ...seguridad];
 
@@ -162,12 +173,31 @@ function GestionUsuarios() {
 
 };
 
-useEffect(() => {
-  obtenerUsuarios();
-}, []);
+  const handleEditUser = (editedUser) => {
+    console.log(editedUser)
+    /*axios
+      .patch(`http://localhost:3000/api/usuarios/edit/${editedUser.id}`, editedUser)
+      .then((response) => {
+        if (response.status === 200) {
+          obtenerUsuarios();
+          setShowModal(false);
+        } else {
+          console.error("Error al editar el usuario:", response);
+        }
+      })
+      .catch((error) => {
+        console.error("Error al editar el usuario:", error);
+      });*/
+  };
 
+  useEffect(() => {
+    obtenerUsuarios();
+  }, []);
 
-  //handleEditClick nos permite mostrar el modal de la fila seleccionada para el editar
+  const handleEditClick = (row) => {
+    props.handleEditUser(row);
+  };
+
   const handleEditRow = (id) => {
     console.log("selecciono la fila con" + id + "en gestion de usuarios");
     setCamposEditados(filas.id);
@@ -309,12 +339,13 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
         />
         <div className='contenedor-tabla'>
         <Tabla
-          columns={columnas}
-          rows={filas}
-          actions  
-          handleEditRow={handleEditRow}
-          handleDeleteRow = {handleDeleteRow}
-        />
+            columns={columnas}
+            rows={filas}
+            actions
+            handleEditRow={handleEditRow}
+            handleDeleteRow={handleDeleteRow}
+            handleEditUser={handleEditUser}
+          />
         </div>
       </div>
 
