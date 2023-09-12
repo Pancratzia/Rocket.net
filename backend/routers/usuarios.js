@@ -191,7 +191,7 @@ routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarId
         });
       }
 
-      return res.status(400).json({ error: 'Error al crear el usuario' });
+      return res.status(400).json({ error: 'Error al actualizar el usuario' });
     }
    } else {
       fs.unlinkSync(req.file.path);
