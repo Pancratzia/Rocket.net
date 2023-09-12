@@ -110,7 +110,7 @@ function GestionCobertura() {
   };
 
   const handleDeleteRow1 = (idPoligono) => {
-    axios.patch(`http://localhost:3000/api/poligonos/${idPoligono}`)
+    axios.delete(`http://localhost:3000/api/poligonos/${idPoligono}`)
       .then((response) => {
         if (response.status === 200) {
           // Muestra un mensaje de éxito en la consola
@@ -312,7 +312,7 @@ function GestionCobertura() {
 
 
   const handleDeleteRow2 = (idPunto) => {
-    axios.patch(`http://localhost:3000/api/puntos/${idPunto}`)
+    axios.delete(`http://localhost:3000/api/puntos/${idPunto}`)
       .then((response) => {
         if (response.status === 200) {
           // Filtra los puntos para eliminar el punto con el ID correspondiente

@@ -28,7 +28,7 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
       const buscarIdUsuario = await pool.query("SELECT id_usuario FROM usuarios WHERE id_usuario = $1",[id_usuario]);
 
         if (buscarIdUsuario.rowCount === 0) {
-          return res.status(404).json({ error: 'Usuario no encontrado' });
+          return res.status(404).json({ error: 'Datos incorrectos' });
         }
 
         const nuevoPoligono = await pool.query('INSERT INTO public."poligonos" (nombre_poligono, id_usuario) VALUES($1, $2) RETURNING id_poligono', [nombre_poligono, id_usuario]);
@@ -44,7 +44,6 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
 
 //update
 
-// Ruta para modificar un polígono por su ID
 routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
   const { id_poligono} = req.params;
   const { nombre_poligono } = req.body;
@@ -58,9 +57,9 @@ routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
     const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_usuario = $1",[id_poligono]);
 
         if (buscarIdPoligono.rowCount === 0) {
-          return res.status(404).json({ error: 'Poligono no encontrado' });
+          return res.status(404).json({ error: 'Datos Incorrectos' });
         }
-    // Actualiza el polígono en la base de datos
+ 
     const query = 'UPDATE poligonos SET nombre_poligono=$1 WHERE id_poligono=$2';
     const values = [nombre_poligono, id_poligono];
     
@@ -68,7 +67,7 @@ routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
 
     auditar(operacion,id_usuarioAuditoria);
 
-    res.json({ mensaje: 'Polígono actualizado correctamente' }); //  JSON.stringify(updatePoligono.rows[0])
+    res.json({ mensaje: 'Polígono actualizado correctamente' }); 
   } catch (error) {
     console.error('Error al actualizar el polígono:', error);
     res.status(500).json({ error: error.message });
@@ -110,7 +109,7 @@ routerPoligonos.get('/:id_poligono', validaIdPoligono, async (req, res) => {
 
 //delete a poligono, 
 
-routerPoligonos.patch('/:id_poligono', validaIdPoligono, async (req, res) => {
+routerPoligonos.delete('/:id_poligono', validaIdPoligono, async (req, res) => {
   try {
       const { id_poligono } = req.params;
       
@@ -120,7 +119,7 @@ routerPoligonos.patch('/:id_poligono', validaIdPoligono, async (req, res) => {
       const eliminarPoligono = await pool.query('DELETE FROM poligonos WHERE id_poligono = $1', [id_poligono]);
 
       if (eliminarPoligono.rowCount === 0) {
-          return res.status(404).json({ error: 'Polígono no encontrado' });
+          return res.status(404).json({ error: 'Datos incorrectos' });
       }
 
       auditar(operacion, id_usuarioAuditoria);

@@ -24,6 +24,9 @@ app.use('/api/sedes',routerSedes);
 const routerSedesDepartamento = require('./routers/sedesdepartamentos.js');
 app.use('/api/sedesdepartamentos',routerSedesDepartamento);
 
+const routerPlanes = require('./routers/planes.js');
+app.use('/api/planes',routerPlanes);
+ 
 //Prueba de funcionamiento
 app.get('/', (req, res)=>{
     res.send('Prueba de funcionamiento de backend 🖥️')
