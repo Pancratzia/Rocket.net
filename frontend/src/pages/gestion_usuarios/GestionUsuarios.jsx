@@ -225,6 +225,7 @@ function GestionUsuarios() {
     console.log("borrandofila" + id + "en gestion de usuarios");
     const nuevasFilas = filas.filter((fila) => fila.id !== id);
     setFilas(nuevasFilas);
+    handleDeleteClick(id);
   }
 
 

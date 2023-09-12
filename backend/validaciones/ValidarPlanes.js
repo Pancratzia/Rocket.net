@@ -44,7 +44,7 @@ const validaIdPlan = [
       .isNumeric()
       .not()
       .isEmpty(),
-    check('id_sede')
+    check('estado_plan')
       .exists()
       .isNumeric()
       .not()
