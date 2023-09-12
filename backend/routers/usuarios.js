@@ -8,7 +8,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const { validationResult } = require('express-validator')
 
-const { validarIdUsuario, validarActUsuario, validarUsuario } = require('../validaciones/ValidarUsuarios.js')
+const { validarIdUsuario, validarActUsuario, validarUsuario, validarpathusuario } = require('../validaciones/ValidarUsuarios.js')
 const { auditar, convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
 const { CargaArchivo, CURRENT_DIR } = require('../middleware/CargaMulter.js')
 const { join } = require('path');
@@ -205,6 +205,78 @@ routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarId
 });
 
 //MODIFICAR USUARIO PATCH (PENDIENTE POR CREAR)
+
+routerUsuarios.patch('/edit/:id_usuario', validarIdUsuario, validarActUsuario, validarpathusuario, async (req, res) => {
+  const { id_usuario } = req.params;
+  const {
+    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, extension_telefonica, telefono, cedula, correo
+  } = req.body;
+
+  const operacion = req.method;
+  const id_usuarioAuditoria = req.headers['id_usuario'];
+
+  try {
+    const errores = validationResult(req);
+
+    if (errores.isEmpty()) {
+      // Query SQL para actualizar el usuario
+      const query = `
+        UPDATE usuarios
+        SET
+          nombre_usuario = $1,
+          id_sededepar = $2,
+          id_tipousuario = $3,
+          nombre = $4,
+          apellido = $5,
+          pregunta = $6,
+          extension_telefonica = $7,
+          telefono = $8,
+          cedula = $9,
+          correo = $10
+        WHERE id_usuario = $11
+          AND NOT borrado
+          AND EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2)
+          AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
+          AND NOT EXISTS (
+            SELECT 1 FROM usuarios
+            WHERE (nombre_usuario = $1 OR cedula = $9)
+            AND id_usuario <> $11
+          )
+        RETURNING *;
+      `;
+
+      const values = [
+        nombre_usuario,
+        id_sededepar,
+        id_tipousuario,
+        nombre,
+        apellido,
+        pregunta,
+        extension_telefonica,
+        telefono,
+        cedula,
+        correo,
+        id_usuario
+      ];
+
+      const actualizarUsuario = await pool.query(query, values);
+      
+      if (actualizarUsuario.rowCount > 0) {
+        auditar(operacion, id_usuarioAuditoria);
+
+        return res.status(200).json({ mensaje: 'Usuario actualizado exitosamente' });
+      } else {
+        return res.status(400).json({ error: 'Error al actualizar el usuario' });
+      }
+    } else {
+      return res.status(400).json({ error: 'Datos incorrectos' });
+    }
+   
+  } catch (error) {
+    console.error('Error al actualizar el usuario:', error);
+    res.status(500).json({ error: 'Error al actualizar el usuario' });
+  }
+});
 
 
 routerUsuarios.use(errorHandler);
