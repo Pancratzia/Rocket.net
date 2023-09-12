@@ -8,13 +8,11 @@ import { useState } from 'react';
 
 export default function Tabla(props) {
 
-  let {rows, columns, actions, handleDeleteRow, handleEditRow} = props;
-  const [filas, setFilas] = useState(rows)
+  let { rows, columns, actions, handleDeleteRow, handleEditRow } = props;
+  const [filas, setFilas] = useState(rows);
 
   const handleEditClick = (row) => {
-  const filasEditadas = filas.filter((fila) => fila.id == row.id);
-  setFilas(filasEditadas);
-  handleEditRow(row.id);
+    props.handleEditUser(row);
   };
 
   const handleDeleteClick = (row) => {
@@ -23,9 +21,10 @@ export default function Tabla(props) {
     handleDeleteRow(row.id);
   };
 
-  React.useEffect(()=> {
+  React.useEffect(() => {
     setFilas(rows);
-  },[rows]);
+  }, [rows]);
+
 
   if (actions) {
     const actionColumn = [
@@ -36,7 +35,7 @@ export default function Tabla(props) {
         renderCell: (params) => {
           return (
             <div className="action-column">
-                <a href="#" id="edit" onClick={() => handleEditClick(params.row)}> 
+                <a href="#" id="edit" onClick={() => handleEditClick(params.row)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="icon icon-tabler icon-tabler-edit"
