@@ -7,34 +7,25 @@ import "../Tabla/Tabla.scss";
 import { useState } from 'react';
 
 export default function Tabla(props) {
-  const [mostrarModal, setMostrarModal] = useState(false);
 
-  //handleEditarClick debe estar como props en todas las renderizaciones del componente tabla 
-  //para poder abrir el moda
+  let {rows, columns, actions, handleDeleteRow, handleEditRow} = props;
+  const [filas, setFilas] = useState(rows)
+
   const handleEditClick = (row) => {
-    setMostrarModal(true); // Mostrar el modal al hacer clic en el botón de editar
-
-    
+  const filasEditadas = filas.filter((fila) => fila.id == row.id);
+  setFilas(filasEditadas);
+  handleEditRow(row.id);
   };
 
-  const handleDeleteRow = (id, rows) => {
-    callback: () => {
-      rows = [...this.state.rows];
-      rows.splice(rows.id, 1); //
-      this.setState({ rows: rows });
+  const handleDeleteClick = (row) => {
+    const nuevasFilas = filas.filter((fila) => fila.id !== row.id);
+    setFilas(nuevasFilas);
+    handleDeleteRow(row.id);
+  };
 
-      React.useEffect(() => {
-        document.getSelection(null)
-        
-      })
-      
-    }
-
-    return console.log(id);
-    
-  }
-
-  let {rows, columns, actions} = props;
+  React.useEffect(()=> {
+    setFilas(rows);
+  },[rows]);
 
   if (actions) {
     const actionColumn = [
@@ -45,7 +36,7 @@ export default function Tabla(props) {
         renderCell: (params) => {
           return (
             <div className="action-column">
-                <a href="#" id="edit" onClick={() => props.handleEditClick(params.rows)}> 
+                <a href="#" id="edit" onClick={() => handleEditClick(params.row)}> 
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="icon icon-tabler icon-tabler-edit"
@@ -64,7 +55,7 @@ export default function Tabla(props) {
                   <path d="M16 5l3 3" />
                 </svg>
               </a>
-              <a href="#" id="delete" onClick={() => handleDeleteRow(rows)}>
+              <a href="#" id="delete" onClick={() => handleDeleteClick(params.row)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="icon icon-tabler icon-tabler-trash"
@@ -103,9 +94,10 @@ export default function Tabla(props) {
         fontSize: 16,
         fontFamily: 'Poppins',
         alignContent: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderColor: 'darkgrey'
       }}
-        rows={rows}
+        rows={filas}
         columns={columns}
         initialState={{
           filter:{

@@ -1,25 +1,24 @@
 import React from 'react';
-import "./GestionClientes.css";
+import "./Archivos.css";
 import Tabla from '../../components/Tabla/Tabla';
 
-function GestionClientes() {
+function Archivos() {
 
     const columnas =[]
     const filas = []
 
     return(
         <div className="contenedor-gestion">
-        <div className="titulo-clientes">
-            <h1>Gestion de Clientes</h1>
+        <div className="titulo-archivos">
+            <h1>Archivos</h1>
             <hr/>
         </div>
         <div className='contenedor-busqueda'>
-            <button className='boton-clientes'>Agregar</button>
+            <button className='boton-archivos'>Agregar</button>
         </div>
         <Tabla columns={columnas} rows={filas}/>
         </div>
     )
 }
 
-export default GestionClientes;
-
+export default Archivos;

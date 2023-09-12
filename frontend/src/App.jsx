@@ -13,7 +13,9 @@ import GestionPlanes from './pages/gestion_planes/GestionPlanes';
 import GestionClientes from './pages/gestion_clientes/GestionClientes';
 import GestionSedes from './pages/gestion_sedes/GestionSedes';
 import ConsultaCobertura from './pages/consulta_cobertura/ConsultaCobertura';
-
+import Auditorias from './pages/auditorias/Auditorias';
+import Archivos from './pages/archivos/Archivos';
+import Reportes from './pages/reportes/Reportes';
 
 
 
@@ -92,6 +94,18 @@ function App() {
         {
           element: <ConsultaCobertura/>,
           path: '/consulta_de_cobertura',
+        },
+        {
+          element: <Archivos/>,
+          path: '/archivos',
+        },
+        {
+          element: <Auditorias/>,
+          path: '/auditorias',
+        },
+        {
+          element: <Reportes/>,
+          path: '/reportes',
         }
       ],
     },

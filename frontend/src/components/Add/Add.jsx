@@ -6,9 +6,14 @@ import "./Add.css";
 
 
 
-function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
+function Add({ estado, cambiarEstado, titulo, campos, onGuardar, filaExistente}) {
   const [formData, setFormData] = useState({});
   const [filas, setFilas] = useState([]);
+
+  if (filaExistente = true) {
+  }else {
+  }
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +26,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
     cambiarEstado(false);
   };
 
-  
+
   // Filtrar los campos para excluir el campo ID
   const camposFiltrados = campos.filter(({ idCampo }) => idCampo !== 'id');
 
@@ -54,7 +59,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                 </button>
               </div>
             </div>
-            <form className="form-grid" onSubmit={handleSubmit}>
+            <form className="form-grid" onSubmit={handleSubmit} >
               <div className="formulario-input">
                 {camposFiltrados.map(({ campo, idCampo, typeCampo, options }) => (
                   <div key={idCampo}>
@@ -74,8 +79,8 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                         Seleccione
                       </option>
                       {options.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
+                        <option key={option.vale} value={option.value}>
+                          {option.label}
                         </option>
                       ))}
                     </select>
@@ -93,7 +98,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar }) {
                       />
                     )}
                   </div>
-                ))}
+                ))} 
               </div>
               <div className="botones">
                 <div className="boton-guardar">
