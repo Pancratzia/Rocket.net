@@ -110,7 +110,7 @@ routerPoligonos.get('/:id_poligono', validaIdPoligono, async (req, res) => {
 
 //delete a poligono, 
 
-routerPoligonos.patch('/:id_poligono', validaIdPoligono, async (req, res) => {
+routerPoligonos.delete('/:id_poligono', validaIdPoligono, async (req, res) => {
   try {
       const { id_poligono } = req.params;
       
