@@ -1,22 +1,29 @@
 const { check } = require('express-validator') //TODO <---
 const { validarResultados } = require('../helpers/validarHelper')
 const pool = require('../database/db.js');
+const { validationResult } = require('express-validator') 
 
 const validaPoligono = [ //Validacion para nombre_poligonos e id_usuarios44+
 	check('nombre_poligono')
-		.exists().withMessage('El campo nombre del poligono es obligatorio')
-		.isLength({ max: 50 }).withMessage('El campo nombre del poligono no puede exceder los 50 caracteres')
+		.exists()
+		.isLength({ max: 50 })
 		.isString()
-		.withMessage('El campo nombre del poligono debe ser String')
 		.custom((value, { req })=>{
 			let patron = /^$|^\s+$/;
 			if (patron.test(value)) {
 				return false
 			} return true
-		}).withMessage('El campo nombre del poligono no puede estar vacio'),
-	
+		}),
 
-	(req, res, next) =>  { validarResultados(req, res, next) }
+		(req, res, next) => {
+			const errores = validationResult(req);
+		
+			if (!errores.isEmpty()) {
+			  return res.status(400).json({ error: 'Datos incorrectos' });
+			}
+		
+			next();
+		  }
 
 
 ]
@@ -24,20 +31,27 @@ const validaPoligono = [ //Validacion para nombre_poligonos e id_usuarios44+
 const validaIdPoligono = [
 	
 	check('id_poligono')
-		.exists().withMessage({error: 'El campo id_poligono no existe'})
-		.isNumeric().withMessage({error: 'El campo id_poligono debe ser numérico'})
+		.exists()
+		.isNumeric()
 		.not()
-		.isEmpty().withMessage({error: 'El campo id_poligono no puede estar vacío'})
+		.isEmpty()
 			.custom((value, { req })=>{
 				let patron = /^$|^\s+$/;
 	 
 				if(patron.test(value)){
 					return false
 				} return true
-			}).withMessage({error: 'El campo id_poligono no puede contener espacios vacios'}),
-		(req, res, next) => {
-			validarResultados(req, res, next)
-		}	
+			}),
+			(req, res, next) => {
+				const errores = validationResult(req);
+			
+				if (!errores.isEmpty()) {
+				  return res.status(400).json({ error: 'Datos incorrectos' });
+				}
+			
+				next();
+			  }
+	
 ]
 
 module.exports = {validaPoligono, validaIdPoligono}
