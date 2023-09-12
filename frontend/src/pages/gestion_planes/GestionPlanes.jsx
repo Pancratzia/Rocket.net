@@ -18,7 +18,7 @@ function GestionPlanes() {
         {
           field: 'descripcion',
           headerName: 'Descripcion',
-          width: 250
+          width: 300
         },
     
         {
@@ -30,9 +30,19 @@ function GestionPlanes() {
         {
           field: 'estado',
           headerName: 'Estado',
-          width: 250,
-          type: 'select',
-          options: ['Activo', 'Inactivo']
+          width: 150,
+          type: 'select' ,
+          options: ['Activo', 'Inactivo'],
+            //cellclassname es una  funcion que devuelve una cadena de clase CSS 
+            cellClassName: (params) => {
+              if (params.value === 'Activo') { //aqui se evalua las opciones que son seleccionadas del select
+                return 'estado-activo';
+              } else if (params.value === 'Inactivo') {
+                return 'estado-inactivo'; // a los return les aplicamos los estilos css en tabla.scss
+              }
+              return '';
+            },
+          
         
         }
  
