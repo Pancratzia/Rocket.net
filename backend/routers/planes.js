@@ -39,7 +39,7 @@ routerPlanes.patch('/:id_plan', validaIdPlan, async (req, res) => {
                 UPDATE planes 
                 SET borrado = true
                 WHERE id_plan = $1
-                AND EXISTS (SELECT 1 FROM planes WHERE id_plan = $1)
+                AND borrado = false  -- Agregamos esta condición para verificar que el plan no esté marcado como borrado
                 RETURNING *;
             `;
 
@@ -59,7 +59,7 @@ routerPlanes.patch('/:id_plan', validaIdPlan, async (req, res) => {
     }
 });
 
-// modificar un plan
+
 // modificar planes
 routerPlanes.put('/:id_plan', validaIdPlan, validarPlan, async (req, res) => {
 
