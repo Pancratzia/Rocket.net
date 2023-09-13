@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 export default function Tabla(props) {
 
-  let { rows, columns, actions, handleDeleteRow} = props;
+  let { rows, columns, actions, handleDeleteRow, handleEditUser} = props;
   const [filas, setFilas] = useState(rows);
 
   const handleEditClick = (row) => {

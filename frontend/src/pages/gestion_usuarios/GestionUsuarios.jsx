@@ -32,7 +32,6 @@ function GestionUsuarios() {
             value: opcion.id_sede_departamento,
             label: opcion.sede_departamento,
           }));
-          console.log('Opciones obtenidas de la API:', opciones);
           setSedeDepartamentoOptions(opciones);
         } else {
           console.error('Error al obtener las opciones de sedepartamento:', response);
@@ -182,10 +181,37 @@ function GestionUsuarios() {
 
 };
 
+  useEffect(() => {
+    obtenerUsuarios();
+  }, []);
+
   const handleEditUser = (editedUser) => {
-    console.log(editedUser)
-    /*axios
-      .patch(`http://localhost:3000/api/usuarios/edit/${editedUser.id}`, editedUser)
+    const propertyMap = {
+      id: 'id_usuario',
+      usuario: 'nombre_usuario',
+      nombre: 'nombre',
+      apellido: 'apellido',
+      pregunta: 'pregunta',
+      extensiontelefonica: 'extension_telefonica',
+      telefono: 'telefono',
+      cedula: 'cedula',
+      correo: 'correo',
+      sedepartamento: 'id_sededepar',
+      tipousuario: 'id_tipousuario',
+    };
+    
+    const requestBody = {};
+
+    for (const key in editedUser) {
+      if (key in propertyMap) {
+        requestBody[propertyMap[key]] = editedUser[key];
+      } else {
+        requestBody[key] = editedUser[key];
+      }
+    }
+    
+    axios
+      .patch(`http://localhost:3000/api/usuarios/edit/${editedUser.id}`, requestBody)
       .then((response) => {
         if (response.status === 200) {
           obtenerUsuarios();
@@ -196,9 +222,13 @@ function GestionUsuarios() {
       })
       .catch((error) => {
         console.error("Error al editar el usuario:", error);
-      });*/
+      });
   };
 
+  const handleEditClick = (row) => {
+    props.handleEditUser(row);
+    handleEditUser(row);
+  };
   useEffect(() => {
     obtenerUsuarios();
   }, []);
@@ -328,11 +358,8 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
             return { campo, idCampo, typeCampo};
               })}
             camposEditados = {camposEditados}
-            onSave={(camposEditadosLocal) => {
-           
-           setShowModal(false);        
-           onChange={handleChange};
-          }}
+            onChange={handleChange}
+            onSave={handleEditUser}
           />
         
         
@@ -369,7 +396,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
             columns={columnas}
             rows={filas}
             actions
-            handleEditRow={handleEditRow}
+            handleEditRow={handleEditClick}
             handleDeleteRow={handleDeleteRow}
             handleEditUser={handleEditUser}
           />
