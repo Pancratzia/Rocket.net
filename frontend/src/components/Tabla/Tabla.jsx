@@ -8,11 +8,17 @@ import { useState } from 'react';
 
 export default function Tabla(props) {
 
-  let { rows, columns, actions, handleDeleteRow, handleEditRow } = props;
+  let { rows, columns, actions, handleDeleteRow} = props;
   const [filas, setFilas] = useState(rows);
 
   const handleEditClick = (row) => {
-    props.handleEditUser(row);
+    if(handleEditUser){
+      {handleEditUser(row)}
+    }else if (handleEditPoligono){
+      {props.handleEditPoligono(row)}
+    }else if (handleEditPunto){
+      {props.handleEditPunto(row)}
+    }
   };
 
   const handleDeleteClick = (row) => {
