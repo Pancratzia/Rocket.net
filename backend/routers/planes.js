@@ -9,6 +9,37 @@ routerPlanes.use(express.json());
 routerPlanes.use(cors());
 
 
+//create 
+routerPlanes.post('/', validarPlan, async (req, res) => {
+    try {
+
+        const errores = validationResult(req); // Agregar esta línea
+
+        if (!errores.isEmpty()) {
+            return res.status(400).json({ errores: errores.array() });
+        }
+
+        const { nombre_plan, descripcion, precio, estado_plan } = req.body;
+
+        // Inserta el nuevo plan en la base de datos
+        const query = `
+        INSERT INTO planes (nombre_plan, descripcion, precio, estado_plan, borrado)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING *;
+        `;
+
+        const values = [nombre_plan, descripcion, precio, estado_plan, false];
+
+        const nuevoPlan = await pool.query(query, values);
+        const idPlanGenerado = nuevoPlan.rows[0].id_plan;
+
+
+        return res.status(200).json({ mensaje: 'Poligono creado exitosamente', id_poligono: idPlanGenerado });
+    } catch (error) {
+        console.error('Error al crear el plan:', error.message);
+        res.status(500).json({ error: 'Error al crear el plan' });
+    }
+});
 // get all planes
 routerPlanes.get('/', async (req, res) => {
     try {
@@ -24,6 +55,36 @@ routerPlanes.get('/', async (req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ error: 'Error al obtener los planes' });
+    }
+});
+
+
+// Get a plan por su id
+routerPlanes.get('/:id_plan', validaIdPlan, async (req, res) => {
+    try {
+        const { id_plan } = req.params;
+        const errores = validationResult(req);
+
+        if (!errores.isEmpty()) {
+            return res.status(400).json({ errores: errores.array() });
+        }
+
+        const query = `
+            SELECT id_plan, nombre_plan, descripcion, precio, estado_plan
+            FROM planes
+            WHERE id_plan = $1 AND borrado = false;
+        `;
+
+        const { rows } = await pool.query(query, [id_plan]);
+
+        if (rows.length === 1) {
+            res.status(200).json(rows[0]);
+        } else {
+            res.status(404).json({ error: 'Plan no encontrado' });
+        }
+    } catch (error) {
+        console.error('Error al obtener el plan por ID:', error.message);
+        res.status(500).json({ error: 'Error al obtener el plan por ID' });
     }
 });
 
