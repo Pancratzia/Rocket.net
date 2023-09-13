@@ -336,7 +336,23 @@ function GestionCobertura() {
   };
   
 
+  const handleEditPoligono = (editedPoligono) => {
+    console.log(editedPoligono)
 
+  };
+
+  const handleEditPunto = (editedPunto) => {
+    console.log(editedPunto)
+
+  };
+
+  const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
+ 
+  const handleChange = (event) => {
+    const {id, value} = event.target;
+    setCamposEditados({...camposEditados, [id]: value})
+  } 
+  
   //Aca se define las columnas de las  2 tablas
     //columnas de la primera tabla
         const columnasPoligono  = [
@@ -350,6 +366,7 @@ function GestionCobertura() {
             field: 'nombre_poligono',
             headerName: 'Poligono',
             width: 150,    
+            editable: true
           }
           ]
 
@@ -359,12 +376,14 @@ function GestionCobertura() {
             field: 'punto', 
             headerName: 'Punto',  
             width: 100, 
+            editable: true
           },
 
           {
             field: 'poligono', 
             headerName: 'Poligono',  
-             width: 150, 
+            width: 150, 
+            editable: true
           }
 
           ]
@@ -437,17 +456,10 @@ function GestionCobertura() {
 
 
         //TODO LO DE EDITAR DE LA TABLA
-
-  const [camposEditar, setCamposEditar] = useState(false); 
   const [showModal, setShowModal] = useState(false);  //Para manejar estados del modal 1
   const [showModal2, setShowModal2] = useState(false);  //Para manejar estados del modal 2
-
-
-    //para mostrar el modal al presionar el icono de editar de la tabla
   
-  //constante para el editar de la tabla tiene como parametro row que es la fila seleccionada. 
   //aca con el setShowModal mostramos el modal 1 que corresponde a la tabla de poligonos
-
   const handleEditRow = (id) => {
       console.log("selecciono la fila con" + id + "en gestion de usuarios");
       setShowModal(true);
@@ -474,7 +486,7 @@ function GestionCobertura() {
               </div>
           
             <div className='tabla-poligonos'>
-              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditRow={handleEditRow}  handleDeleteRow = {handleDeleteRow1}/> 
+              <Tabla columns={columnasPoligono} rows={filasPoligono} actions handleEditRow={handleEditRow} handleEditPoligono= {handleEditPoligono}  handleDeleteRow = {handleDeleteRow1}/> 
             </div>
             
                
@@ -500,7 +512,7 @@ function GestionCobertura() {
                 </div>
                
                 <div className='tabla-puntos'> 
-                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditRow={handleEditRow2}  handleDeleteRow = {handleDeleteRow2}/>
+                <Tabla columns={columnasPunto} rows={filasPunto} actions handleEditRow={handleEditRow2} handleEditPunto={handleEditPunto}  handleDeleteRow = {handleDeleteRow2}/>
                 </div>
                 
              

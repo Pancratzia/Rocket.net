@@ -4,8 +4,10 @@ import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
 import Swal from "sweetalert2";
 import { useState, useEffect } from 'react';
+import withReactContent from "sweetalert2-react-content";
 import axios from 'axios';
 
+const MySwal = withReactContent(Swal);
 
 
 function GestionUsuarios() {
@@ -13,6 +15,14 @@ function GestionUsuarios() {
   const [sedeDepartamentoOptions, setSedeDepartamentoOptions] = useState([]);
 
   const [usuarios, setUsuarios] = useState([]);
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+  })
 
   const obtenerSedepartamentoOptions = () => {
     axios.get('http://localhost:3000/api/sedesdepartamentos')
@@ -22,7 +32,6 @@ function GestionUsuarios() {
             value: opcion.id_sede_departamento,
             label: opcion.sede_departamento,
           }));
-          console.log('Opciones obtenidas de la API:', opciones);
           setSedeDepartamentoOptions(opciones);
         } else {
           console.error('Error al obtener las opciones de sedepartamento:', response);
@@ -144,7 +153,6 @@ function GestionUsuarios() {
 
   const [filas, setFilas] = useState([]) //esto es del modal agregar
   const [estadoModal1, cambiarEstadoModal1] = useState(false); //esto es del modal de agregar
-  const [filaEditar, setFilaEditar] = useState(null);
   const [showModal, setShowModal] = useState(false);  //Aca manejamos los estados del modal editar
 
   // Función para obtener los usuarios desde la API
@@ -173,10 +181,37 @@ function GestionUsuarios() {
 
 };
 
+  useEffect(() => {
+    obtenerUsuarios();
+  }, []);
+
   const handleEditUser = (editedUser) => {
-    console.log(editedUser)
-    /*axios
-      .patch(`http://localhost:3000/api/usuarios/edit/${editedUser.id}`, editedUser)
+    const propertyMap = {
+      id: 'id_usuario',
+      usuario: 'nombre_usuario',
+      nombre: 'nombre',
+      apellido: 'apellido',
+      pregunta: 'pregunta',
+      extensiontelefonica: 'extension_telefonica',
+      telefono: 'telefono',
+      cedula: 'cedula',
+      correo: 'correo',
+      sedepartamento: 'id_sededepar',
+      tipousuario: 'id_tipousuario',
+    };
+    
+    const requestBody = {};
+
+    for (const key in editedUser) {
+      if (key in propertyMap) {
+        requestBody[propertyMap[key]] = editedUser[key];
+      } else {
+        requestBody[key] = editedUser[key];
+      }
+    }
+    
+    axios
+      .patch(`http://localhost:3000/api/usuarios/edit/${editedUser.id}`, requestBody)
       .then((response) => {
         if (response.status === 200) {
           obtenerUsuarios();
@@ -187,16 +222,17 @@ function GestionUsuarios() {
       })
       .catch((error) => {
         console.error("Error al editar el usuario:", error);
-      });*/
+      });
   };
 
+  const handleEditClick = (row) => {
+    props.handleEditUser(row);
+    handleEditUser(row);
+  };
   useEffect(() => {
     obtenerUsuarios();
   }, []);
 
-  const handleEditClick = (row) => {
-    props.handleEditUser(row);
-  };
 
   const handleEditRow = (id) => {
     console.log("selecciono la fila con" + id + "en gestion de usuarios");
@@ -208,7 +244,7 @@ function GestionUsuarios() {
     // Realiza la solicitud PATCH para eliminar el usuario
     axios.patch(`http://localhost:3000/api/usuarios/${idUsuario}`)
       .then(response => {
-        if (response.status === 200) {
+        if (response == 200) {
           obtenerUsuarios(); 
         } else {
           console.error('Error al eliminar el usuario:', response);
@@ -219,13 +255,25 @@ function GestionUsuarios() {
       });
   };
   
-  
 
   const handleDeleteRow = (id) => {
-    console.log("borrandofila" + id + "en gestion de usuarios");
-    const nuevasFilas = filas.filter((fila) => fila.id !== id);
-    setFilas(nuevasFilas);
-    handleDeleteClick(id);
+     swalWithBootstrapButtons.fire({
+      text: "Estas seguro de que deseas eliminar el usuario?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+      }).then(response => {
+        if (response.isConfirmed){
+        console.log("borrando fila" + id + "en gestion de usuarios");
+        const nuevasFilas = filas.filter((fila) => fila.id !== id);
+        setFilas(nuevasFilas);
+        handleDeleteClick(id);
+        }else {
+        response.dismiss === Swal.DismissReason.cancel
+        setFilas(filas);
+        }
+      })
   }
 
 
@@ -236,47 +284,55 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
     setCamposEditados({...camposEditados, [id]: value})
   }
 
-//esto es para el agregado de las filas con el modal
-  const agregarFila = (nuevaFila) => {
-    setFilas([...filas, nuevaFila]);
-  };
-
-
   const agregarUsuario = (nuevoUsuario) => {
-  const formData = new FormData();
-  const nuevaImagen = new File([], 'user.png', { type: 'image/png' });
 
-  formData.append('nombre_usuario', nuevoUsuario.usuario);
-  formData.append('nombre', nuevoUsuario.nombre);
-  formData.append('apellido', nuevoUsuario.apellido);
-  formData.append('pregunta', nuevoUsuario.pregunta);
-  formData.append('extension_telefonica', nuevoUsuario.extensiontelefonica);
-  formData.append('telefono', nuevoUsuario.telefono);
-  formData.append('cedula', nuevoUsuario.cedula);
-  formData.append('correo', nuevoUsuario.correo);
-  formData.append('id_sededepar', nuevoUsuario.sedepartamento);
-  formData.append('clave', nuevoUsuario.clave);
-  formData.append('respuesta', nuevoUsuario.respuesta);
-  formData.append('id_tipousuario', nuevoUsuario.tipousuario);
-  formData.append('fileUsuario', nuevaImagen);
+  swalWithBootstrapButtons.fire({
+      text: "Estas seguro de que deseas crear el usuario?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+  }).then(response => {
 
-  axios.post('http://localhost:3000/api/usuarios', formData)
+    if (response.isConfirmed){
+    const formData = new FormData();
+    const nuevaImagen = new File([], 'user.png', { type: 'image/png' }); 
+  
+      formData.append('nombre_usuario', nuevoUsuario.usuario);
+      formData.append('nombre', nuevoUsuario.nombre);
+      formData.append('apellido', nuevoUsuario.apellido);
+      formData.append('pregunta', nuevoUsuario.pregunta);
+      formData.append('extension_telefonica', nuevoUsuario.extensiontelefonica);
+      formData.append('telefono', nuevoUsuario.telefono);
+      formData.append('cedula', nuevoUsuario.cedula);
+      formData.append('correo', nuevoUsuario.correo);
+      formData.append('id_sededepar', nuevoUsuario.sedepartamento);
+      formData.append('clave', nuevoUsuario.clave);
+      formData.append('respuesta', nuevoUsuario.respuesta);
+      formData.append('id_tipousuario', nuevoUsuario.tipousuario);
+      formData.append('fileUsuario', nuevaImagen);
+    
+    axios.post('http://localhost:3000/api/usuarios', formData)
     .then(response => {
       console.log('Respuesta de la solicitud:', response);
       if (response.status === 200) {
-        const usuarioCreado = response.data;
         cambiarEstadoModal1(false); 
-        console.log('Usuario creado:', usuarioCreado);
+        MySwal.fire('Exito','Has creado el usuario','success')
       } else {
-        console.error('Error al crear el usuario:', response);
+        MySwal.fire('Error','Error al crear el usuario', 'error');
       }
     })
     .catch(error => {
-      console.error('Error al crear el usuario:', error);
+      MySwal.fire('Error','Error al crear el usuario', 'error');
       if (error.response) {
-        console.log('Respuesta de error:', error.response.data);
+      console.log('Respuesta de error:', error.response.data);
       }
     });
+    } else {
+      response.dimiss== Swal.DismissReason.cancel;
+      
+    }
+  })
 };
 
   
@@ -302,11 +358,8 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
             return { campo, idCampo, typeCampo};
               })}
             camposEditados = {camposEditados}
-            onSave={(camposEditadosLocal) => {
-           
-           setShowModal(false);        
-           onChange={handleChange};
-          }}
+            onChange={handleChange}
+            onSave={handleEditUser}
           />
         
         
@@ -343,7 +396,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
             columns={columnas}
             rows={filas}
             actions
-            handleEditRow={handleEditRow}
+            handleEditRow={handleEditClick}
             handleDeleteRow={handleDeleteRow}
             handleEditUser={handleEditUser}
           />
