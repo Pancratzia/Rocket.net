@@ -1,19 +1,23 @@
 import React from "react";
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import "./Add.css";
 
-
+const MySwal = withReactContent(Swal);
 
 function Add({ estado, cambiarEstado, titulo, campos, onGuardar, filaExistente}) {
   const [formData, setFormData] = useState({});
   const [filas, setFilas] = useState([]);
 
-  if (filaExistente = true) {
-  }else {
-  }
-  
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault();
