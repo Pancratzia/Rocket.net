@@ -4,7 +4,28 @@ import Tabla from '../../components/Tabla/Tabla';
 
 function Auditorias() {
 
-    const columnas =[]
+    const columnas = [
+        { field: "operacion", headerName: "Operacion", width: 300},
+    
+        {
+          field: "usuarioau",
+          headerName: "Usuario",
+          width: 180,
+          editable: true,
+        },
+        {
+            field: "fecha",
+            headerName: "Fecha",
+            width: 160,
+            editable: true,
+        },
+        {
+            field: "hora",
+            headerName: "Hora",
+            width: 170,
+            editable: true,
+        }
+    ]
     const filas = []
 
     return(
