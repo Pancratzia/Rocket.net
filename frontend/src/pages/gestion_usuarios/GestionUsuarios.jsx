@@ -265,7 +265,7 @@ function GestionUsuarios() {
       cancelButtonText: 'No',
       }).then(response => {
         if (response.isConfirmed){
-        console.log("borrandofila" + id + "en gestion de usuarios");
+        console.log("borrando fila" + id + "en gestion de usuarios");
         const nuevasFilas = filas.filter((fila) => fila.id !== id);
         setFilas(nuevasFilas);
         handleDeleteClick(id);
@@ -286,9 +286,6 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
 
   const agregarUsuario = (nuevoUsuario) => {
 
-    const formData = new FormData();
-    const nuevaImagen = new File([], 'user.png', { type: 'image/png' }); 
-  
   swalWithBootstrapButtons.fire({
       text: "Estas seguro de que deseas crear el usuario?",
       icon: 'question',
@@ -298,7 +295,9 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
   }).then(response => {
 
     if (response.isConfirmed){
-
+    const formData = new FormData();
+    const nuevaImagen = new File([], 'user.png', { type: 'image/png' }); 
+  
       formData.append('nombre_usuario', nuevoUsuario.usuario);
       formData.append('nombre', nuevoUsuario.nombre);
       formData.append('apellido', nuevoUsuario.apellido);
@@ -317,7 +316,6 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
     .then(response => {
       console.log('Respuesta de la solicitud:', response);
       if (response.status === 200) {
-        const usuarioCreado = response.data;
         cambiarEstadoModal1(false); 
         MySwal.fire('Exito','Has creado el usuario','success')
       } else {
@@ -332,6 +330,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
     });
     } else {
       response.dimiss== Swal.DismissReason.cancel;
+      
     }
   })
 };
