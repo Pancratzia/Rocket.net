@@ -6,8 +6,6 @@ import Swal from "sweetalert2";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-
-
 function GestionUsuarios() {
 
   const [sedeDepartamentoOptions, setSedeDepartamentoOptions] = useState([]);
