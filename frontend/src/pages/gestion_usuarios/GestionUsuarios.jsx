@@ -397,7 +397,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
             rows={filas}
             actions
             handleEditRow={handleEditClick}
-            handleDeleteRow={handleDeleteClick}
+            handleDeleteRow={handleDeleteRow}
             handleEditUser={handleEditUser}
           />
         </div>
