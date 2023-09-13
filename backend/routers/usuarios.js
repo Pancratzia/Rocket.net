@@ -215,6 +215,9 @@ routerUsuarios.patch('/edit/:id_usuario', validarIdUsuario, validarActUsuario, v
   const operacion = req.method;
   const id_usuarioAuditoria = req.headers['id_usuario'];
 
+  const camposAmayusculas = ['nombre', 'apellido', 'pregunta'];
+  const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
+
   try {
     const errores = validationResult(req);
 
@@ -249,9 +252,9 @@ routerUsuarios.patch('/edit/:id_usuario', validarIdUsuario, validarActUsuario, v
         nombre_usuario,
         id_sededepar,
         id_tipousuario,
-        nombre,
-        apellido,
-        pregunta,
+        camposMayus.nombre,
+        camposMayus.apellido,
+        camposMayus.pregunta,
         extension_telefonica,
         telefono,
         cedula,
