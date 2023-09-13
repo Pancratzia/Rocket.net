@@ -79,9 +79,8 @@ routerPuntos.put('/:id_punto', validaPuntos, async (req, res) => {
   }
 })
 
-
 //delete
-routerPuntos.patch('/:id_punto', validaidPuntos, async (req, res) => {
+routerPuntos.delete('/:id_punto', validaidPuntos, async (req, res) => {
   try {
     const { id_punto } = req.params;
     const operacion = req.method;

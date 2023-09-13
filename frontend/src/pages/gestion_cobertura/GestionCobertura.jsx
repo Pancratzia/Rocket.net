@@ -110,7 +110,7 @@ function GestionCobertura() {
   };
 
   const handleDeleteRow1 = (idPoligono) => {
-    axios.patch(`http://localhost:3000/api/poligonos/${idPoligono}`)
+    axios.delete(`http://localhost:3000/api/poligonos/${idPoligono}`)
       .then((response) => {
         if (response.status === 200) {
           // Muestra un mensaje de éxito en la consola
@@ -312,7 +312,7 @@ function GestionCobertura() {
 
 
   const handleDeleteRow2 = (idPunto) => {
-    axios.patch(`http://localhost:3000/api/puntos/${idPunto}`)
+    axios.delete(`http://localhost:3000/api/puntos/${idPunto}`)
       .then((response) => {
         if (response.status === 200) {
           // Filtra los puntos para eliminar el punto con el ID correspondiente
@@ -496,7 +496,7 @@ function GestionCobertura() {
            
                 <div className = 'lista-btn'> 
                   <Lista  items = {items} label = 'Seleccionar poligono' value={poligonoSeleccionado} setValue={setPoligonoSeleccionado}/>  
-                  <button className='boton-cobertura' onClick={crearPunto}>Crear punto</button> 
+                  <button className='boton-cobertura2' onClick={crearPunto}>Crear punto</button> 
                 </div>
                
                 <div className='tabla-puntos'> 
