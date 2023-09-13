@@ -114,12 +114,9 @@ width: 100%;
     
   }
 
-  .superposiciones{
-    overflow-y: scroll;
-  }
-
   .contenedor-modal{
-    height:max-content;
+    max-height: 90%;
+    overflow-y: scroll;
   }
 
 }
