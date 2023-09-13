@@ -6,6 +6,9 @@ const port = 3000;
 const routerAuditoria = require('./routers/auditoria.js');
 app.use('/api/auditoria',routerAuditoria); 
 
+const routerClientes = require('./routers/clientes.js');
+app.use('/api/clientes', routerClientes);
+
 const routerPoligonos = require('./routers/poligonos.js');
 app.use('/api/poligonos',routerPoligonos); 
 
