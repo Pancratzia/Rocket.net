@@ -23,7 +23,6 @@ export default function Tabla(props) {
 
   const handleDeleteClick = (row) => {
     const nuevasFilas = filas.filter((fila) => fila.id !== row.id);
-    setFilas(nuevasFilas);
     handleDeleteRow(row.id);
   };
 
