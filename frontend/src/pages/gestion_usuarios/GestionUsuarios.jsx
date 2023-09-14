@@ -186,6 +186,15 @@ function GestionUsuarios() {
   }, []);
 
   const handleEditUser = (editedUser) => {
+
+    swalWithBootstrapButtons.fire({
+      text: "Estas seguro de que deseas editar el usuario?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+      }).then (response =>{
+    if (response.isConfirmed){
     const propertyMap = {
       id: 'id_usuario',
       usuario: 'nombre_usuario',
@@ -223,6 +232,10 @@ function GestionUsuarios() {
       .catch((error) => {
         console.error("Error al editar el usuario:", error);
       });
+      } else {
+        response.dismiss === Swal.DismissReason.cancel;
+      }
+    })
   };
 
   const handleEditClick = (row) => {
@@ -244,10 +257,11 @@ function GestionUsuarios() {
     // Realiza la solicitud PATCH para eliminar el usuario
     axios.patch(`http://localhost:3000/api/usuarios/${idUsuario}`)
       .then(response => {
-        if (response == 200) {
-          obtenerUsuarios(); 
+        if (response.status === 200) {
+          obtenerUsuarios();
+          MySwal.fire('Success', 'Usuario eliminado correctamente', 'success')
         } else {
-          console.error('Error al eliminar el usuario:', response);
+          Swal.fire('Error','Error al eliminar el usuario','error');
         }
       })
       .catch(error => {
@@ -387,7 +401,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
           filas={filas}
           setFilas={setFilas}
           onGuardar={(nuevoUsuario) => {
-            agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
+          agregarUsuario(nuevoUsuario); // Llama a la función para agregar el usuario
           }}
           
         />
@@ -396,7 +410,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
             columns={columnas}
             rows={filas}
             actions
-            handleEditRow={handleEditClick}
+            handleEditClick={handleEditRow}
             handleDeleteRow={handleDeleteRow}
             handleEditUser={handleEditUser}
           />
