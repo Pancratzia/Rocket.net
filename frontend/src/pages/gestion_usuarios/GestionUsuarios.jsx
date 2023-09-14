@@ -244,14 +244,15 @@ function GestionUsuarios() {
     // Realiza la solicitud PATCH para eliminar el usuario
     axios.patch(`http://localhost:3000/api/usuarios/${idUsuario}`)
       .then(response => {
-        if (response == 200) {
+        
+        if (response.status == 200) {
           obtenerUsuarios(); 
         } else {
           console.error('Error al eliminar el usuario:', response);
         }
       })
       .catch(error => {
-        console.error('Error al eliminar el usuario:', error);
+        console.error('Error al eliminar el usuario: a', error);
       });
   };
   
