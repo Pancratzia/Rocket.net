@@ -146,6 +146,8 @@ function GestionPlanes() {
       setShowModal(true); 
       };
 
+      
+
       const handleEditPlan = (editedPlans) => {
         swalWithBootstrapButtons.fire({
           text: "Estas seguro de que deseas editar el plan?",
@@ -155,7 +157,35 @@ function GestionPlanes() {
           cancelButtonText: 'No',
           }).then (response =>{
         if (response.isConfirmed){ 
-          console.log('prueba');
+            const propertyMap = {
+              id: 'id_plan',
+              nombre_plan: 'nombre_plan',
+              descripcion: 'descripcion',
+              estado: 'estado_plan',
+              precio: 'precio',
+            };
+    
+            const requestBody = {};
+    
+          for (const key in editedPlans) {
+            if (key in propertyMap) {
+              requestBody[propertyMap[key]] = editedPlans[key];
+            } else {
+              requestBody[key] = editedPlans[key];
+            }
+        }
+            axios.put(`http://localhost:3000/api/planes/${editedPlans.id}`, requestBody)
+              .then((response) => {
+                if (response.status === 200) {
+                  obtenerPlanes(); // Vuelve a cargar la lista de planes después de editar
+                  setShowModal(false); // Cierra el modal de edición
+                } else {
+                  console.error("Error al editar el plan:", response);
+                }
+              })
+              .catch((error) => {
+                console.error("Error al editar el plan:", error);
+              });
         }else{
           Swal.fire('Error', 'Error al editar el plan', 'error')
         }
