@@ -130,18 +130,52 @@ function GestionPlanes() {
       const [showModal, setShowModal] = useState(false);   //estado para el modal de editar
     
       
+      const handleEditPlan = (plan) => {
+        axios.put(`http://localhost:3000/api/planes/${plan.id}`, plan)
+          .then((response) => {
+            if (response.status === 200) {
+              obtenerPlanes(); // Vuelve a cargar la lista de planes después de editar
+              setShowModal(false); // Cierra el modal de edición
+            } else {
+              console.error("Error al editar el plan:", response);
+            }
+          })
+          .catch((error) => {
+            console.error("Error al editar el plan:", error);
+          });
+      };
+      
+
+
       const handleEditRow = (row) => {
        
         setShowModal(true); 
     
      
       };
+
+      const handleDeletePlan = (id_plan) => {
+        axios.patch(`http://localhost:3000/api/planes/${id_plan}`)
+          .then((response) => {
+            if (response.status === 200) {
+              obtenerPlanes(); // Vuelve a cargar la lista de planes después de eliminar
+            } else {
+              console.error("Error al eliminar el plan:", response);
+            }
+          })
+          .catch((error) => {
+            console.error("Error al eliminar el plan:", error);
+          });
+      };      
     
         const handleDeleteRow = (id) => {
         console.log("borrandofila" + id + "en gestion de sedes");
         const nuevasFilas = filas.filter((fila) => fila.id !== id);
-        setFilas(NuevasFilas);
+        setFilas(nuevasFilas);
+        handleDeletePlan(id);
       }
+
+      
     
     
         const [camposEditados, setCamposEditados] = useState({}); 
@@ -163,7 +197,7 @@ function GestionPlanes() {
             columns={columnas}
             rows={planesConId} // Asegúrate de que 'planesConId' tenga 'id' único en cada fila
             actions
-            handleEditRow={handleEditRow}
+            handleEditRow={handleEditPlan}
             handleDeleteRow = {handleDeleteRow}
           />
           
