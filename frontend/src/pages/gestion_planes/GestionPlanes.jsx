@@ -139,15 +139,16 @@ function GestionPlanes() {
       const [setCampos] = useState(false);
       const [camposEditados, setCamposEditados] = useState({}); 
       const [showModal, setShowModal] = useState(false);   //estado para el modal de editar
-    
-      
+  
       const handleEditRow = (row) => {
       console.log("selecciono la fila con" + id + "en gestion de usuarios");
       setCamposEditados(filas.id);
       setShowModal(true); 
       };
 
-  const handleEditPlan = (editedPlans) => {
+      
+
+      const handleEditPlan = (editedPlans) => {
         swalWithBootstrapButtons.fire({
           text: "Estas seguro de que deseas editar el plan?",
           icon: 'question',
@@ -156,7 +157,35 @@ function GestionPlanes() {
           cancelButtonText: 'No',
           }).then (response =>{
         if (response.isConfirmed){ 
-          console.log('prueba');
+            const propertyMap = {
+              id: 'id_plan',
+              nombre_plan: 'nombre_plan',
+              descripcion: 'descripcion',
+              estado: 'estado_plan',
+              precio: 'precio',
+            };
+    
+            const requestBody = {};
+    
+          for (const key in editedPlans) {
+            if (key in propertyMap) {
+              requestBody[propertyMap[key]] = editedPlans[key];
+            } else {
+              requestBody[key] = editedPlans[key];
+            }
+        }
+            axios.put(`http://localhost:3000/api/planes/${editedPlans.id}`, requestBody)
+              .then((response) => {
+                if (response.status === 200) {
+                  obtenerPlanes(); // Vuelve a cargar la lista de planes después de editar
+                  setShowModal(false); // Cierra el modal de edición
+                } else {
+                  console.error("Error al editar el plan:", response);
+                }
+              })
+              .catch((error) => {
+                console.error("Error al editar el plan:", error);
+              });
         }else{
           Swal.fire('Error', 'Error al editar el plan', 'error')
         }
@@ -169,9 +198,19 @@ function GestionPlanes() {
     setCamposEditados({...camposEditados, [id]: value})
   } 
 
-  const handleDeleteClick = (id) => {
-
-  }
+  const handleDeletePlan = (id_plan) => {
+    axios.patch(`http://localhost:3000/api/planes/${id_plan}`)
+      .then((response) => {
+        if (response.status === 200) {
+          obtenerPlanes(); 
+        } else {
+          console.error("Error al eliminar el plan:", response);
+        }
+      })
+      .catch((error) => {
+        console.error("Error al eliminar el plan:", error);
+      });
+  }; 
     
   const handleDeleteRow = (id) => {
         swalWithBootstrapButtons.fire({
@@ -185,7 +224,7 @@ function GestionPlanes() {
             console.log("borrandofila" + id + "en gestion de planes");
             const nuevasFilas = filas.filter((fila) => fila.id !== id);
             setFilas(nuevasFilas);
-            handleDeleteClick(id);
+            handleDeletePlan(id);
           }else {
             response.dismiss === Swal.DismissReason.cancel
             setFilas(filas);
@@ -201,17 +240,17 @@ function GestionPlanes() {
           </div>
           <div className='contenedor-busqueda'>
             <button className='boton-planes' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
-        </div>
-        <Tabla 
-        columns={columnas} 
-        rows={filas}
-        actions
-        handleEditClick = {handleEditRow}
-        handleDeleteRow = {handleDeleteRow}
-        handleEditPlan = {handleEditPlan}
-        />
-
-        <Add
+          </div>
+          <Tabla
+            columns={columnas}
+            rows={planesConId} // Asegúrate de que 'planesConId' tenga 'id' único en cada fila
+            actions
+            handleEditRow={handleEditRow}
+            handleDeleteRow = {handleDeleteRow}
+            handleEditPlan = {handleEditPlan}
+          />
+          
+          <Add
             estado={estadoModal1}
             cambiarEstado={cambiarEstadoModal1}
             titulo="Agregar Plan"
