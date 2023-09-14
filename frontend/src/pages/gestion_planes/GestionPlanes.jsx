@@ -189,15 +189,7 @@ function GestionPlanes() {
         }
      })
   }
-     
-    
-  // const agregarFila = (nuevaFila) => {
-  //   setFilas([...filas, nuevaFila]);
-  //   };
-    
-
-
-      
+       
       return(
         <div className="contenedor-gestion">
           <div className="titulo-planes">
