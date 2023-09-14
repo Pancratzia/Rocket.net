@@ -57,6 +57,7 @@ routerUsuarios.post('/', CargaArchivo.single('fileUsuario'), validarUsuario, asy
 
     if (errores.isEmpty()) {
 
+      
       const crearUsuario = await pool.query(consulta, [
         nombre_usuario, id_sededepar, id_tipousuario, camposMayus.nombre, camposMayus.apellido,
         camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica,
