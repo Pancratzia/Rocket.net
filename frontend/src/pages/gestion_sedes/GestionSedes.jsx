@@ -3,8 +3,20 @@ import { useState } from 'react';
 import "./GestionSedes.css";
 import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 function GestionSedes() {
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+  })
 
     const columnas = [
     { field: 'id', headerName: 'ID', width: 40, editable: false },
@@ -49,33 +61,61 @@ function GestionSedes() {
   const [filas, setFilas] = useState([])
   const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar
   const [setCampos] = useState(false);
-
+  const [camposEditados, setCamposEditados] = useState({}); 
   const [showModal, setShowModal] = useState(false);   //estado para el modal de editar
 
   
   const handleEditRow = (row) => {
-   
-    setShowModal(true); 
-
- 
+  console.log("selecciono la fila con" + id + "en gestion de usuarios");
+  setCamposEditados(filas.id);
+  setShowModal(true); 
   };
 
-    const handleDeleteRow = (id) => {
+  const handleEditSede = (editedSedes) => {
+    swalWithBootstrapButtons.fire({
+      text: "Estas seguro de que deseas editar la sede?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+      }).then (response =>{
+    if (response.isConfirmed){ 
+      console.log('prueba');
+    }else{
+      Swal.fire('Error', 'Error al editar la sede', 'error')
+    }  
+  })
+}
+
+const handleChange = (event) => {
+  const {id, value} = event.target;
+  setCamposEditados({...camposEditados, [id]: value})
+} 
+
+const handleDeleteRow = (id) => {
+    swalWithBootstrapButtons.fire({
+    text: "Estas seguro de que deseas eliminar la sede?",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Si',
+    cancelButtonText: 'No',
+    }).then(response => {
+    if (response.isConfirmed){
     console.log("borrandofila" + id + "en gestion de sedes");
     const nuevasFilas = filas.filter((fila) => fila.id !== id);
-    setFilas(NuevasFilas);
+    setFilas(nuevasFilas);
+    handleDeleteClick(id);
+    }else {
+    response.dismiss === Swal.DismissReason.cancel
+    setFilas(filas);
+      }
+   })
   }
 
-
-    const [camposEditados, setCamposEditados] = useState({}); 
- 
-
-    const agregarFila = (nuevaFila) => {
+const agregarFila = (nuevaFila) => {
     setFilas([...filas, nuevaFila]);
-  };
+};
 
-    
-    
     return(
         <div className="contenedor-gestion">
         <div className="titulo-sedes">
@@ -90,8 +130,9 @@ function GestionSedes() {
         columns={columnas} 
         rows={filas}
         actions  
-        handleEditRow={handleEditRow}
+        handleEditClick = {handleEditRow}
         handleDeleteRow = {handleDeleteRow}
+        handleEditSede = {handleEditSede}
         />
         </div>
 
@@ -102,50 +143,32 @@ function GestionSedes() {
             campos={columnas.map(({ headerName: campo, field: idCampo, type, options }) => {
                 if (type === 'select') {
                  return {
-                            campo,
-                            idCampo,
-                            typeCampo: 'select',
-                            options: options,
+                        campo,
+                        idCampo,
+                        typeCampo: 'select',
+                        options: options,
                         };
-                    }
-
-                 else {
+                    } else {
                     return { campo, idCampo, typeCampo: 'text' };}
-})}
-
+      })}
              filas={filas}
              setFilas={setFilas}
              onGuardar={agregarFila}
-
         />
-
         
         <Add
             estado={showModal}
             cambiarEstado={setShowModal}
             titulo="Editar Sede"
-            campos={columnas.map(({ headerName: campo, field: idCampo, type, options }) => {
-                if (type === 'select') {
-                 return {
-                            campo,
-                            idCampo,
-                            typeCampo: 'select',
-                            options: options,
-                        };
-                    }
-
-                 else {
-                    return { campo, idCampo, typeCampo: 'text' };}
-})}
-   
-        />
-
-        
-
-</div>
-
-
-    )
+            campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
+              return { campo, idCampo, typeCampo};
+              })}
+              camposEditados = {camposEditados}
+              onChange={handleChange}
+              onSave={handleEditSede}  
+        />    
+    </div>
+   )
 }
 
 export default GestionSedes;

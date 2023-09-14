@@ -337,14 +337,36 @@ function GestionCobertura() {
   
 
   const handleEditPoligono = (editedPoligono) => {
-    console.log(editedPoligono)
-
-  };
+    swalWithBootstrapButtons.fire({
+      text: "Estas seguro de que deseas editar el poligono?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+      }).then (response =>{
+    if (response.isConfirmed){ 
+      console.log('prueba');
+    }else{
+      Swal.fire('Error', 'Error al editar el poligono', 'error')
+    }
+  })
+};
 
   const handleEditPunto = (editedPunto) => {
-    console.log(editedPunto)
-
-  };
+    swalWithBootstrapButtons.fire({
+      text: "Estas seguro de que deseas editar el punto?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+      }).then (response =>{
+    if (response.isConfirmed){ 
+      console.log('prueba');
+    }else{
+      Swal.fire('Error', 'Error al editar el punto', 'error')
+    }
+  })
+};
 
   const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
  
@@ -388,23 +410,13 @@ function GestionCobertura() {
 
           ]
 
-  //Aca se definen las filas de las tablas
-           
-    //filas de la primera tabla
-        const [filasPoligono, setFilasPoligono] = useState ([]);
+    const [filasPoligono, setFilasPoligono] = useState ([]);
+    const [filasPunto, setFilasPunto] = useState([]);
 
-
-    //filas de la segunda tabla
-        const [filasPunto, setFilasPunto] = useState([]);
-
-
-
-  //Aca se definen los items de la lista (select)
-              //Aca se definen los items de la lista (select)
-              const items = nombresPoligonos.map((nombre) => ({
-                id: nombre,
-                name: nombre,
-              }));
+    const items = nombresPoligonos.map((nombre) => ({
+      id: nombre,
+      name: nombre,
+      }));
             
 ///////////Modales del modulo se definen las props/////////////////
     //modal 1: Editar poligono
@@ -540,26 +552,15 @@ function GestionCobertura() {
         <Add
           estado={showModal2}
           cambiarEstado={setShowModal2}
-          titulo="Editar Puntos y Poligono"s
-          campos={modalPunto.map(({ headerName: campo, field: idCampo, type, options }) => {
-            if (type === 'select') {
-              return {
-                campo,
-                idCampo,
-                typeCampo: 'select',
-                options: options,
-              };
-            }
-
-            else {
-              return { campo, idCampo, typeCampo: 'text' };
-            }
-          })}
-          />
-
-          
+          titulo="Editar Puntos y Poligono"
+          campos={modalPunto.map(({ headerName: campo, field: idCampo, typeCampo }) => {
+          return { campo, idCampo, typeCampo};
+            })}
+          camposEditados = {camposEditados}
+          onChange={handleChange}
+          onSave={handleEditPunto}
+          />  
         </div>
-        
     )
 }
 
