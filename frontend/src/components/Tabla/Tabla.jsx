@@ -8,16 +8,27 @@ import { useState } from 'react';
 
 export default function Tabla(props) {
 
-  let { rows, columns, actions, handleDeleteRow, handleEditRow } = props;
+  let { rows, columns, actions, handleDeleteRow, handleEditUser, handleEditPoligono, handleEditPunto, handleEditClient, handleEditPlan, handleEditSede} = props;
   const [filas, setFilas] = useState(rows);
 
   const handleEditClick = (row) => {
-    props.handleEditUser(row);
+    if(handleEditUser){
+      {handleEditUser(row)}
+    }else if (handleEditPoligono){
+      {handleEditPoligono(row)}
+    }else if (handleEditPunto){
+      {handleEditPunto(row)}
+    } else if (handleEditClient){
+      {handleEditClient(row)}
+    } else if (handleEditPlan){
+      {handleEditPlan(row)}
+    } else if (handleEditSede){
+    {handleEditSede(row)}
+    }
   };
 
   const handleDeleteClick = (row) => {
     const nuevasFilas = filas.filter((fila) => fila.id !== row.id);
-    setFilas(nuevasFilas);
     handleDeleteRow(row.id);
   };
 

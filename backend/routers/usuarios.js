@@ -57,6 +57,7 @@ routerUsuarios.post('/', CargaArchivo.single('fileUsuario'), validarUsuario, asy
 
     if (errores.isEmpty()) {
 
+      
       const crearUsuario = await pool.query(consulta, [
         nombre_usuario, id_sededepar, id_tipousuario, camposMayus.nombre, camposMayus.apellido,
         camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica,
@@ -215,6 +216,9 @@ routerUsuarios.patch('/edit/:id_usuario', validarIdUsuario, validarActUsuario, v
   const operacion = req.method;
   const id_usuarioAuditoria = req.headers['id_usuario'];
 
+  const camposAmayusculas = ['nombre', 'apellido', 'pregunta'];
+  const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
+
   try {
     const errores = validationResult(req);
 
@@ -249,9 +253,9 @@ routerUsuarios.patch('/edit/:id_usuario', validarIdUsuario, validarActUsuario, v
         nombre_usuario,
         id_sededepar,
         id_tipousuario,
-        nombre,
-        apellido,
-        pregunta,
+        camposMayus.nombre,
+        camposMayus.apellido,
+        camposMayus.pregunta,
         extension_telefonica,
         telefono,
         cedula,
