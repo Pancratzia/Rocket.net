@@ -3,6 +3,10 @@ import './GestionPlanes.css';
 import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
 import axios from 'axios';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 function GestionPlanes() {
   const [planesConId, setPlanes] = useState([]);
@@ -81,6 +85,14 @@ function GestionPlanes() {
     obtenerNombresPlanes();
   }, []);
 
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+  })
+
     const columnas = [
         { field: 'id', headerName: 'ID', width: 40, editable: false },
 
@@ -116,36 +128,72 @@ function GestionPlanes() {
                 return 'estado-inactivo'; // a los return les aplicamos los estilos css en tabla.scss
               }
               return '';
-            },
-          
-        
-        }
- 
-        
-      ];
+            },      
+        }      
+  ];
     
       const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar
       const [setCampos] = useState(false);
-    
+      const [camposEditados, setCamposEditados] = useState({}); 
       const [showModal, setShowModal] = useState(false);   //estado para el modal de editar
     
       
       const handleEditRow = (row) => {
-       
-        setShowModal(true); 
-    
-     
+      console.log("selecciono la fila con" + id + "en gestion de usuarios");
+      setCamposEditados(filas.id);
+      setShowModal(true); 
       };
+
+  const handleEditPlan = (editedPlans) => {
+        swalWithBootstrapButtons.fire({
+          text: "Estas seguro de que deseas editar el plan?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+          }).then (response =>{
+        if (response.isConfirmed){ 
+          console.log('prueba');
+        }else{
+          Swal.fire('Error', 'Error al editar el plan', 'error')
+        }
+        
+      })
+   }
+
+  const handleChange = (event) => {
+    const {id, value} = event.target;
+    setCamposEditados({...camposEditados, [id]: value})
+  } 
+
+  const handleDeleteClick = (id) => {
+
+  }
     
-        const handleDeleteRow = (id) => {
-        console.log("borrandofila" + id + "en gestion de sedes");
-        const nuevasFilas = filas.filter((fila) => fila.id !== id);
-        setFilas(NuevasFilas);
-      }
-    
-    
-        const [camposEditados, setCamposEditados] = useState({}); 
+  const handleDeleteRow = (id) => {
+        swalWithBootstrapButtons.fire({
+          text: "Estas seguro de que deseas eliminar el plan?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+          }).then(response => {
+            if (response.isConfirmed){
+            console.log("borrandofila" + id + "en gestion de planes");
+            const nuevasFilas = filas.filter((fila) => fila.id !== id);
+            setFilas(nuevasFilas);
+            handleDeleteClick(id);
+          }else {
+            response.dismiss === Swal.DismissReason.cancel
+            setFilas(filas);
+        }
+     })
+  }
      
+    
+  // const agregarFila = (nuevaFila) => {
+  //   setFilas([...filas, nuevaFila]);
+  //   };
     
 
 
@@ -158,16 +206,17 @@ function GestionPlanes() {
           </div>
           <div className='contenedor-busqueda'>
             <button className='boton-planes' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
-          </div>
-          <Tabla
-            columns={columnas}
-            rows={planesConId} // Asegúrate de que 'planesConId' tenga 'id' único en cada fila
-            actions
-            handleEditRow={handleEditRow}
-            handleDeleteRow = {handleDeleteRow}
-          />
-          
-          <Add
+        </div>
+        <Tabla 
+        columns={columnas} 
+        rows={filas}
+        actions
+        handleEditClick = {handleEditRow}
+        handleDeleteRow = {handleDeleteRow}
+        handleEditPlan = {handleEditPlan}
+        />
+
+        <Add
             estado={estadoModal1}
             cambiarEstado={cambiarEstadoModal1}
             titulo="Agregar Plan"
@@ -183,37 +232,25 @@ function GestionPlanes() {
 
                  else {
                     return { campo, idCampo, typeCampo: 'text' };}
-            })}
-
-            filas={filas}
-            setFilas={setFilas}
-            onGuardar={agregarFila}
-
-          />
+      })}
+        filas={filas}
+        setFilas={setFilas}
+        onGuardar={agregarFila}
+        />
 
           <Add
             estado={showModal}
             cambiarEstado={setShowModal}
             titulo="Editar Plan"
-            campos={columnas.map(({ headerName: campo, field: idCampo, type, options }) => {
-              if (type === 'select') {
-                return {
-                  campo,
-                  idCampo,
-                  typeCampo: 'select',
-                  options: options,
-                };
-                            }
-
-                 else {
-                    return { campo, idCampo, typeCampo: 'text' };}
+            campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
+            return { campo, idCampo, typeCampo};
             })}
+            camposEditados = {camposEditados}
+            onChange={handleChange}
+            onSave={handleEditPlan}
+        />
+      </div>
+    )
+}
 
-          />
-
-
-        </div>
-      )
-    }
-    
-    export default GestionPlanes;
+export default GestionPlanes;
