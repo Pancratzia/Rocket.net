@@ -143,7 +143,7 @@ function GestionPlanes() {
       setShowModal(true); 
       };
 
-  const handleEditPlan = (editedPlans) => {
+      const handleEditPlan = (editedPlans) => {
         swalWithBootstrapButtons.fire({
           text: "Estas seguro de que deseas editar el plan?",
           icon: 'question',
@@ -151,9 +151,8 @@ function GestionPlanes() {
           confirmButtonText: 'Si',
           cancelButtonText: 'No',
           }).then (response =>{
-          if (response.status === 200) {
-            obtenerPlanes(); 
-            setShowModal(false);
+        if (response.isConfirmed){ 
+          console.log('prueba');
         }else{
           Swal.fire('Error', 'Error al editar el plan', 'error')
         }
@@ -215,6 +214,7 @@ function GestionPlanes() {
             actions
             handleEditRow={handleEditRow}
             handleDeleteRow = {handleDeleteRow}
+            handleEditPlan = {handleEditPlan}
           />
           
           <Add
