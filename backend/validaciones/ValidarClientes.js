@@ -1,0 +1,87 @@
+const { validationResult, check} = require('express-validator')
+const {validarResultados} = require('../helpers/validarHelper')
+
+const validaidClientes =[
+    check('id_cliente')
+    .exists()
+    .isNumeric()
+    .not()
+    .isEmpty()
+    .custom((value, { req }) => {
+      let patron = /^$|^\s+$/;
+
+      if (patron.test(value)) {
+        return false
+      } return true
+    }),
+    (req, res, next) => {
+      const errores = validationResult(req);
+  
+      if (!errores.isEmpty()) {
+        return res.status(400).json({ error: 'Datos incorrectos' });
+      }
+  
+      next();
+    }
+]
+const validaClientes = [
+    check('nombre')
+    .exists()
+    .isLength({ max: 50 })
+    .isAlpha('es-ES')
+    .not()
+    .isEmpty(),
+    check('ubicacion')
+    .isLength({ max: 255 })
+    .isString()
+    .not()
+    .isEmpty(),
+    check('telefono')
+    .isLength({ max: 20 })
+    .matches(/^[0-9]+$/)
+    .not()
+    .isEmpty(),
+  check('id_plan')
+    .exists()
+    .isNumeric()
+    .not()
+    .isEmpty(),
+  check('id_usuario')
+    .exists()
+    .isNumeric()
+    .not()
+    .isEmpty(),
+    check('estado_usuario')
+    .exists()
+    .isNumeric()
+    .not()
+    .isEmpty()
+]
+const validarActCliente= [
+  check('nombre')
+    .optional(),
+
+  check('ubicacion')
+    .optional(),
+
+  check('telefono')
+    .optional(),
+
+  check('correo')
+    .optional(),
+
+  check('id_plan')
+    .optional(),
+
+  check('id_usuario')
+    .optional(),
+  check('estado_usuario')
+  .optional(),
+
+  (req, res, next) => {
+    validarResultados(req, res, next)
+  }
+
+];
+
+module.exports = {validaidClientes, validaClientes,validarActCliente}
