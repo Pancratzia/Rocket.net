@@ -1,10 +1,85 @@
-import React from 'react';
-import { useState } from 'react';
-import "./GestionPlanes.css";
+import React, { useEffect, useState } from 'react';
+import './GestionPlanes.css';
 import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
+import axios from 'axios';
 
 function GestionPlanes() {
+  const [planesConId, setPlanes] = useState([]);
+  const [filas, setFilas] = useState([]);
+  const [nombresPlan, setNombresPlan] = useState([]);
+
+
+  useEffect(() => {
+    obtenerPlanes();
+  }, []);
+
+  const obtenerPlanes = () => {
+    axios.get('http://localhost:3000/api/planes')
+      .then((response) => {
+        console.log('Datos de planes obtenidos de la API:', response.data);
+
+        
+        const planesConId = response.data.map((plan) => ({
+          id: plan.id_plan,
+          nombre_plan: plan.nombre_plan,
+          descripcion: plan.descripcion,
+          precio: plan.precio,
+          estado: plan.estado_plan,
+        }));
+        console.log('Planes después del mapeo:', planesConId);
+
+        setPlanes(planesConId);
+        setFilas(planesConId);
+      })
+      .catch((error) => {
+        console.error('Error al obtener planes:', error);
+      });
+  };
+
+  const obtenerNombresPlanes = () => {
+    axios.get('http://localhost:3000/api/planes')
+      .then((response) => {
+        console.log('Datos de planes obtenidos de la API:', response.data);
+  
+        const nombresPlan = response.data.map((planes) => planes.nombre_plan);
+  
+        console.log('Nombres de planess obtenidos:', nombresPlan);
+  
+        setNombresPlan(nombresPlan);
+      })
+      .catch((error) => {
+        console.error('Error al obtener nombres de polígonos:', error);
+      });
+  };
+
+  const agregarFila = (nuevoPlan) => {
+    nuevoPlan.estado_plan = 1;
+    axios.post('http://localhost:3000/api/planes', nuevoPlan)
+      .then(response => {
+        console.log('Respuesta de la solicitud:', response);
+        if (response.status === 201) {
+          const planCreado = response.data.plan;
+          cambiarEstadoModal1(false);
+          console.log('Plan creado:', planCreado);
+          // Agregar el plan creado a las filas
+          setFilas([...filas, planCreado]);
+        } else {
+          console.error('Error al crear el plan:', response);
+        }
+      })
+      .catch(error => {
+        console.error('Error al crear el plan:', error);
+        if (error.response) {
+          console.log('Respuesta de error:', error.response.data);
+        }
+      });
+  };
+
+  useEffect(() => {
+    console.log('Efecto useEffect para obtener nombres de planes ejecutado');
+    obtenerNombresPlanes();
+  }, []);
 
     const columnas = [
         { field: 'id', headerName: 'ID', width: 40, editable: false },
@@ -18,7 +93,7 @@ function GestionPlanes() {
         {
           field: 'descripcion',
           headerName: 'Descripcion',
-          width: 250
+          width: 300
         },
     
         {
@@ -30,16 +105,25 @@ function GestionPlanes() {
         {
           field: 'estado',
           headerName: 'Estado',
-          width: 250,
-          type: 'select',
-          options: ['Activo', 'Inactivo']
+          width: 150,
+          type: 'select' ,
+          options: ['Activo', 'Inactivo'],
+            //cellclassname es una  funcion que devuelve una cadena de clase CSS 
+            cellClassName: (params) => {
+              if (params.value === 'Activo') { //aqui se evalua las opciones que son seleccionadas del select
+                return 'estado-activo';
+              } else if (params.value === 'Inactivo') {
+                return 'estado-inactivo'; // a los return les aplicamos los estilos css en tabla.scss
+              }
+              return '';
+            },
+          
         
         }
  
         
       ];
     
-      const [filas, setFilas] = useState([])
       const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar
       const [setCampos] = useState(false);
     
@@ -63,75 +147,73 @@ function GestionPlanes() {
         const [camposEditados, setCamposEditados] = useState({}); 
      
     
-        const agregarFila = (nuevaFila) => {
-        setFilas([...filas, nuevaFila]);
-      };
-    
 
-    return(
+
+      
+      return(
         <div className="contenedor-gestion">
-        <div className="titulo-planes">
+          <div className="titulo-planes">
             <h1>Gestion de Planes</h1>
             <hr/>
-        </div>
-        <div className='contenedor-busqueda'>
+          </div>
+          <div className='contenedor-busqueda'>
             <button className='boton-planes' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
-        </div>
-        <Tabla 
-        columns={columnas} 
-        rows={filas}
-        actions
-        handleEditRow={handleEditRow}
-        handleDeleteRow = {handleDeleteRow}
-        />
-
-        <Add
+          </div>
+          <Tabla
+            columns={columnas}
+            rows={planesConId} // Asegúrate de que 'planesConId' tenga 'id' único en cada fila
+            actions
+            handleEditRow={handleEditRow}
+            handleDeleteRow = {handleDeleteRow}
+          />
+          
+          <Add
             estado={estadoModal1}
             cambiarEstado={cambiarEstadoModal1}
             titulo="Agregar Plan"
             campos={columnas.map(({ headerName: campo, field: idCampo, type, options }) => {
-                if (type === 'select') {
-                 return {
-                            campo,
-                            idCampo,
-                            typeCampo: 'select',
-                            options: options,
-                        };
-                    }
+              if (type === 'select') {
+                return {
+                  campo,
+                  idCampo,
+                  typeCampo: 'select',
+                  options: options,
+                };
+                            }
 
                  else {
                     return { campo, idCampo, typeCampo: 'text' };}
-})}
+            })}
 
-             filas={filas}
-             setFilas={setFilas}
-             onGuardar={agregarFila}
+            filas={filas}
+            setFilas={setFilas}
+            onGuardar={agregarFila}
 
-        />
+          />
 
-        <Add
+          <Add
             estado={showModal}
             cambiarEstado={setShowModal}
             titulo="Editar Plan"
             campos={columnas.map(({ headerName: campo, field: idCampo, type, options }) => {
-                if (type === 'select') {
-                 return {
-                            campo,
-                            idCampo,
-                            typeCampo: 'select',
-                            options: options,
-                        };
-                    }
+              if (type === 'select') {
+                return {
+                  campo,
+                  idCampo,
+                  typeCampo: 'select',
+                  options: options,
+                };
+                            }
 
                  else {
                     return { campo, idCampo, typeCampo: 'text' };}
-})}
-   
-        />
+            })}
+
+          />
 
 
         </div>
-    )
-}
-
-export default GestionPlanes;
+      )
+    }
+    
+    export default GestionPlanes;
