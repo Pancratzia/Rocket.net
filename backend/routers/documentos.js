@@ -26,7 +26,7 @@ routerDocumentos.post('/', validarDocumento, CargaDocumento.single('documento'),
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al subir el archivo' });
-  }
+  } 
 });
 
 //Modificar Documentos
