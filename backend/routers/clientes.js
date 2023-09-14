@@ -5,7 +5,7 @@ const pool = require('../database/db.js');
 const { validationResult } = require('express-validator');
 const { convertirMayusculas } = require('../funciones/funciones.js');
 
-//const { validaClientes, validaidClientes } = require('../validaciones/ValidarClientes.js');
+const { validaClientes, validaidClientes, validarActCliente } = require('../validaciones/ValidarClientes.js');
 //const { auditar } = require('../funciones/funciones.js')
 
 const routerClientes = express.Router();
@@ -14,7 +14,7 @@ routerClientes.use(cors());
 
 
 //create
-routerClientes.post('/', async (req, res) => {
+routerClientes.post('/', validaClientes, async (req, res) => {
 
   const consulta = `
   WITH validaciones AS (
@@ -37,13 +37,17 @@ try {
   const camposAmayusculas = ['nombre'];
   const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
 
+  const errores = validationResult(req);
+  if(errores.isEmpty()){
   const crearCliente = await pool.query(consulta, [
     camposMayus.nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario
   ]);
   if (crearCliente.rows.length > 0) {
     return res.status(200).json({ mensaje: 'Cliente creado exitosamente' });
   }
-
+  } else{
+    return res.status(400).json({ error: 'Datos incorrectos' });
+  }
 } catch (error) {
   console.error(error.message);
 }
@@ -54,17 +58,8 @@ try {
 
 
 //modificar cliente
-routerClientes.put('/:id_cliente', async (req, res) => {
-  const { id_cliente } = req.params;
-    const {
-      nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario
-    } = req.body;
-
-    const operacion = req.method;
-    const camposAmayusculas = ['nombre'];
-    const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
-  try {
-    const query = `
+routerClientes.put('/:id_cliente', validaClientes, validarActCliente, validaidClientes, async (req, res) => {
+  const query = `
     UPDATE clientes
     SET
       nombre = $1,
@@ -80,32 +75,33 @@ routerClientes.put('/:id_cliente', async (req, res) => {
       AND EXISTS (SELECT 1 FROM usuarios WHERE id_usuario = $6)
     RETURNING *;
   `;
-  const values = [
-    camposMayus.nombre,
-    ubicacion,
-    telefono,
-    correo,
-    id_plan,
-    id_usuario,
-    estado_usuario
+  try {
+    const { id_cliente } = req.params;
+    const {
+      nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario
+    } = req.body;
 
-  ];
+    const operacion = req.method;
+    const camposAmayusculas = ['nombre'];
+    const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
 
-  const actualizarUsuario = await pool.query(query, values);
+  const actualizarUsuario = await pool.query(query,[
+    camposMayus.nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario, id_cliente
+  ]);
 
   if (actualizarUsuario.rowCount > 0) {
-  return res.status(200).json({ mensaje: 'Usuario actualizado exitosamente' });
+  return res.status(200).json({ mensaje: 'Cliente actualizado exitosamente' });
     } 
   } catch (error) {
     console.error('Error al actualizar el usuario:', error);
-    res.status(500).json({ error: 'Error al actualizar el usuario' });
+    res.status(500).json({ error: 'Error al actualizar el ' });
   }
 });
 
 
 
 //borrar cliente
-routerClientes.patch('/:id_cliente', async (req, res) => {
+routerClientes.patch('/:id_cliente', validaidClientes, async (req, res) => {
   try {
     const { id_cliente } = req.params;
 

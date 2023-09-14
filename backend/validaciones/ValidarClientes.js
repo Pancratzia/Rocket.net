@@ -15,14 +15,22 @@ const validaidClientes =[
       } return true
     }),
     (req, res, next) => {
-        validarResultados(req, res, next)
-}]
+      const errores = validationResult(req);
+  
+      if (!errores.isEmpty()) {
+        return res.status(400).json({ error: 'Datos incorrectos' });
+      }
+  
+      next();
+    }
+]
 const validaClientes = [
     check('nombre')
     .exists()
     .isLength({ max: 50 })
-    .isString()
-    .not().isEmpty(),
+    .isAlpha('es-ES')
+    .not()
+    .isEmpty(),
     check('ubicacion')
     .isLength({ max: 255 })
     .isString()
@@ -47,10 +55,33 @@ const validaClientes = [
     .exists()
     .isNumeric()
     .not()
-    .isEmpty(),
-    (req, res, next) => {
-        validarResultados(req, res, next)
-}
+    .isEmpty()
 ]
+const validarActCliente= [
+  check('nombre')
+    .optional(),
 
-module.exports = {validaidClientes, validaClientes}
+  check('ubicacion')
+    .optional(),
+
+  check('telefono')
+    .optional(),
+
+  check('correo')
+    .optional(),
+
+  check('id_plan')
+    .optional(),
+
+  check('id_usuario')
+    .optional(),
+  check('estado_usuario')
+  .optional(),
+
+  (req, res, next) => {
+    validarResultados(req, res, next)
+  }
+
+];
+
+module.exports = {validaidClientes, validaClientes,validarActCliente}
