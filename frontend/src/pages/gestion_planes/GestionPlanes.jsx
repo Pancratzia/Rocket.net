@@ -99,18 +99,21 @@ function GestionPlanes() {
         {
           field: 'nombre_plan',
           headerName: 'Plan',
+          editable: true,
           width: 250
         },
     
         {
           field: 'descripcion',
           headerName: 'Descripcion',
+          editable: true,
           width: 300
         },
     
         {
           field: 'precio',
           headerName: 'Precio',
+          editable: true,
           width: 250
         },
     
