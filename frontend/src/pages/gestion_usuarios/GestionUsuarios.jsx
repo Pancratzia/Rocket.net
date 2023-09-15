@@ -265,7 +265,7 @@ function GestionUsuarios() {
         }
       })
       .catch(error => {
-        console.error('Error al eliminar el usuario:', error);
+        console.error('Error al eliminar el usuario: a', error);
       });
   };
   
