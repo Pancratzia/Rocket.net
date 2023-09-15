@@ -14,10 +14,8 @@ const validaPoligono = [ //Validacion para nombre_poligonos e id_usuarios44+
 				return false
 			} return true
 		}),
-
 		(req, res, next) => {
 			const errores = validationResult(req);
-		
 			if (!errores.isEmpty()) {
 			  return res.status(400).json({ error: 'Datos incorrectos' });
 			}
@@ -34,17 +32,9 @@ const validaIdPoligono = [
 		.exists()
 		.isNumeric()
 		.not()
-		.isEmpty()
-			.custom((value, { req })=>{
-				let patron = /^$|^\s+$/;
-	 
-				if(patron.test(value)){
-					return false
-				} return true
-			}),
+		.isEmpty(),
 			(req, res, next) => {
 				const errores = validationResult(req);
-			
 				if (!errores.isEmpty()) {
 				  return res.status(400).json({ error: 'Datos incorrectos' });
 				}
