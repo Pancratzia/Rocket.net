@@ -62,7 +62,7 @@ function GestionPlanes() {
     axios.post('http://localhost:3000/api/planes', nuevoPlan)
       .then(response => {
         console.log('Respuesta de la solicitud:', response);
-        if (response.status === 201) {
+        if (response.status === 200) {
           const planCreado = response.data.plan;
           cambiarEstadoModal1(false);
           console.log('Plan creado:', planCreado);
