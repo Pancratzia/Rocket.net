@@ -283,47 +283,51 @@ useEffect(() => {
 } 
   
     
-  const agregarFila = (nuevoCliente) => {
-    swalWithBootstrapButtons.fire({
-      text: "Estas seguro de que deseas crear el cliente?",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Si',
-      cancelButtonText: 'No',
-  }).then(response => {
+const agregarFila = (nuevaFila) => {
+  swalWithBootstrapButtons.fire({
+    text: "Estas seguro de que deseas crear el usuario?",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Si',
+    cancelButtonText: 'No',
+}).then(response => {
 
-    if (response.isConfirmed){ 
-      const formData = new FormData(); 
-  
-      formData.append('nombre', nuevoCliente.nombre);
-      formData.append('ubicacion', nuevoCliente.ubicacion);
-      formData.append('telefono', nuevoCliente.telefono);
-      formData.append('correo', nuevoCliente.correo);
-      formData.append('id_plan', nuevoCliente.plan);
-      formData.append('id_usuario', nuevoCliente.usuario);
-      formData.append('estado_usuario', nuevoCliente.estadousuario);
-    axios.post('http://localhost:3000/api/clientes', formData)
-    .then(response => {
-      console.log('Respuesta de la solicitud:', response);
-      if (response.status === 200) {
-        cambiarEstadoModal1(false); 
-        MySwal.fire('Exito','Has creado el cliente','success')
+  if (response.isConfirmed){
+  const formData = new FormData();
+  formData.append('nombre', nuevaFila.nombre);
+  formData.append('ubicacion', nuevaFila.ubicacion);
+  formData.append('telefono', nuevaFila.telefono);
+  formData.append('correo', nuevaFila.correo);
+  formData.append('id_plan', nuevaFila.plan);
+  formData.append('id_usuario', nuevaFila.usuario);
+  formData.append('estado_usuario', nuevaFila.estadousuario);
+  axios.post('http://localhost:3000/api/clientes', formData)
+  .then(response => {
+    console.log('Respuesta de la solicitud:', response);
+    if (response.status === 201) {
+      const clienteCreado = response.data.plan;
+      cambiarEstadoModal1(false);
+      console.log('Cliente creado:', clienteCreado);
+      // Agregar el plan creado a las filas
+      setFilas([...filas, clienteCreado]);
+      MySwal.fire('Exito','Has creado el cliente','success')
       } else {
         MySwal.fire('Error','Error al crear el cliente', 'error');
       }
     })
-    .catch(error => {
-      MySwal.fire('Error','Error al crear el cliente', 'error');
+  .catch(error => {
+    MySwal.fire('Error','Error al crear el cliente', 'error');
       if (error.response) {
       console.log('Respuesta de error:', error.response.data);
       }
-    });
-    } else {
-      response.dimiss== Swal.DismissReason.cancel;
-      
-    }
   })
-  };
+} else {
+  response.dimiss== Swal.DismissReason.cancel;
+  
+}
+  });
+}
+
 
     return(
         <div className="contenedor-gestion">
@@ -362,8 +366,8 @@ useEffect(() => {
 
              filas={filas}
              setFilas={setFilas}
-             onGuardar={(nuevoCliente) => {
-              agregarFila(nuevoCliente);
+             onGuardar={(nuevaFila) => {
+              agregarFila(nuevaFila);
              }}
 
         />
