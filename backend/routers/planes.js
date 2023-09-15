@@ -4,6 +4,7 @@ const pool = require('../database/db.js');
 const routerPlanes = express.Router();
 const { validaIdPlan, validarPlan } = require('../validaciones/ValidarPlanes.js');
 const { validationResult } = require('express-validator')
+const { auditar } = require('../funciones/funciones.js')
 
 routerPlanes.use(express.json());
 routerPlanes.use(cors());
@@ -14,6 +15,8 @@ routerPlanes.post('/', validarPlan, async (req, res) => {
     try {
 
         const errores = validationResult(req); // Agregar esta línea
+        const operacion = req.method;
+        const id_usuarioAuditoria = req.headers['id_usuario'];
 
         if (!errores.isEmpty()) {
             return res.status(400).json({ errores: errores.array() });
@@ -33,8 +36,8 @@ routerPlanes.post('/', validarPlan, async (req, res) => {
         const nuevoPlan = await pool.query(query, values);
         const idPlanGenerado = nuevoPlan.rows[0].id_plan;
 
-
-        return res.status(200).json({ mensaje: 'Poligono creado exitosamente', id_poligono: idPlanGenerado });
+        auditar(operacion, id_usuarioAuditoria);
+        return res.status(200).json({ mensaje: 'Plan creado exitosamente' });
     } catch (error) {
         console.error('Error al crear el plan:', error.message);
         res.status(500).json({ error: 'Error al crear el plan' });
@@ -94,6 +97,9 @@ routerPlanes.patch('/:id_plan', validaIdPlan, async (req, res) => {
     try {
         const { id_plan } = req.params;
         const errores = validationResult(req);
+        const operacion = req.method;
+        const id_usuarioAuditoria = req.headers['id_usuario'];
+
 
         if (errores.isEmpty()) {
             const updateQuery = `
@@ -107,6 +113,7 @@ routerPlanes.patch('/:id_plan', validaIdPlan, async (req, res) => {
             const updatedPlan = await pool.query(updateQuery, [id_plan]);
 
             if (updatedPlan.rowCount === 1) {
+                auditar(operacion, id_usuarioAuditoria);
                 return res.status(200).json({ mensaje: 'Plan eliminado correctamente' });
             } else {
                 return res.status(404).json({ error: 'Plan no encontrado' });
@@ -125,7 +132,10 @@ routerPlanes.patch('/:id_plan', validaIdPlan, async (req, res) => {
 routerPlanes.put('/:id_plan', validaIdPlan, validarPlan, async (req, res) => {
 
     const { id_plan } = req.params;
-   
+    const operacion = req.method;
+    const id_usuarioAuditoria = req.headers['id_usuario'];
+
+
     const { nombre_plan, descripcion, precio, estado_plan } = req.body;
 
     try {
@@ -142,6 +152,7 @@ routerPlanes.put('/:id_plan', validaIdPlan, validarPlan, async (req, res) => {
         const actualizarPlan = await pool.query(query, values);
 
         if (actualizarPlan.rowCount > 0) {
+            auditar(operacion, id_usuarioAuditoria);
             return res.status(200).json({ mensaje: 'Plan actualizado exitosamente' });
         } else {
             return res.status(404).json({ error: 'Error al modificar plan' });

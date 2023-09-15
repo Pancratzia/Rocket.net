@@ -3,10 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
 const { validationResult } = require('express-validator');
-const { convertirMayusculas } = require('../funciones/funciones.js');
+const { auditar, convertirMayusculas } = require('../funciones/funciones.js');
 
 const { validaClientes, validaidClientes, validarActCliente } = require('../validaciones/ValidarClientes.js');
-//const { auditar } = require('../funciones/funciones.js')
 
 const routerClientes = express.Router();
 routerClientes.use(express.json());
@@ -15,6 +14,9 @@ routerClientes.use(cors());
 
 //create
 routerClientes.post('/', validaClientes, async (req, res) => {
+
+  const operacion = req.method;
+  const id_usuarioAuditoria = req.headers['id_usuario'];
 
   const consulta = `
   WITH validaciones AS (
@@ -31,29 +33,30 @@ routerClientes.post('/', validaClientes, async (req, res) => {
   WHERE existePlan = true AND existeUsuario = true
   RETURNING *;
 `;
-try {
+  try {
 
-  const {nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario } = req.body;
-  const camposAmayusculas = ['nombre'];
-  const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
+    const { nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario } = req.body;
+    const camposAmayusculas = ['nombre'];
+    const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
 
-  const errores = validationResult(req);
-  if(errores.isEmpty()){
-  const crearCliente = await pool.query(consulta, [
-    camposMayus.nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario
-  ]);
-  if (crearCliente.rows.length > 0) {
-    return res.status(200).json({ mensaje: 'Cliente creado exitosamente' });
+    const errores = validationResult(req);
+    if (errores.isEmpty()) {
+      const crearCliente = await pool.query(consulta, [
+        camposMayus.nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario
+      ]);
+      if (crearCliente.rows.length > 0) {
+        auditar(operacion, id_usuarioAuditoria);
+        return res.status(200).json({ mensaje: 'Cliente creado exitosamente' });
+      }
+    } else {
+      return res.status(400).json({ error: 'Datos incorrectos' });
+    }
+  } catch (error) {
+    console.error(error.message);
   }
-  } else{
-    return res.status(400).json({ error: 'Datos incorrectos' });
-  }
-} catch (error) {
-  console.error(error.message);
-}
 });
 
-  
+
 
 
 
@@ -82,16 +85,19 @@ routerClientes.put('/:id_cliente', validaClientes, validarActCliente, validaidCl
     } = req.body;
 
     const operacion = req.method;
+    const id_usuarioAuditoria = req.headers['id_usuario'];
+
     const camposAmayusculas = ['nombre'];
     const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
 
-  const actualizarUsuario = await pool.query(query,[
-    camposMayus.nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario, id_cliente
-  ]);
+    const actualizarUsuario = await pool.query(query, [
+      camposMayus.nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario, id_cliente
+    ]);
 
-  if (actualizarUsuario.rowCount > 0) {
-  return res.status(200).json({ mensaje: 'Cliente actualizado exitosamente' });
-    } 
+    if (actualizarUsuario.rowCount > 0) {
+      auditar(operacion, id_usuarioAuditoria);
+      return res.status(200).json({ mensaje: 'Cliente actualizado exitosamente' });
+    }
   } catch (error) {
     console.error('Error al actualizar el usuario:', error);
     res.status(500).json({ error: 'Error al actualizar el ' });
@@ -104,6 +110,9 @@ routerClientes.put('/:id_cliente', validaClientes, validarActCliente, validaidCl
 routerClientes.patch('/:id_cliente', validaidClientes, async (req, res) => {
   try {
     const { id_cliente } = req.params;
+    const operacion = req.method;
+    const id_usuarioAuditoria = req.headers['id_usuario'];
+
 
     // Validacion #1
     const clienteExistente = await pool.query('SELECT * FROM clientes WHERE id_cliente = $1 AND borrado = false', [id_cliente]);
@@ -121,8 +130,8 @@ routerClientes.patch('/:id_cliente', validaidClientes, async (req, res) => {
     `;
 
     await pool.query(updateQuery, [id_cliente]);
-
-    res.json({ mensaje: 'Cliente eliminado correctamente' });
+    auditar(operacion, id_usuarioAuditoria);
+    res.status(200).json({ mensaje: 'Cliente eliminado correctamente' });
   } catch (error) {
     console.error('Error al marcar cliente como borrado:', error);
     res.status(500).json({ error: 'Error al marcar cliente como borrado' });
@@ -132,28 +141,28 @@ routerClientes.patch('/:id_cliente', validaidClientes, async (req, res) => {
 
 //obtener cliente
 routerClientes.get('/', async (req, res) => {
-    try {
-      const clientes = await pool.query('SELECT id_cliente, nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario FROM clientes WHERE borrado = false ORDER BY id_cliente ASC');
-      res.json(clientes.rows);
-  
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  try {
+    const clientes = await pool.query('SELECT id_cliente, nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario FROM clientes WHERE borrado = false ORDER BY id_cliente ASC');
+    res.json(clientes.rows);
+
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 //obtener un cliente
 routerClientes.get('/:id_cliente', async (req, res) => {
-    try {
-      const { id_cliente } = req.params;
-      const clientes = await pool.query('SELECT id_cliente, nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario FROM clientes WHERE id_cliente = $1 AND borrado = false', [id_cliente]);
-      if (clientes.rowCount === 0) {
-        return res.status(404).json({ error: 'Cliente no encontrado' });
-      }
-      res.json(clientes.rows[0]);
-  
-    } catch (error) {
-      console.log(error);
+  try {
+    const { id_cliente } = req.params;
+    const clientes = await pool.query('SELECT id_cliente, nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario FROM clientes WHERE id_cliente = $1 AND borrado = false', [id_cliente]);
+    if (clientes.rowCount === 0) {
+      return res.status(404).json({ error: 'Cliente no encontrado' });
     }
-  });
+    res.json(clientes.rows[0]);
 
-  module.exports = routerClientes;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+module.exports = routerClientes;
