@@ -1,4 +1,6 @@
 import React from 'react';
+import { useState } from 'react';
+import ModalArchivo from '../../components/ModalArchivo/ModalArchivo';
 import "./Archivos.css";
 import Tabla from '../../components/Tabla/Tabla';
 
@@ -23,8 +25,30 @@ function Archivos() {
             width: 250,
             editable: true,
         },
+        {
+            field: "idusuario",
+            headerName: "Usuario",
+            width: 250,
+            editable: true,
+        },
+        {
+            field: "fechasubida",
+            headerName: "Fecha de subida",
+            width: 250,
+            editable: true,
+        },
+        {
+            field: "horasubida",
+            headerName: "Hora de subida",
+            width: 250,
+            editable: true,
+        },
     ]
-    const filas = []
+
+    const [filas, setFilas] = useState([])
+    const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar
+    const [showModal, setShowModal] = useState(false);
+
 
     return(
         <div className="contenedor-gestion">
@@ -33,8 +57,14 @@ function Archivos() {
             <hr/>
         </div>
         <div className='contenedor-busqueda'>
-            <button className='boton-archivos'>Agregar</button>
+            <button className='boton-archivos' onClick={() => cambiarEstadoModal1(!estadoModal1)}>Agregar</button>
         </div>
+        <ModalArchivo 
+        estado={estadoModal1} 
+        cambiarEstado={cambiarEstadoModal1}
+        subir={(nuevoArchivo) => {agregarArchivo(nuevoArchivo);}}
+        />
+        
         <Tabla columns={columnas} rows={filas}/>
         </div>
     )

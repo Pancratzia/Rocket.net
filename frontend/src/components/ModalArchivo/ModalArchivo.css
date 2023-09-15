@@ -1,0 +1,145 @@
+.contenedor-cerrar-archivo{
+display:flex;
+align-items: right;
+justify-content: right;
+padding: 0px;
+}
+
+.cerrar-archivo{
+border:none;
+background-color: transparent;
+padding:0px;
+cursor: pointer;
+}
+
+.contenedor-archivos{
+width: 100vw;
+height: 100vh; 
+position: fixed; 
+top: 0;
+left: 0;
+background: rgba(0, 0, 0, .5);
+padding: 40px;
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 1;
+}
+
+.contenedor-formulario{
+width: 500px;
+min-height: 500px;
+background: #fff;
+position: absolute;
+border-radius: 5px;
+box-shadow: rgba(100, 100, 111, 8.2) 0px 7px 29px 0px;
+padding: 20px;
+z-index: 2;
+}
+
+.titulo-modal-archivo h1{
+font: 'Poppins';
+font-size: 30px;
+justify-content: center;
+text-align: center;
+width: 100%;
+}
+
+.caja{
+width: 460px;
+height: 200px;
+padding: 20px;
+display:grid;
+border-radius: 5px;
+gap:10px;
+background-color: #032240; 
+box-shadow: black 2px 2px 4px;
+}
+
+.caja h1{
+text-align: center;
+font: 'Poppins';
+font-size: 15px;
+font-weight: 200;
+color: white;
+}
+
+.caja h2{
+text-align: center;
+font: 'Poppins';
+font-size: 12px;
+font-weight: 200;
+color: white;
+}
+
+.icon-subir{
+width: 100%;   
+height: 80px;
+padding-top: 5px;
+color: #299E6A;
+cursor: pointer;
+}
+
+.formulario-style{
+margin: 20px 20px;
+display: flex;
+flex-direction: column;
+gap: 20px;
+justify-content: center;
+align-items: left;
+}
+
+.input-archivo{
+height: 40px;
+border-radius: 20px;
+border-color: #299E6A;
+font-size: 19px;
+font:'Poppins';
+padding-left: 6px;
+width: 100%;
+}
+
+.input-archivo:focus{
+border-color:#299E6A;
+border-radius: 20px;
+}
+
+.nombre-archivo{
+text-align: left; 
+font-size: 15px;
+}
+
+.descripcion-archivo{
+text-align: left;
+font-size: 15px;
+}
+
+.contenedor-botones-archivos{
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.boton-subir{
+width: 30%;
+height: 40px;
+background-color: #032240;
+color: white;
+border-color: transparent;
+font: 'Poppins';
+font-size: 18px;
+border-radius: 8px;
+cursor: pointer;
+}
+
+.boton-cancelar{
+width: 30%;
+height: 40px;
+background-color: #032240;
+color: white;
+border-color: transparent;
+font: 'Poppins';
+font-size: 18px;
+border-radius: 8px;
+cursor: pointer;
+}

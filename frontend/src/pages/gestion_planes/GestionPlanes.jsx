@@ -119,7 +119,7 @@ function GestionPlanes() {
     
   const agregarFila = (nuevaFila) => {
     setFilas([...filas, nuevaFila]);
-    };
+  };
     
 
     return(
