@@ -3,12 +3,24 @@ import { useState } from 'react';
 import ModalArchivo from '../../components/ModalArchivo/ModalArchivo';
 import "./Archivos.css";
 import Tabla from '../../components/Tabla/Tabla';
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 function Archivos() {
 
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: 'btn btn-success',
+          cancelButton: 'btn btn-danger'
+          },
+          buttonsStyling: false
+      })
+
     const columnas =[
         {
-            field: "idarchivo",
+            field: "id",
             headerName: "ID",
             width: 100,
             editable: true,
@@ -49,7 +61,38 @@ function Archivos() {
     const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar
     const [showModal, setShowModal] = useState(false);
 
+   
+    const agregarArchivo = (newFormData) => {
+        setFilas([...filas, newFormData]);
+        
+    }; // este es el codigo de la funcion que agrega a la fila el newFormData que tiene almacenado la informacion del modal y las funciones que definimos para obtener la hora y fecha de subida del archivo
 
+    const handleDeleteClick = (id) => {
+
+    }
+    const handleDeleteRow = (id) => {
+        swalWithBootstrapButtons.fire({
+          text: "Estas seguro de que deseas eliminar el Archivo?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+          }).then(response => {
+            if (response.isConfirmed){
+            console.log("borrandofila" + id + "en Archivos");
+            const nuevasFilas = filas.filter((fila) => fila.id !== id);
+            setFilas(nuevasFilas);
+            handleDeleteClick(id);
+          }else {
+            response.dismiss === Swal.DismissReason.cancel
+            setFilas(filas);
+        }
+     })
+  }
+
+     
+     
+      
     return(
         <div className="contenedor-gestion">
         <div className="titulo-archivos">
@@ -62,10 +105,10 @@ function Archivos() {
         <ModalArchivo 
         estado={estadoModal1} 
         cambiarEstado={cambiarEstadoModal1}
-        subir={(nuevoArchivo) => {agregarArchivo(nuevoArchivo);}}
+        subir={agregarArchivo}
         />
         
-        <Tabla columns={columnas} rows={filas}/>
+        <Tabla columns={columnas} rows={filas} actions  handleDeleteRow = {handleDeleteRow}/>
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import { useRef, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import { FaFileUpload } from "react-icons/fa";
 import "./ModalArchivo.css";
 
@@ -12,18 +13,22 @@ const [descripcion, setDescripcion] = useState("")
 
 const handleFile=(event)=> {
     setFile(event.target.files[0])
+    setTitulo(event.target.files[0].name) //para obtener el nombre del archivo y guardarlos en el estado titulo (setTitulo)
     console.log(event.target.files[0])
 }
 
+
 const handleSubmit = (e) => {
     e.preventDefault();
+  
 
-    const newFormData = { ...formData, id: uuidv4() };
 
-    subir(newFormData);
-    setFilas([...filas,formData]);
-    setFormData({});
-    cambiarEstado(false);
+    const newFormData = { ...formData, id: uuidv4(), tituloarchivo: titulo,  
+    descripcionarchivo: descripcion,  idusuario: "id_usuario", // aca estan almacenado la data del modal
+    }; 
+    
+    subir(newFormData); 
+    console.log('prueba de almacenamiento', newFormData); // para ver si se estan almacenando los datos
 }
 
 const handleFileInputClick = () =>{
@@ -65,13 +70,13 @@ const handleFileInputClick = () =>{
         <div className="contenedor-campos">
             <form className = "formulario-style" onSubmit={handleSubmit}>
             <label className = "nombre-archivo">Titulo del archivo</label>
-            <input className="input-archivo" id="nombre" onChange={(e) => setTitulo(e.target.value)}></input>
+            <input className="input-archivo" id="nombre" onChange={(e) => setTitulo(e.target.value)} value={titulo}></input>
             <label className = "descripcion-archivo">Descripcion del archivo</label>
             <input className="input-archivo" onChange={(e) => setDescripcion(e.target.value)}></input>
             </form>
         </div>
         <div className="contenedor-botones-archivos">
-        <button className="boton-subir">Subir</button>
+        <button className="boton-subir" onClick={handleSubmit}>Subir</button>
         <button className="boton-cancelar" onClick={() => cambiarEstado(!estado)}>Cancelar </button>
         </div>
         </div>
