@@ -18,8 +18,7 @@ routerPoligonos.use(cors());
 routerPoligonos.post('/', validaPoligono, async(req, res) => {
     try {
         
-      const {nombre_poligono} = req.body;
-      const {id_usuario} = req.body;
+      const {nombre_poligono, id_usuario} = req.body;
 
       // parametros para auditoria
       const  operacion  = req.method;
