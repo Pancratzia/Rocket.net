@@ -3,12 +3,10 @@ import './GestionPlanes.css';
 import Tabla from '../../components/Tabla/Tabla';
 import Add from '../../components/Add/Add';
 import axios from 'axios';
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-
-const MySwal = withReactContent(Swal);
 
 function GestionPlanes() {
+  const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar
+  const [setCampos] = useState(false);
   const [planesConId, setPlanes] = useState([]);
   const [filas, setFilas] = useState([]);
   const [nombresPlan, setNombresPlan] = useState([]);
@@ -59,6 +57,7 @@ function GestionPlanes() {
 
   const agregarFila = (nuevoPlan) => {
     nuevoPlan.estado_plan = 1;
+    console.log('Nuevo plan con estado:', nuevoPlan);
     axios.post('http://localhost:3000/api/planes', nuevoPlan)
       .then(response => {
         console.log('Respuesta de la solicitud:', response);
@@ -85,35 +84,24 @@ function GestionPlanes() {
     obtenerNombresPlanes();
   }, []);
 
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn btn-success',
-      cancelButton: 'btn btn-danger'
-      },
-      buttonsStyling: false
-  })
-
     const columnas = [
         { field: 'id', headerName: 'ID', width: 40, editable: false },
 
         {
           field: 'nombre_plan',
           headerName: 'Plan',
-          editable: true,
           width: 250
         },
     
         {
           field: 'descripcion',
           headerName: 'Descripcion',
-          editable: true,
           width: 300
         },
     
         {
           field: 'precio',
           headerName: 'Precio',
-          editable: true,
           width: 250
         },
     
@@ -121,117 +109,70 @@ function GestionPlanes() {
           field: 'estado',
           headerName: 'Estado',
           width: 150,
-          type: 'select' ,
-          options: ['Activo', 'Inactivo'],
-            //cellclassname es una  funcion que devuelve una cadena de clase CSS 
-            cellClassName: (params) => {
-              if (params.value === 'Activo') { //aqui se evalua las opciones que son seleccionadas del select
-                return 'estado-activo';
-              } else if (params.value === 'Inactivo') {
-                return 'estado-inactivo'; // a los return les aplicamos los estilos css en tabla.scss
-              }
-              return '';
-            },      
-        }      
-  ];
+          type: 'select',
+          options: [
+            
+            {
+              value:1,
+              label: "Jefes de sede",
+
+          },
+
+          {
+            value:2,
+            label:"Usuarios Creacion de archivos",
+          },
+        
+          {
+            value:3,
+            label: "Usuarios solo lectura",
+          },
+        ], // Cambia las opciones a valores numéricos
+        }
+ 
+        
+      ];
+      /*cellclassname es una funcion que devuelve una cadena de clase CSS
+      cellClassName:(params)=> {
+        if (params.value == "Activo"){     //(Aca se evalua las opciones que son seleccionadas del select)
+          return 'estado-activo';
+        }else if (params.value === 'Inactivo'){
+          return 'estado-inactivo';  //(a los return les aplicamos los estilos css en tablas.css)
+          
+        }
+
+        return '';
+      },
+      
+      
+      
+      
+      */
+
     
-      const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar
-      const [setCampos] = useState(false);
-      const [camposEditados, setCamposEditados] = useState({}); 
       const [showModal, setShowModal] = useState(false);   //estado para el modal de editar
-  
+    
+      
       const handleEditRow = (row) => {
-      console.log("selecciono la fila con" + id + "en gestion de usuarios");
-      setCamposEditados(filas.id);
-      setShowModal(true); 
+       
+        setShowModal(true); 
+    
+     
       };
+    
+        const handleDeleteRow = (id) => {
+        console.log("borrandofila" + id + "en gestion de sedes");
+        const nuevasFilas = filas.filter((fila) => fila.id !== id);
+        setFilas(NuevasFilas);
+      }
+    
+    
+        const [camposEditados, setCamposEditados] = useState({}); 
+     
+    
+
 
       
-
-      const handleEditPlan = (editedPlans) => {
-        swalWithBootstrapButtons.fire({
-          text: "Estas seguro de que deseas editar el plan?",
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonText: 'Si',
-          cancelButtonText: 'No',
-          }).then (response =>{
-        if (response.isConfirmed){ 
-            const propertyMap = {
-              id: 'id_plan',
-              nombre_plan: 'nombre_plan',
-              descripcion: 'descripcion',
-              estado: 'estado_plan',
-              precio: 'precio',
-            };
-    
-            const requestBody = {};
-    
-          for (const key in editedPlans) {
-            if (key in propertyMap) {
-              requestBody[propertyMap[key]] = editedPlans[key];
-            } else {
-              requestBody[key] = editedPlans[key];
-            }
-        }
-            axios.put(`http://localhost:3000/api/planes/${editedPlans.id}`, requestBody)
-              .then((response) => {
-                if (response.status === 200) {
-                  obtenerPlanes(); // Vuelve a cargar la lista de planes después de editar
-                  setShowModal(false); // Cierra el modal de edición
-                } else {
-                  console.error("Error al editar el plan:", response);
-                }
-              })
-              .catch((error) => {
-                console.error("Error al editar el plan:", error);
-              });
-        }else{
-          Swal.fire('Error', 'Error al editar el plan', 'error')
-        }
-        
-      })
-   }
-
-  const handleChange = (event) => {
-    const {id, value} = event.target;
-    setCamposEditados({...camposEditados, [id]: value})
-  } 
-
-  const handleDeletePlan = (id_plan) => {
-    axios.patch(`http://localhost:3000/api/planes/${id_plan}`)
-      .then((response) => {
-        if (response.status === 200) {
-          obtenerPlanes(); 
-        } else {
-          console.error("Error al eliminar el plan:", response);
-        }
-      })
-      .catch((error) => {
-        console.error("Error al eliminar el plan:", error);
-      });
-  }; 
-    
-  const handleDeleteRow = (id) => {
-        swalWithBootstrapButtons.fire({
-          text: "Estas seguro de que deseas eliminar el plan?",
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonText: 'Si',
-          cancelButtonText: 'No',
-          }).then(response => {
-            if (response.isConfirmed){
-            console.log("borrandofila" + id + "en gestion de planes");
-            const nuevasFilas = filas.filter((fila) => fila.id !== id);
-            setFilas(nuevasFilas);
-            handleDeletePlan(id);
-          }else {
-            response.dismiss === Swal.DismissReason.cancel
-            setFilas(filas);
-        }
-     })
-  }
-       
       return(
         <div className="contenedor-gestion">
           <div className="titulo-planes">
@@ -243,17 +184,42 @@ function GestionPlanes() {
           </div>
           <Tabla
             columns={columnas}
-            rows={planesConId} // Asegúrate de que 'planesConId' tenga 'id' único en cada fila
+            rows={planesConId} 
             actions
             handleEditRow={handleEditRow}
             handleDeleteRow = {handleDeleteRow}
-            handleEditPlan = {handleEditPlan}
           />
           
           <Add
-            estado={estadoModal1}
-            cambiarEstado={cambiarEstadoModal1}
-            titulo="Agregar Plan"
+          
+           estado={estadoModal1}
+           cambiarEstado={cambiarEstadoModal1}
+           titulo="Agregar Plan"
+           campos={columnas.map(({ headerName: campo, field: idCampo, type, options }) => {
+              if (type === 'select') {
+                return {
+
+                  
+                  
+            campo,
+            idCampo,
+            typeCampo: 'select',
+             options: options, 
+           };
+                            }
+
+                 else {
+                    return { campo, idCampo, typeCampo: 'text' };}
+            })}
+
+           filas={filas}
+           setFilas={setFilas}
+              onGuardar={agregarFila}
+          />
+          <Add
+            estado={showModal}
+            cambiarEstado={setShowModal}
+            titulo="Editar Plan"
             campos={columnas.map(({ headerName: campo, field: idCampo, type, options }) => {
               if (type === 'select') {
                 return {
@@ -266,25 +232,13 @@ function GestionPlanes() {
 
                  else {
                     return { campo, idCampo, typeCampo: 'text' };}
-      })}
-        filas={filas}
-        setFilas={setFilas}
-        onGuardar={agregarFila}
-        />
-
-          <Add
-            estado={showModal}
-            cambiarEstado={setShowModal}
-            titulo="Editar Plan"
-            campos={columnas.map(({ headerName: campo, field: idCampo, typeCampo }) => {
-            return { campo, idCampo, typeCampo};
             })}
-            camposEditados = {camposEditados}
-            onChange={handleChange}
-            onSave={handleEditPlan}
-        />
-      </div>
-    )
-}
 
-export default GestionPlanes;
+          />
+
+
+        </div>
+      )
+    }
+    
+    export default GestionPlanes;

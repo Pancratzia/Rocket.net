@@ -11,6 +11,7 @@ const MySwal = withReactContent(Swal);
 
 function GestionCobertura() {
 
+  const [poligonosedit, setpoligonosedit] = useState([])
   const [poligonos, setPoligonos] = useState([]);
   const [puntos, setPuntos] = useState([]);
   const [campos, setCampos] = useState(false);
@@ -21,7 +22,7 @@ function GestionCobertura() {
   const obtenerPoligonos = () => {
     axios.get('http://localhost:3000/api/poligonos')
       .then((response) => {
-        console.log('Datos de polígonos obtenidos de la API:', response.data);
+        console.log('Datos de poligonos obtenidos de la API:', response.data);
   
         const poligonosConId = response.data.map((poligono) => ({
           id: poligono.id_poligono,
@@ -29,13 +30,13 @@ function GestionCobertura() {
           id_usuario: poligono.id_usuario,
         }));
   
-        console.log('Polígonos después del mapeo:', poligonosConId);
+        console.log('Poligonos después del mapeo:', poligonosConId);
   
         setPoligonos(poligonosConId);
         setFilasPoligono(poligonosConId);
       })
       .catch((error) => {
-        console.error('Error al obtener polígonos:', error);
+        console.error('Error al obtener poligonos:', error);
       });
   };
 
@@ -43,69 +44,69 @@ function GestionCobertura() {
     axios
       .get('http://localhost:3000/api/poligonos')
       .then((response) => {
-        console.log('Datos de polígonos obtenidos de la API:', response.data);
+        console.log('Datos de poligonos obtenidos de la API:', response.data);
   
         const nombresPoligonos = response.data.map((poligono) => poligono.nombre_poligono);
   
-        console.log('Nombres de polígonos obtenidos:', nombresPoligonos);
+        console.log('Nombres de poligonos obtenidos:', nombresPoligonos);
   
         setNombresPoligonos(nombresPoligonos); // Actualiza el estado con los nombres
       })
       .catch((error) => {
-        console.error('Error al obtener nombres de polígonos:', error);
+        console.error('Error al obtener nombres de poligonos:', error);
       });
   };
   
   useEffect(() => {
-    console.log('Efecto useEffect para obtener polígonos ejecutado');
+    console.log('Efecto useEffect para obtener poligonos ejecutado');
     obtenerPoligonos();
   }, []);
   
   useEffect(() => {
-    console.log('Efecto useEffect para obtener nombres de polígonos ejecutado');
+    console.log('Efecto useEffect para obtener nombres de poligonos ejecutado');
     obtenerNombresPoligonos();
   }, []);
 
 
   const crearPoligono = () => {
-    // Validar que se haya ingresado un nombre de polígono
+    // Validar que se haya ingresado un nombre de poligono
     if (poligono.trim() === '') {
       MySwal.fire({
         title: <strong>Error</strong>,
-        html: <i>Por favor, ingrese un nombre para el polígono</i>,
+        html: <i>Por favor, ingrese un nombre para el poligono</i>,
         icon: 'error',
       });
       return;
     }
   
-    // Crear un objeto que represente el nuevo polígono
+    // Crear un objeto que represente el nuevo poligono
     const nuevoPoligono = {
       nombre_poligono: poligono, 
       id_usuario: '1' 
     };
   
-    // Enviar el objeto al servidor para crear el polígono
-    console.log('Datos del nuevo polígono:', nuevoPoligono);
+    // Enviar el objeto al servidor para crear el poligono
+    console.log('Datos del nuevo poligono:', nuevoPoligono);
     axios.post('http://localhost:3000/api/poligonos', nuevoPoligono)
   .then((response) => {
     if (response.status === 200) {
-      obtenerPoligonos(); // Actualiza la lista de polígonos después de crear uno nuevo
+      obtenerPoligonos(); // Actualiza la lista de poligonos después de crear uno nuevo
       const poligonoCreado = response.data;
       const nuevoIdPoligono = poligonoCreado.id_poligono; 
     
-      // Agregar el nuevo polígono a las filas con el ID generado
+      // Agregar el nuevo poligono a las filas con el ID generado
       setFilasPoligono([...filasPoligono, { id: nuevoIdPoligono, ...poligonoCreado }]);
     
       // Mostrar una notificación de éxito
-      MySwal.fire('Polígono creado', 'El polígono se ha creado correctamente', 'success');
+      MySwal.fire('Poligono creado', 'El poligono se ha creado correctamente', 'success');
     
     } else {
-      Swal.fire('Error', 'No se pudo crear el polígono', 'error');
+      Swal.fire('Error', 'No se pudo crear el poligono', 'error');
     }
   })
   .catch((error) => {
-    console.error('Error al crear el polígono:', error);
-    Swal.fire('Error', 'Ocurrió un error al crear el polígono', 'error');
+    console.error('Error al crear el poligono:', error);
+    Swal.fire('Error', 'Ocurrió un error al crear el poligono', 'error');
   });
   };
 
@@ -114,18 +115,45 @@ function GestionCobertura() {
       .then((response) => {
         if (response.status === 200) {
           // Muestra un mensaje de éxito en la consola
-          console.log('Polígono eliminado correctamente');
+          console.log('Poligono eliminado correctamente');
         } else {
           // Muestra un mensaje de error en la consola
-          console.error('No se pudo eliminar el polígono');
+          console.error('No se pudo eliminar el poligono');
         }
       })
       .catch((error) => {
         // Muestra un mensaje de error en la consola
-        console.error('Error al eliminar el polígono:', error);
+        console.error('Error al eliminar el poligono:', error);
       });
   };
 
+  const handleEditPoligono = (editPoligono) => {
+    const idPoligonoAModificar = editPoligono.id;
+    console.log('ID del poligono a modificar:', idPoligonoAModificar);
+    const nuevoNombrePoligono = editPoligono.nombre_poligono;
+  
+    // Verificar si el poligono existe en la base de datos antes de editar  
+
+  
+    // Crear un objeto con las modificaciones
+    const modificacionesPoligono = {
+      nombre_poligono: nuevoNombrePoligono,
+    };
+  
+    // Actualizar el estado con los cambios pendientes de edición
+    // Enviar la solicitud PUT al servidor para guardar los cambios
+    axios.put(`http://localhost:3000/api/poligonos/${idPoligonoAModificar}`, modificacionesPoligono)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log('Poligono actualizado correctamente en el servidor');
+        } else {
+          console.error('No se pudo actualizar el poligono en el servidor');
+        }
+      })
+      .catch((error) => {
+        console.error('Error al actualizar el poligono:', error);
+      });
+  };
 // Alertas para crear poligono 
   const [poligono, setPoligono] = useState('');   
   const crearPoligonos = (event) => {
@@ -168,7 +196,7 @@ function GestionCobertura() {
                   })
              
               } else {
-      // Mostrar mensaje de error si los campos están vacíos
+      // Mostrar mensaje de error si los campos están vacios
               MySwal.fire({
                   title: <strong>Error</strong>,
                   html: <i>Por favor, complete el campo</i>,
@@ -220,7 +248,7 @@ function GestionCobertura() {
                     }
                   })
               } else {
-                // Mostrar mensaje de error si los campos están vacíos
+                // Mostrar mensaje de error si los campos están vacios
                 MySwal.fire({
                   title: <strong>Error</strong>,
                   html: <i>Por favor, complete todos los campos</i>,
@@ -228,6 +256,8 @@ function GestionCobertura() {
                 });
               }
             };
+
+
 
             const obtenerPuntos = () => {
               axios.get('http://localhost:3000/api/puntos')
@@ -304,7 +334,7 @@ function GestionCobertura() {
     .catch((error) => {
       console.error('Error al crear el punto:', error);
       Swal.fire('Error', 'Ocurrió un error al crear el punto', 'error');
-      // Agregar esta línea para mostrar detalles del error en la consola
+      // Agregar esta linea para mostrar detalles del error en la consola
       console.log('Detalles del error:', error.response);
     });
   }
@@ -336,37 +366,40 @@ function GestionCobertura() {
   };
   
 
-  const handleEditPoligono = (editedPoligono) => {
-    swalWithBootstrapButtons.fire({
-      text: "Estas seguro de que deseas editar el poligono?",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Si',
-      cancelButtonText: 'No',
-      }).then (response =>{
-    if (response.isConfirmed){ 
-      console.log('prueba');
-    }else{
-      Swal.fire('Error', 'Error al editar el poligono', 'error')
-    }
-  })
-};
-
   const handleEditPunto = (editedPunto) => {
-    swalWithBootstrapButtons.fire({
-      text: "Estas seguro de que deseas editar el punto?",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Si',
-      cancelButtonText: 'No',
-      }).then (response =>{
-    if (response.isConfirmed){ 
-      console.log('prueba');
-    }else{
-      Swal.fire('Error', 'Error al editar el punto', 'error')
+    console.log('Valores en editedPunto:', editedPunto);
+  
+    // Separar la cadena "121 - 131" en latitud y longitud
+    const [latitudStr, longitudStr] = editedPunto.punto.split(' - ');
+  
+    // Convertir las cadenas en números
+    const latitud = parseFloat(latitudStr);
+    const longitud = parseFloat(longitudStr);
+  
+    // Verificar si la conversión fue exitosa
+    if (!isNaN(latitud) && !isNaN(longitud)) {
+      // Enviar la solicitud PUT al servidor para guardar los cambios
+      axios
+        .put(`http://localhost:3000/api/puntos/${editedPunto.id}`, {
+          latitud: latitud,
+          longitud: longitud,
+          id_poligono: editedPunto.poligono,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            console.log('Punto actualizado correctamente en el servidor');
+          } else {
+            console.error('No se pudo actualizar el punto en el servidor');
+          }
+        })
+        .catch((error) => {
+          console.error('Error al actualizar el punto:', error);
+        });
+    } else {
+      console.error('Nueva latitud o longitud no son números válidos.');
+      // Puedes mostrar un mensaje de error o realizar alguna acción de manejo de errores aquí.
     }
-  })
-};
+  };
 
   const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
  
@@ -472,7 +505,7 @@ function GestionCobertura() {
   const [showModal2, setShowModal2] = useState(false);  //Para manejar estados del modal 2
   
   //aca con el setShowModal mostramos el modal 1 que corresponde a la tabla de poligonos
-  const handleEditRow = (id) => {
+const handleEditRow = (id) => {
       console.log("selecciono la fila con" + id + "en gestion de usuarios");
       setShowModal(true);
   };
