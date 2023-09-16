@@ -2,31 +2,57 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js');
+const fs = require('fs');
+const { validationResult } = require('express-validator')
 
 const routerDocumentos = express.Router();
 routerDocumentos.use(express.json());
 routerDocumentos.use(cors());
+const { auditar, convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
 const { validarIdDocumento, validarDocumento } = require('../validaciones/ValidarDocumentos.js')
 
 //Crear Documento
 
 const { CargaDocumento, CURRENT_DIR } = require('../middleware/DocumentosMulter.js')
 
-routerDocumentos.post('/', validarDocumento, CargaDocumento.single('documento'),async (req, res) => {
-  const { titulo,descripcion, id_usuario, hora_subida, fecha_subida } = req.body;
+routerDocumentos.post('/', CargaDocumento.single('documento'), validarDocumento, async (req, res) => {
+  
+  const consulta = `
+  INSERT INTO documentos (titulo, descripcion, id_usuario, hora_subida, fecha_subida, permiso, borrado) 
+  VALUES ($1, $2, 1, $3, $4, $5, false) RETURNING *;
+`;
+
+try {
+  const { titulo, descripcion, hora_subida, fecha_subida, permiso } = req.body;
+  const operacion = req.method;
+  const id_usuarioAuditoria = req.headers['id_usuario'];
   const documento = req.file.filename;
 
-  const query = 'INSERT INTO documentos (titulo, descripcion, id_usuario, hora_subida, fecha_subida) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-  const values = [titulo, descripcion, id_usuario, hora_subida, fecha_subida];
+  // Construir una cadena de fecha y hora válida
+  const fechaHoraValida = `${fecha_subida} ${hora_subida}:00`;
 
-  try {
-    const result = await pool.query(query, values);
-    console.log(result)
-    res.json({ id: result.rows[0].id });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error al subir el archivo' });
-  } 
+  const errores = validationResult(req);
+
+  if (errores.isEmpty()) {
+    const crearDocumento = await pool.query(consulta, [
+      documento, descripcion, fechaHoraValida, fechaHoraValida, permiso
+    ]);
+    if (crearDocumento.rows.length > 0) {
+      auditar(operacion, id_usuarioAuditoria);
+      return res.status(200).json({ mensaje: 'Documento creado exitosamente' });
+    }else {
+      fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: 'Error al crear el documento' });
+    }
+  } else {
+    fs.unlinkSync(req.file.path);
+    return res.status(400).json({ error: 'Datos incorrectos' });
+  }
+} catch (error) {
+  console.error(error.message);
+  return res.status(400).json({ error: 'Error al crear el documento' });
+}
+
 });
 
 //Modificar Documentos
@@ -58,6 +84,8 @@ routerDocumentos.put('/:id_documento', validarDocumento, validarIdDocumento, asy
     console.error(err.message)
   }
 })
+
+routerDocumentos.use(errorHandler);
 
 //Obtener Documentos
 

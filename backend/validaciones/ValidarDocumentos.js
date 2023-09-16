@@ -32,7 +32,13 @@ const validarDocumento = [
   check('id_usuario')
     .exists()
     .isString()
-    .not().isEmpty()
+    .not().isEmpty(),
+  check ('documento').custom((value, { req }) => {
+    if (!req.file) {
+      throw new Error('Datos incorrectos');
+    }
+    return true;
+  }),
 ]
 
 module.exports = {validarIdDocumento, validarDocumento}
