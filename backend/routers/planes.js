@@ -46,7 +46,8 @@ routerPlanes.get('/', async (req, res) => {
         const query = `
             SELECT id_plan, nombre_plan, descripcion, precio, estado_plan
             FROM planes
-            WHERE borrado = false;
+            WHERE borrado = false
+            ORDER BY id_plan ASC;
         `;
 
         const { rows } = await pool.query(query);
@@ -134,6 +135,9 @@ routerPlanes.put('/:id_plan', validaIdPlan, validarPlan, async (req, res) => {
             SET nombre_plan = $1, descripcion = $2, precio = $3, estado_plan = $4
             WHERE id_plan = $5
             AND borrado = false
+            AND NOT EXISTS (
+                SELECT 1 FROM planes WHERE nombre_plan = $1 AND id_plan <> $5 AND borrado = false
+            )
             RETURNING *;
         `;
 
