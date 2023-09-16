@@ -19,6 +19,10 @@
     
 }
 
+.estado-activo{
+  background-color: aqua;
+}
+
   .contenedor-busqueda{
     padding: 20px;
     justify-content: right;

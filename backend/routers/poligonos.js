@@ -18,8 +18,7 @@ routerPoligonos.use(cors());
 routerPoligonos.post('/', validaPoligono, async(req, res) => {
     try {
         
-      const {nombre_poligono} = req.body;
-      const {id_usuario} = req.body;
+      const {nombre_poligono, id_usuario} = req.body;
 
       // parametros para auditoria
       const  operacion  = req.method;
@@ -44,7 +43,7 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
 
 //update
 
-routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
+routerPoligonos.put('/:id_poligono', validaIdPoligono,validaPoligono, async (req, res) => {
   const { id_poligono} = req.params;
   const { nombre_poligono } = req.body;
   
@@ -54,10 +53,10 @@ routerPoligonos.put('/:id_poligono', validaIdPoligono, async (req, res) => {
 
   try {
 
-    const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_usuario = $1",[id_poligono]);
+    const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_poligono = $1",[id_poligono]);
 
         if (buscarIdPoligono.rowCount === 0) {
-          return res.status(404).json({ error: 'Datos Incorrectos' });
+          return res.status(404).json({ error: 'Error al crear el poligono' });
         }
  
     const query = 'UPDATE poligonos SET nombre_poligono=$1 WHERE id_poligono=$2';

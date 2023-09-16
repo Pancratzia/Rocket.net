@@ -125,6 +125,8 @@ export default function Tabla(props) {
         slotProps={{
           toolbar:{
             showQuickFilter: true,
+            csvOptions: { disableToolbarButton: true },
+            printOptions: { disableToolbarButton: true },
           },
         }}
       />

@@ -58,11 +58,11 @@ function GestionPlanes() {
   };
 
   const agregarFila = (nuevoPlan) => {
-    nuevoPlan.estado_plan = 1;
+    nuevoPlan.estado_plan = nuevoPlan.estado; // Ajusta esto según tu estructura de datos
     axios.post('http://localhost:3000/api/planes', nuevoPlan)
       .then(response => {
         console.log('Respuesta de la solicitud:', response);
-        if (response.status === 201) {
+        if (response.status === 200) {
           const planCreado = response.data.plan;
           cambiarEstadoModal1(false);
           console.log('Plan creado:', planCreado);
@@ -122,8 +122,20 @@ function GestionPlanes() {
           headerName: 'Estado',
           width: 150,
           type: 'select' ,
-          options: ['Activo', 'Inactivo'],
-            //cellclassname es una  funcion que devuelve una cadena de clase CSS 
+          options: [
+            
+
+            {
+              value:1,
+              label: "Activo",
+            },
+            {
+              value:2,
+              label: "Inactivo"
+            },
+  
+          ],
+            /*//cellclassname es una  funcion que devuelve una cadena de clase CSS 
             cellClassName: (params) => {
               if (params.value === 'Activo') { //aqui se evalua las opciones que son seleccionadas del select
                 return 'estado-activo';
@@ -131,7 +143,7 @@ function GestionPlanes() {
                 return 'estado-inactivo'; // a los return les aplicamos los estilos css en tabla.scss
               }
               return '';
-            },      
+            }, */     
         }      
   ];
     
@@ -231,8 +243,10 @@ function GestionPlanes() {
         }
      })
   }
-       
-      return(
+
+    
+    return(
+
         <div className="contenedor-gestion">
           <div className="titulo-planes">
             <h1>Gestion de Planes</h1>
