@@ -91,7 +91,7 @@ routerDocumentos.use(errorHandler);
 
 routerDocumentos.get('/', async (req, res) => {
   try {
-    const documentos = await pool.query('SELECT id_documento, titulo, descripcion, id_usuario, hora_subida, fecha_subida FROM documentos WHERE (borrado = false OR borrado IS NULL) ORDER BY id_documento ASC');
+    const documentos = await pool.query('SELECT id_documento, titulo, descripcion, id_usuario, hora_subida, fecha_subida FROM documentos WHERE borrado = false ORDER BY id_documento ASC');
     res.json(documentos.rows);
 
   } catch (error) {
@@ -104,7 +104,7 @@ routerDocumentos.get('/', async (req, res) => {
 routerDocumentos.get('/:id_documento', validarIdDocumento, validarDocumento, async (req, res) => {
   try {
     const { id_documento } = req.params;
-    const documentos = await pool.query('SELECT id_documento, titulo, descripcion, id_usuario, hora_subida, fecha_subida FROM documentos WHERE (id_documento = $1) AND (borrado = false OR borrado IS NULL)', [id_documento]);
+    const documentos = await pool.query('SELECT id_documento, titulo, descripcion, id_usuario, hora_subida, fecha_subida FROM documentos WHERE (id_documento = $1) AND borrado = false ', [id_documento]);
     console.log(id_documento)
     if (documentos.rowCount === 0) {
       return res.status(404).json({ error: 'Documento no encontrado' });
@@ -118,17 +118,31 @@ routerDocumentos.get('/:id_documento', validarIdDocumento, validarDocumento, asy
 
 
   // Eliminar Documento
-routerDocumentos.delete('/:id_documento', validarIdDocumento, validarDocumento, async (req, res) => {
+routerDocumentos.patch('/:id_documento', validarIdDocumento, validarDocumento, async (req, res) => {
   try {
     const { id_documento } = req.params;
-    const EliminarDocumento = await pool.query('DELETE FROM documentos WHERE id_documento = $1', [id_documento]);
 
-    if (EliminarDocumento.rowCount === 0) {
+    // Validacion #1
+    const documentoexiste = await pool.query('SELECT * FROM documentos WHERE id_documento = $1 AND borrado = false', [id_documento]);
+
+    if (documentoexiste.rowCount === 0) {
       return res.status(404).json({ error: 'Documento no encontrado' });
     }
-    res.json('El documento fue borrado');
-  } catch (err) {
-    console.error(err.message)
+
+    // Actualiza el documento y marca como borrado
+    const updateQuery = `
+      UPDATE documentos 
+      SET borrado = true
+      WHERE id_documento = $1
+      RETURNING *;
+    `;
+
+    await pool.query(updateQuery, [id_documento]);
+
+    res.json({ mensaje: 'documento eliminado correctamente' });
+  } catch (error) {
+    console.error('Error al marcar documento como borrado:', error);
+    res.status(500).json({ error: 'Error al marcar documento como borrado' });
   }
 });
 
