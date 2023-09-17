@@ -27,7 +27,7 @@ routerUsuarios.post('/', CargaArchivo.single('fileUsuario'), validarUsuario, asy
       EXISTS (SELECT 1 FROM sedes_departamentos WHERE id_sede_departamento = $2) AS existeSedeDepartamento,
       EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3) AS existeTipoUsuario,
       NOT EXISTS (SELECT 1 FROM usuarios WHERE nombre_usuario = $1) AS nombreUsuarioNoExiste,
-      NOT EXISTS (SELECT 1 FROM usuarios WHERE cedula = $12) AS cedulaUsuarioNoExiste
+      NOT EXISTS (SELECT 1 FROM usuarios WHERE cedula = $12) AS cedulaUsuarioNoExiste,
       NOT EXISTS (SELECT 1 FROM usuarios WHERE correo = $13) AS correoUsuarioNoExiste
   )
   INSERT INTO usuarios (
@@ -244,9 +244,9 @@ routerUsuarios.patch('/edit/:id_usuario', validarIdUsuario, validarActUsuario, v
           AND EXISTS (SELECT 1 FROM tipos_usuarios WHERE id_tipo_usuario = $3)
           AND NOT EXISTS (
             SELECT 1 FROM usuarios
-            WHERE (nombre_usuario = $1 OR cedula = $9)
+            WHERE (nombre_usuario = $1 OR cedula = $9 OR correo = $10)
             AND id_usuario <> $11
-          ) AND  NOT EXISTS (SELECT 1 FROM usuarios WHERE correo = $10)
+          )
         RETURNING *;
       `;
 
