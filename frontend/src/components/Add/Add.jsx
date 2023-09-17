@@ -91,7 +91,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar, filaExistente})
                             [idCampo]: e.target.value,
                           })
                         }
-                      />
+                      required/>
                     )}
                   </div>
                 ))} 
