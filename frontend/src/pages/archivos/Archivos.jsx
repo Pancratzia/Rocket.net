@@ -59,20 +59,32 @@ function Archivos() {
 
     const [filas, setFilas] = useState([])
     const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar
-    const [showModal, setShowModal] = useState(false);
 
    
     const agregarArchivo = (newFormData) => {
-        setFilas([...filas, newFormData]);
-        
-    }; // este es el codigo de la funcion que agrega a la fila el newFormData que tiene almacenado la informacion del modal y las funciones que definimos para obtener la hora y fecha de subida del archivo
+    swalWithBootstrapButtons.fire({
+        text: "¿Estas seguro de que deseas eliminar el Archivo?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+
+    }).then(response => {
+    if (response.isConfirmed){
+    setFilas([...filas, newFormData]);
+    cambiarEstadoModal1(false);   
+    } else {
+        response.dismiss == Swal.DismissReason.cancel
+        }
+    })
+}; // este es el codigo de la funcion que agrega a la fila el newFormData que tiene almacenado la informacion del modal y las funciones que definimos para obtener la hora y fecha de subida del archivo
 
     const handleDeleteClick = (id) => {
 
     }
     const handleDeleteRow = (id) => {
         swalWithBootstrapButtons.fire({
-          text: "Estas seguro de que deseas eliminar el Archivo?",
+          text: "¿Estas seguro de que deseas eliminar el Archivo?",
           icon: 'question',
           showCancelButton: true,
           confirmButtonText: 'Si',
@@ -90,8 +102,6 @@ function Archivos() {
      })
   }
 
-     
-     
       
     return(
         <div className="contenedor-gestion">

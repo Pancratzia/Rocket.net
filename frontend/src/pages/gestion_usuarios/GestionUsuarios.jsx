@@ -229,8 +229,10 @@ function GestionUsuarios() {
         if (response.status === 200) {
           obtenerUsuarios();
           setShowModal(false);
+          MySwal.fire('Success', 'Usuario editado correctamente', 'success')
+          window.location.reload();
         } else {
-          console.error("Error al editar el usuario:", response);
+          Swal.fire('Error', 'Usuario editado correctamente', 'error')
         }
       })
       .catch((error) => {
@@ -263,7 +265,7 @@ function GestionUsuarios() {
       .then(response => {
         if (response.status === 200) {
           obtenerUsuarios();
-          MySwal.fire('Success', 'Usuario eliminado correctamente', 'success')
+          MySwal.fire('Exito', 'Usuario eliminado correctamente', 'success')
         } else {
           Swal.fire('Error','Error al eliminar el usuario','error');
         }
@@ -336,6 +338,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
       if (response.status === 200) {
         cambiarEstadoModal1(false); 
         MySwal.fire('Exito','Has creado el usuario','success')
+        window.location.reload();
       } else {
         MySwal.fire('Error','Error al crear el usuario', 'error');
       }
