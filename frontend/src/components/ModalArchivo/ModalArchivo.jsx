@@ -21,14 +21,16 @@ const handleFile=(event)=> {
 const handleSubmit = (e) => {
     e.preventDefault();
   
-
-
     const newFormData = { ...formData, id: uuidv4(), tituloarchivo: titulo,  
     descripcionarchivo: descripcion,  idusuario: "id_usuario", // aca estan almacenado la data del modal
     }; 
     
     subir(newFormData); 
+    setDescripcion("");
+    setTitulo("");
+    cambiarEstado(false);
     console.log('prueba de almacenamiento', newFormData); // para ver si se estan almacenando los datos
+    
 }
 
 const handleFileInputClick = () =>{

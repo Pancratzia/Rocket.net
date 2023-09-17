@@ -22,7 +22,6 @@ function GestionPlanes() {
     axios.get('http://localhost:3000/api/planes')
       .then((response) => {
         console.log('Datos de planes obtenidos de la API:', response.data);
-
         
         const planesConId = response.data.map((plan) => ({
           id: plan.id_plan,
@@ -41,7 +40,7 @@ function GestionPlanes() {
       });
   };
 
-  const obtenerNombresPlanes = () => {
+const obtenerNombresPlanes = () => {
     axios.get('http://localhost:3000/api/planes')
       .then((response) => {
         console.log('Datos de planes obtenidos de la API:', response.data);
@@ -57,32 +56,40 @@ function GestionPlanes() {
       });
   };
 
-  const agregarFila = (nuevoPlan) => {
+const agregarFila = (nuevoPlan) => {
+     swalWithBootstrapButtons.fire({
+      text: "¿Estas seguro de que deseas crear el plan?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+      }).then (response =>{
+    if (response.isConfirmed){
     nuevoPlan.estado_plan = nuevoPlan.estado; // Ajusta esto según tu estructura de datos
     axios.post('http://localhost:3000/api/planes', nuevoPlan)
       .then(response => {
         console.log('Respuesta de la solicitud:', response);
         if (response.status === 200) {
-          const planCreado = response.data.plan;
-          cambiarEstadoModal1(false);
-          console.log('Plan creado:', planCreado);
-          // Agregar el plan creado a las filas
-          setFilas([...filas, planCreado]);
+        const planCreado = response.data.plan;
+        cambiarEstadoModal1(false);
+        setFilas([...filas, planCreado]);
+        MySwal.fire('¡Exito!', 'Plan creado correctamente', 'success');
+        window.location.reload();
         } else {
-          console.error('Error al crear el plan:', response);
+        Swal.fire('¡Error!','Error al eliminar el plan','error');
         }
       })
       .catch(error => {
-        console.error('Error al crear el plan:', error);
-        if (error.response) {
-          console.log('Respuesta de error:', error.response.data);
-        }
+        Swal.fire('¡Error!','Error al eliminar el plan','error');
       });
-  };
+     } else{
+      response.dismiss === Swal.DismissReason.cancel;
+    }
+  })
+};
 
   useEffect(() => {
-    console.log('Efecto useEffect para obtener nombres de planes ejecutado');
-    obtenerNombresPlanes();
+  obtenerNombresPlanes();
   }, []);
 
   const swalWithBootstrapButtons = Swal.mixin({
@@ -91,7 +98,7 @@ function GestionPlanes() {
       cancelButton: 'btn btn-danger'
       },
       buttonsStyling: false
-  })
+})
 
     const columnas = [
         { field: 'id', headerName: 'ID', width: 40, editable: false },
@@ -135,15 +142,15 @@ function GestionPlanes() {
             },
   
           ],
-            /*//cellclassname es una  funcion que devuelve una cadena de clase CSS 
+            //cellclassname es una  funcion que devuelve una cadena de clase CSS 
             cellClassName: (params) => {
-              if (params.value === 'Activo') { //aqui se evalua las opciones que son seleccionadas del select
+              if (params.value === 1) { //aqui se evalua las opciones que son seleccionadas del select
                 return 'estado-activo';
-              } else if (params.value === 'Inactivo') {
+              } else if (params.value === 2) {
                 return 'estado-inactivo'; // a los return les aplicamos los estilos css en tabla.scss
               }
               return '';
-            }, */     
+            },     
         }      
   ];
     
@@ -162,7 +169,7 @@ function GestionPlanes() {
 
       const handleEditPlan = (editedPlans) => {
         swalWithBootstrapButtons.fire({
-          text: "Estas seguro de que deseas editar el plan?",
+          text: "¿Estas seguro de que deseas editar el plan?",
           icon: 'question',
           showCancelButton: true,
           confirmButtonText: 'Si',
@@ -191,15 +198,17 @@ function GestionPlanes() {
                 if (response.status === 200) {
                   obtenerPlanes(); // Vuelve a cargar la lista de planes después de editar
                   setShowModal(false); // Cierra el modal de edición
+                  MySwal.fire('¡Exito!', 'Plan editado correctamente', 'success')
+                  window.location.reload();
                 } else {
-                  console.error("Error al editar el plan:", response);
+                  Swal.fire('¡Error!', 'Error al editar el plan', 'error')
                 }
               })
               .catch((error) => {
-                console.error("Error al editar el plan:", error);
+                Swal.fire('¡Error!', 'Error al editar el plan', 'error')
               });
         }else{
-          Swal.fire('Error', 'Error al editar el plan', 'error')
+          response.dismiss === Swal.DismissReason.cancel;
         }
         
       })
@@ -215,18 +224,19 @@ function GestionPlanes() {
       .then((response) => {
         if (response.status === 200) {
           obtenerPlanes(); 
+          MySwal.fire('¡Exito!', 'Plan eliminado correctamente', 'success')
         } else {
-          console.error("Error al eliminar el plan:", response);
+          Swal.fire('¡Error!', 'Error al eliminar el plan', 'error')
         }
       })
       .catch((error) => {
-        console.error("Error al eliminar el plan:", error);
+        Swal.fire('¡Error!', 'Error al eliminar el plan', error)
       });
   }; 
     
   const handleDeleteRow = (id) => {
         swalWithBootstrapButtons.fire({
-          text: "Estas seguro de que deseas eliminar el plan?",
+          text: "¿Estas seguro de que deseas eliminar el plan?",
           icon: 'question',
           showCancelButton: true,
           confirmButtonText: 'Si',
