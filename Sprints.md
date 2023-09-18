@@ -5,7 +5,7 @@
 | 3      | 11/08/23 – 25/08/23 | Desarrollo de la página externa de cobertura (Back y Front). Creación de las páginas de Login, Recuperar Contraseña y Diseño de la plantilla Admin Dashboard (Frontend). API de Auditorias (Backend) |
 | 4      | 25/08/23 – 09/09/23 | Módulos Gestión de Usuarios, Estado de Red, Gestión de Cobertura y Consulta de Cobertura (Frontend y Backend) |
 | 5      | 09/09/23 – 16/09/23 | Continuación de Gestión de Usuarios, Gestión de Cobertura (Frontend y Backend). Módulo de Archivos. Modulo Gestión de Clientes. Módulo de Gestión de Planes. Inicio del Chat       |
-| 6      | 16/09/23 – 23/09/23 | Login y Recuperación de Contraseñas. Continuación del Chat     |
+| 6      | 16/09/23 – 23/09/23 | Actividades atrasadas del Sprint 5. Login y Recuperación de Contraseña. Continuación del Chat     |
 | 7      | 23/09/23 – 30/09/23 | Módulos de Reportes, Auditorías y Dashboard. Módulo de Anuncios  |
 | 8      | 30/09/23 – 08/10/23 | Semana de Entrega. EN ESTA SEMANA NO SE PROGRAMA  
 
