@@ -120,14 +120,18 @@ function GestionUsuarios() {
       options: [
         {
           value: 1,
-          label: "Jefes de Sedes",
+          label: "Administrador",
         },
         {
           value: 2,
-          label: "Usuarios Creación de Archivos",
+          label: "Jefes de Sedes",
         },
         {
           value: 3,
+          label: "Usuarios Creación de Archivos",
+        },
+        {
+          value: 4,
           label: "Usuarios solo lectura",
         },
       ],
