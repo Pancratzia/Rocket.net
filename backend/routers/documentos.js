@@ -4,16 +4,17 @@ const cors = require('cors');
 const pool = require('../database/db.js');
 const fs = require('fs');
 const { validationResult } = require('express-validator')
+const { join } = require('path');
 
 const routerDocumentos = express.Router();
 routerDocumentos.use(express.json());
 routerDocumentos.use(cors());
 const { auditar, convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
-const { validarIdDocumento, validarDocumento } = require('../validaciones/ValidarDocumentos.js')
+const { validarIdDocumento, validarDocumento, validarActDocumento} = require('../validaciones/ValidarDocumentos.js')
 
 //Crear Documento
 
-const { CargaDocumento, CURRENT_DIR } = require('../middleware/DocumentosMulter.js')
+const { CargaDocumento, CURRENT_DIR } = require('../middleware/DocumentosMulter.js');
 
 routerDocumentos.post('/', CargaDocumento.single('documento'), validarDocumento, async (req, res) => {
   
@@ -56,48 +57,90 @@ try {
 });
 
 //Modificar Documentos
+routerDocumentos.put('/:id_documento', CargaDocumento.single('documento'), validarIdDocumento, validarActDocumento, validarDocumento, async (req, res) => {
+  const { id_documento } = req.params;
+  const { descripcion, fecha_subida, hora_subida, permiso } = req.body;
 
-routerDocumentos.put('/:id_documento', validarDocumento, validarIdDocumento, async (req, res) => {
+  // Obtener el nombre actual del documento en la base de datos
+  const queryNombreDocumento = 'SELECT titulo FROM documentos WHERE id_documento = $1';
+  const resultNombreDocumento = await pool.query(queryNombreDocumento, [id_documento]);
+  const nombreDocumentoActual = resultNombreDocumento.rows.length > 0 ? resultNombreDocumento.rows[0].titulo : null;
+
+  const documento = req.file ? req.file.filename : null;
+
   try {
-    const { id_documento } = req.params;
-    const { titulo, descripcion, id_usuario, hora_subida,fecha_subida} = req.body;
-    console.log(req.body)
+    const errores = validationResult(req);
 
-    // Validaciones para validar existencia del documento
-    const buscarIdDocumento = await pool.query("SELECT id_documento FROM documentos WHERE id_documento = $1", [id_documento]);
+    if (errores.isEmpty()) {
+      // Query SQL para actualizar el documento con validación de existencia
+      const query = `
+      UPDATE documentos
+      SET
+        titulo = $1,
+        descripcion = $2,
+        permiso = $3,
+        fecha_subida = $4, 
+        hora_subida = $5 
+      WHERE id_documento = $6
+        AND NOT borrado
+        AND EXISTS (SELECT 1 FROM documentos WHERE id_documento = $6)
+      RETURNING *;
+      `;
 
-    if (buscarIdDocumento.rowCount === 0) {
-      return res.status(404).json({ error: 'Documento no encontrado' });
+      const fechaHoraValida = `${fecha_subida} ${hora_subida}:00`;
+
+      const values = [
+        documento || nombreDocumentoActual, 
+        descripcion,
+        permiso,
+        fecha_subida,
+        fechaHoraValida,
+        id_documento
+      ];
+
+      const actualizarDocumento = await pool.query(query, values);
+
+      if (actualizarDocumento.rowCount > 0) {
+        if (documento && nombreDocumentoActual ) {
+          const pathDocAnterior = join(__dirname, '../cargas', nombreDocumentoActual);
+  
+          fs.unlink(pathDocAnterior, (err) => {
+            if (err) {
+              console.error('Error al eliminar documento anterior:', err);
+            } else {
+              console.log('Documento anterior eliminado con éxito');
+            }
+          });
+        }
+  
+        return res.status(200).json({ mensaje: 'Documento actualizado exitosamente' });
+      } else {
+        if (documento) {
+          const pathDocNuevo = join(__dirname, '../cargas', documento);
+      
+          fs.unlink(pathDocNuevo, (err) => {
+            if (err) {
+              console.error('Error al eliminar el documento nuevo:', err);
+            } else {
+              console.log('Documento eliminado debido al error');
+            }
+          });
+        }
+        
+        return res.status(400).json({ error: 'Error al actualizar el documento' });
+      }
+    } else {
+      
+      fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: 'Datos incorrectos'});
     }
-
-    // Validaciones para validar existencia del usuario
-    const buscarIdUsuario = await pool.query("SELECT id_usuario FROM usuarios WHERE id_usuario = $1", [id_usuario]);
-
-    if (buscarIdUsuario.rowCount === 0) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
-    }
-
-    const modificarDocumento = await pool.query('UPDATE "documentos" SET titulo = $1, descripcion = $2, id_usuario = $3, hora_subida = $4, fecha_subida = $5 WHERE id_documento = $6', [titulo, descripcion, id_usuario, hora_subida,fecha_subida, id_documento]);
-
-    res.status(200).json({ mensaje: 'Documento modificado exitosamente' });
-  } catch (err) {
-    console.error(err.message)
-  }
-})
-
-routerDocumentos.use(errorHandler);
-
-//Obtener Documentos
-
-routerDocumentos.get('/', async (req, res) => {
-  try {
-    const documentos = await pool.query('SELECT id_documento, titulo, descripcion, id_usuario, hora_subida, fecha_subida FROM documentos WHERE borrado = false ORDER BY id_documento ASC');
-    res.json(documentos.rows);
-
   } catch (error) {
-    console.log(error);
+    console.error('Error al actualizar el documento:', error);
+    res.status(500).json({ error: 'Error al actualizar el documento' });
   }
 });
+
+routerDocumentos.use(errorHandler);
   
   //Obtener un Documento
   

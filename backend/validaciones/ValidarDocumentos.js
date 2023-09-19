@@ -1,5 +1,5 @@
 const { validationResult, check } = require('express-validator') 
-const { validarResultados } = require('../helpers/validarHelper') 
+const { validarResultados } = require('../helpers/validarHelper'); 
 
 const validarIdDocumento = [
     check('id_documento')
@@ -18,7 +18,8 @@ const validarIdDocumento = [
         const errores = validationResult(req);
     
         if (!errores.isEmpty()) {
-          return res.status(400).json({ error: 'Datos incorrectos' });
+          
+          return res.status(400).json({ error: 'Datos incorrectos xd' });
         }
     
         next();
@@ -26,12 +27,7 @@ const validarIdDocumento = [
   ]
 
 const validarDocumento = [
-  check('titulo')
-    .exists()
-    .isLength({ max: 50 })
-    .isString()
-    .not().isEmpty(),
-    
+
   check('descripcion')
     .exists()
     .isLength({ max: 255 })
@@ -42,12 +38,16 @@ const validarDocumento = [
     .exists()
     .isString()
     .not().isEmpty(),
-  check ('documento').custom((value, { req }) => {
-    if (!req.file) {
-      throw new Error('Datos incorrectos');
-    }
-    return true;
-  }),
 ]
 
-module.exports = {validarIdDocumento, validarDocumento}
+validarActDocumento = [
+  check('titulo')
+  .optional(),
+  check('descripcion')
+  .optional(),
+  check('id_usuario')
+  .optional(),
+
+]
+
+module.exports = {validarIdDocumento, validarDocumento, validarActDocumento}
