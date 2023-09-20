@@ -12,11 +12,12 @@ routerLogin.post('/', async(req, res) => {
 
     const {nombre_usuario, clave} = req.body;
 
-    const user = await pool.query('SELECT * FROM usuarios WHERE nombre_usuario = $1', [nombre_usuario])
-
 });
 
+function generateAccessToken(user){
+
+};
 
 
 
-module.exports =routerLogin
+module.exports =routerLogin  
