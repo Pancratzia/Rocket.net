@@ -22,7 +22,7 @@ const handleSubmit = (e) => {
     e.preventDefault();
   
     const newFormData = { ...formData, id: uuidv4(), tituloarchivo: titulo,  
-    descripcionarchivo: descripcion,  idusuario: "id_usuario", // aca estan almacenado la data del modal
+    descripcionarchivo: descripcion,  idusuario: "id_usuario",
     }; 
     
     subir(newFormData); 
