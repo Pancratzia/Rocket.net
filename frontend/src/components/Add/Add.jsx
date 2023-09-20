@@ -11,6 +11,14 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar, filaExistente})
   const [formData, setFormData] = useState({});
   const [filas, setFilas] = useState([]);
 
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+  })
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -57,7 +65,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar, filaExistente})
             </div>
             <form className="form-grid" onSubmit={handleSubmit} >
               <div className="formulario-input">
-                {camposFiltrados.map(({ campo, idCampo, typeCampo, options, file }) => (
+                {camposFiltrados.map(({ campo, idCampo, typeCampo, options }) => (
                   <div key={idCampo}>
                     <label htmlFor={idCampo}>{campo}</label>
                     {typeCampo === "select" ? (
@@ -91,7 +99,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar, filaExistente})
                             [idCampo]: e.target.value,
                           })
                         }
-                      required/>
+                      />
                     )}
                   </div>
                 ))} 

@@ -11,12 +11,14 @@
 .estado-inactivo {
     background-color: #D42222;
     color: white;
-    height: 5px;   
+    border-radius: 20px;
+  
+      
   }
   
   .estado-activo {
     background-color: #4DAB2C;
     color: white;
-    height: 5px;
-    width: 5px;
+
+    border-radius: 20px;
   }
