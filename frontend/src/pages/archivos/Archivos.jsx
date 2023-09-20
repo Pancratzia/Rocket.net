@@ -1,14 +1,17 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ModalArchivo from '../../components/ModalArchivo/ModalArchivo';
 import "./Archivos.css";
 import Tabla from '../../components/Tabla/Tabla';
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import axios from 'axios';
 
 const MySwal = withReactContent(Swal);
 
 function Archivos() {
+
+    const [documentos, setDocumentos] = useState([]);
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -55,7 +58,59 @@ function Archivos() {
             width: 250,
             editable: true,
         },
+        {
+            field: "permiso",
+            headerName: "Permiso",
+            description: "Permiso del archivo",
+            width: 160,
+            type: "select",
+            editable: true,
+            options: [
+              {
+                value: 1,
+                label: "Administrador",
+              },
+              {
+                value: 2,
+                label: "Jefes de Sedes",
+              },
+              {
+                value: 3,
+                label: "Usuarios Creación de Archivos",
+              },
+              {
+                value: 4,
+                label: "Usuarios solo lectura",
+              },
+            ],
+          },
     ]
+
+    const obtenerDocumentos = () => {
+        axios.get('http://localhost:3000/api/documentos')
+          .then(response => {
+            const documentosConId = response.data.map(documentos => ({
+              id: documentos.id_documento,
+              tituloarchivo: documentos.titulo,
+              descripcionarchivo: documentos.descripcion,
+              idusuario: documentos.id_usuario,
+              fechasubida: documentos.fecha_subida,
+              horasubida: documentos.hora_subida,
+              permiso: documentos.permiso
+            }));
+            setDocumentos(documentosConId);
+            setFilas(documentosConId);
+          })
+          .catch(error => {
+            console.error('Error al obtener documentos:', error);
+          });
+      
+      };
+      
+        useEffect(() => {
+          obtenerDocumentos();
+        }, []); 
+      
 
     const [filas, setFilas] = useState([])
     const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar
@@ -80,6 +135,17 @@ function Archivos() {
 }; 
 
     const handleDeleteClick = (id) => {
+        axios.patch(`http://localhost:3000/api/documentos/${id}`)
+      .then(response => {
+        if (response.status === 200) {
+          obtenerDocumentos();
+        } else {
+          console.error("Error al eliminar el usuario:", response);
+        }
+      })
+      .catch(error => {
+        console.error('Error al eliminar el usuario: a', error);
+      });
 
     }
     const handleDeleteRow = (id) => {

@@ -19,7 +19,7 @@ const validarIdDocumento = [
     
         if (!errores.isEmpty()) {
           
-          return res.status(400).json({ error: 'Datos incorrectos xd' });
+          return res.status(400).json({ error: 'Datos incorrectos ' });
         }
     
         next();

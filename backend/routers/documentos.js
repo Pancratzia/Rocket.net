@@ -159,6 +159,18 @@ routerDocumentos.get('/:id_documento', validarIdDocumento, validarDocumento, asy
   }
 });
 
+// Obtener Documentos
+routerDocumentos.get('/', async (req, res) => {
+  try {
+    const documentos = await pool.query('SELECT id_documento, titulo, descripcion, id_usuario, hora_subida, fecha_subida, permiso FROM documentos WHERE borrado = false ORDER BY id_documento ASC');
+    res.json(documentos.rows);
+  } catch (error) {
+    console.log(error);
+  }
+
+
+})
+
 
   // Eliminar Documento
 routerDocumentos.patch('/:id_documento', validarIdDocumento, validarDocumento, async (req, res) => {
