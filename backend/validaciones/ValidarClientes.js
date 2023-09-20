@@ -55,28 +55,7 @@ const validaClientes = [
     .exists()
     .isNumeric()
     .not()
-    .isEmpty()
-]
-const validarActCliente= [
-  check('nombre')
-    .optional(),
-
-  check('ubicacion')
-    .optional(),
-
-  check('telefono')
-    .optional(),
-
-  check('correo')
-    .optional(),
-
-  check('id_plan')
-    .optional(),
-
-  check('id_usuario')
-    .optional(),
-  check('estado_usuario')
-  .optional(),
+    .isEmpty(),
 
   (req, res, next) => {
     validarResultados(req, res, next)
@@ -84,4 +63,4 @@ const validarActCliente= [
 
 ];
 
-module.exports = {validaidClientes, validaClientes,validarActCliente}
+module.exports = {validaidClientes, validaClientes}
