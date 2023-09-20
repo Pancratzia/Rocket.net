@@ -77,7 +77,7 @@ function Archivos() {
         response.dismiss == Swal.DismissReason.cancel
         }
     })
-}; // este es el codigo de la funcion que agrega a la fila el newFormData que tiene almacenado la informacion del modal y las funciones que definimos para obtener la hora y fecha de subida del archivo
+};
 
     const handleDeleteClick = (id) => {
 
