@@ -33,6 +33,9 @@ app.use('/api/planes',routerPlanes);
 const routerDocumentos = require('./routers/documentos.js');
 app.use('/api/documentos', routerDocumentos);
 
+const routerLogin = require('./routers/login.js');
+app.use('/api/login', routerLogin);
+
 //Prueba de funcionamiento
 app.get('/', (req, res)=>{
     res.send('Prueba de funcionamiento de backend 🖥️')
