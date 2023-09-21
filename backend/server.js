@@ -36,6 +36,9 @@ app.use('/api/documentos', routerDocumentos);
 const routerLogin = require('./routers/login.js');
 app.use('/api/login', routerLogin);
 
+const routerContrasena2 = require('./routers/contrasena2.js');
+app.use('/api/contrasena2', routerContrasena2);
+
 //Prueba de funcionamiento
 app.get('/', (req, res)=>{
     res.send('Prueba de funcionamiento de backend 🖥️')
