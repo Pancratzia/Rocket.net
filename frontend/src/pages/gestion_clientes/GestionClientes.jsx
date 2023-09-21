@@ -21,7 +21,7 @@ function GestionClientes() {
       },
       buttonsStyling: false
   })
-  const obtenerPlanesObtions = () => {
+  const obtenerPlanesOptions = () => {
     axios.get('http://localhost:3000/api/planes')
     .then(response => {
       if (response.status === 200) {
@@ -39,10 +39,10 @@ function GestionClientes() {
   });
 };
 useEffect(() => {
-  obtenerPlanesObtions();
-})
+  obtenerPlanesOptions();
+}, []);
 
-const obtenerUsuariosObtions = () => {
+const obtenerUsuariosOptions = () => {
   axios.get('http://localhost:3000/api/usuarios')
   .then(response => {
     if (response.status === 200) {
@@ -61,9 +61,10 @@ console.error('Error al obtener las opciones de usuarios:', error);
 };
   
 useEffect(() => {
-  obtenerUsuariosObtions();
+  obtenerUsuariosOptions();
 }, []);
     const columnas = [
+      { field: "id", headerName: "ID", width: 40, editable: false },
       {
         field: 'nombre',
         headerName: 'Nombre',
@@ -118,14 +119,14 @@ useEffect(() => {
           field: 'estadousuario',
           headerName: 'Estado',
           description:'Usuario activo o inactivo',
-          width: 150,
+          width: 160,
           type: 'select',
           options: [{
-            value:1,
+            value: 0,
             label: "Cliente Activo",
           },
           {
-            value:2,
+            value: 1,
             label: "Cliente Inactivo",
           },
         ],
@@ -137,9 +138,7 @@ useEffect(() => {
 
     
       const [filas, setFilas] = useState({})
-      const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar
-      const [setCampos] = useState(false);
-    
+      const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar 
       const [showModal, setShowModal] = useState(false);   //estado para el modal de editar
     
       const obtenerClientes = () => {
@@ -165,7 +164,17 @@ useEffect(() => {
     
 
       const agregarCliente = (nuevoCliente) => {
-       nuevoCliente.estado_usuario = nuevoCliente.estado;
+          swalWithBootstrapButtons.fire({
+    text: "Estas seguro de que deseas crear el cliente?",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Si',
+    cancelButtonText: 'No',
+}).then(response => {
+  if(response.isConfirmed){
+        nuevoCliente.id_plan = nuevoCliente.plan;
+      nuevoCliente.id_usuario = nuevoCliente.usuario;
+       nuevoCliente.estado_usuario = nuevoCliente.estadousuario;
           axios.post('http://localhost:3000/api/clientes', nuevoCliente)
           .then(response => {
             console.log('Respuesta a la solicitud:', response);
@@ -185,9 +194,11 @@ useEffect(() => {
               console.log('Respuesta de error:', error.response.data);
             }
           });
-      };
+      }
+    });
+  };
 
-  const handleEditRow = (row) => {
+  const handleEditRow = (id) => {
     console.log("selecciono la fila con" + id + "en gestion de usuarios");
     setCamposEditados(filas.id);
     setShowModal(true); 
