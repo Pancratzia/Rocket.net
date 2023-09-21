@@ -9,7 +9,7 @@ const { join } = require('path');
 const routerDocumentos = express.Router();
 routerDocumentos.use(express.json());
 routerDocumentos.use(cors());
-const { auditar, convertirMayusculas, errorHandler } = require('../funciones/funciones.js')
+const { auditar, convertirMayusculas, errorHandler, obtenerFechayHora } = require('../funciones/funciones.js')
 const { validarIdDocumento, validarDocumento, validarActDocumento} = require('../validaciones/ValidarDocumentos.js')
 
 //Crear Documento
@@ -20,7 +20,7 @@ routerDocumentos.post('/', CargaDocumento.single('documento'), validarDocumento,
   
   const consulta = `
   INSERT INTO documentos (titulo, descripcion, id_usuario, hora_subida, fecha_subida, permiso, borrado) 
-  VALUES ($1, $2, 1, $3, $4, $5, false) RETURNING *;
+  VALUES ($1, $2, 1, CAST($3 as time), CAST($4 as date), $5, false) RETURNING *;
 `;
 
 try {
@@ -30,13 +30,14 @@ try {
   const documento = req.file.filename;
 
   // Construir una cadena de fecha y hora válida
-  const fechaHoraValida = `${fecha_subida} ${hora_subida}:00`;
+  const fechaActual = obtenerFechayHora("fecha");
+  const horaActual = obtenerFechayHora("hora");
 
   const errores = validationResult(req);
 
   if (errores.isEmpty()) {
     const crearDocumento = await pool.query(consulta, [
-      documento, descripcion, fechaHoraValida, fechaHoraValida, permiso
+      documento, descripcion, horaActual, fechaActual, permiso
     ]);
     if (crearDocumento.rows.length > 0) {
       auditar(operacion, id_usuarioAuditoria);
@@ -87,14 +88,15 @@ routerDocumentos.put('/:id_documento', CargaDocumento.single('documento'), valid
       RETURNING *;
       `;
 
-      const fechaHoraValida = `${fecha_subida} ${hora_subida}:00`;
+      const fechaActual = obtenerFechayHora("fecha");
+      const horaActual = obtenerFechayHora("hora");;
 
       const values = [
         documento || nombreDocumentoActual, 
         descripcion,
         permiso,
-        fecha_subida,
-        fechaHoraValida,
+        fechaActual,
+        horaActual,
         id_documento
       ];
 
@@ -163,13 +165,18 @@ routerDocumentos.get('/:id_documento', validarIdDocumento, validarDocumento, asy
 routerDocumentos.get('/', async (req, res) => {
   try {
     const documentos = await pool.query('SELECT id_documento, titulo, descripcion, id_usuario, hora_subida, fecha_subida, permiso FROM documentos WHERE borrado = false ORDER BY id_documento ASC');
-    res.json(documentos.rows);
+    
+    const documentosFormateados = documentos.rows.map((documento) => ({
+      ...documento,
+      fecha_subida: documento.fecha_subida.toISOString().split('T')[0], // Formatea a "AAAA-MM-DD"
+    }));
+    
+    res.json(documentosFormateados);
   } catch (error) {
     console.log(error);
   }
+});
 
-
-})
 
 
   // Eliminar Documento
