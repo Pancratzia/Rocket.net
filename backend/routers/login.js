@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { jwtVerify, SignJWT } = require('jose');
+const { SignJWT } = require('jose');
 const bcrypt = require("bcryptjs");
 
 const cors = require('cors');
@@ -72,6 +72,5 @@ routerLogin.post('/', async (req, res) => {
 //         return res.status(401).json({ mensaje: 'No Autorizado' });
 //     }
 // });
-
 
 module.exports = routerLogin  
