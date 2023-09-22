@@ -20,7 +20,8 @@ routerClientes.post('/', validaClientes, async (req, res) => {
   WITH validaciones AS (
     SELECT
       EXISTS (SELECT 1 FROM planes WHERE id_plan = $5) AS existePlan,
-      EXISTS (SELECT 1 FROM usuarios WHERE id_usuario = $6) AS existeUsuario
+      EXISTS (SELECT 1 FROM usuarios WHERE id_usuario = $6) AS existeUsuario,
+      NOT EXISTS (SELECT 1 FROM clientes WHERE correo = $4) AS correoNoExiste
       )
   INSERT INTO clientes (
     nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario
@@ -28,7 +29,7 @@ routerClientes.post('/', validaClientes, async (req, res) => {
   SELECT
     $1, $2, $3, $4, $5, $6, $7
   FROM validaciones
-  WHERE existePlan = true AND existeUsuario = true
+  WHERE existePlan = true AND existeUsuario = true AND correoNoExiste
   RETURNING *;
 `;
 try {
@@ -58,7 +59,7 @@ try {
 
 
 //modificar cliente
-routerClientes.put('/:id_cliente', validaClientes, validarActCliente, validaidClientes, async (req, res) => {
+routerClientes.put('/:id_cliente', validaClientes, validaidClientes, async (req, res) => {
   const query = `
     UPDATE clientes
     SET
@@ -73,6 +74,7 @@ routerClientes.put('/:id_cliente', validaClientes, validarActCliente, validaidCl
       AND NOT borrado
       AND EXISTS (SELECT 1 FROM planes WHERE id_plan = $5)
       AND EXISTS (SELECT 1 FROM usuarios WHERE id_usuario = $6)
+      AND NOT EXISTS (SELECT 1 FROM clientes WHERE correo = $4 AND id_cliente <> $8)
     RETURNING *;
   `;
   try {
