@@ -40,7 +40,7 @@ const validarDocumento = [
     .not().isEmpty(),
 ]
 
-validarActDocumento = [
+const validarActDocumento = [
   check('titulo')
   .optional(),
   check('descripcion')

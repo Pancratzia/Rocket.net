@@ -56,7 +56,7 @@ routerPoligonos.put('/:id_poligono', validaIdPoligono,validaPoligono, async (req
     const buscarIdPoligono = await pool.query("SELECT id_poligono FROM poligonos WHERE id_poligono = $1",[id_poligono]);
 
         if (buscarIdPoligono.rowCount === 0) {
-          return res.status(404).json({ error: 'Error al crear el poligono' });
+          return res.status(404).json({ error: 'Error al modificar el poligono' });
         }
  
     const query = 'UPDATE poligonos SET nombre_poligono=$1 WHERE id_poligono=$2';
@@ -66,9 +66,9 @@ routerPoligonos.put('/:id_poligono', validaIdPoligono,validaPoligono, async (req
 
     auditar(operacion,id_usuarioAuditoria);
 
-    res.json({ mensaje: 'Polígono actualizado correctamente' }); 
+    res.json({ mensaje: 'Polígono modificado correctamente' }); 
   } catch (error) {
-    console.error('Error al actualizar el polígono:', error);
+    console.error('Error al modificar el polígono:', error);
     res.status(500).json({ error: error.message });
   }
 });

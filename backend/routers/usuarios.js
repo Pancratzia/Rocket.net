@@ -1,6 +1,5 @@
 // Dependencias
 const express = require('express');
-const multer = require('multer');
 const cors = require('cors');
 const pool = require('../database/db.js');
 const bcrypt = require('bcrypt');

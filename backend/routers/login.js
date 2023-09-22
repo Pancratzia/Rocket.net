@@ -1,5 +1,4 @@
 const express = require('express');
-const { authNomUserClave } = require('../helpers/authNomUserClave')
 
 const { jwtVerify, SignJWT } = require('jose');
 const bcrypt = require("bcryptjs");
@@ -31,6 +30,7 @@ routerLogin.post('/', async (req, res) => {
         }
 
         const idUser = user.id_usuario;
+
         const jwtConstructor = new SignJWT({ idUser });
         const encoder = new TextEncoder();
         const jwt = await jwtConstructor
@@ -42,37 +42,36 @@ routerLogin.post('/', async (req, res) => {
         res.status(200).json({ mensaje: 'Inicio de Sesión exitoso', jwt });
 
     } catch (error) {
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
-
-
 })
 
-routerLogin.get("/profile/", async (req, res) => {
-    const { authorization } = req.headers;
+// routerLogin.get("/profile/", async (req, res) => {
+//     const { authorization } = req.headers;
 
-    if (!authorization) return res.sendStatus(401);
+//     if (!authorization) return res.sendStatus(401);
 
-    try {
-        const encoder = new TextEncoder();
-        const { payload } = await jwtVerify(
-            authorization,
-            encoder.encode(process.env.JWT_PRIVATE_KEY)
-        );
+//     try {
+//         const encoder = new TextEncoder();
+//         const { payload } = await jwtVerify(
+//             authorization,
+//             encoder.encode(process.env.JWT_PRIVATE_KEY)
+//         );
 
-        const query = 'SELECT * FROM usuarios WHERE id_usuario = $1';
-        const user = await pool.query(query, [payload.idUser]);
+//         const query = 'SELECT * FROM usuarios WHERE id_usuario = $1';
+//         const user = await pool.query(query, [payload.idUser]);
 
-        if (user.rowCount === 0) return res.sendStatus(401);
+//         if (user.rowCount === 0) return res.sendStatus(401);
 
-        delete user.rows[0].clave;
-        delete user.rows[0].respuesta
+//         delete user.rows[0].clave;
+//         delete user.rows[0].respuesta
 
-        return res.send({mensaje: "Autorizado"});
+//         return res.send({mensaje: "Autorizado",user});
 
-    } catch (err) {
-        return res.sendStatus(401);
-    }
-});
+//     } catch (err) {
+//         return res.status(401).json({ mensaje: 'No Autorizado' });
+//     }
+// });
 
 
 module.exports = routerLogin  
