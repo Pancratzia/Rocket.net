@@ -30,10 +30,10 @@ routerUsuarios.post('/', CargaArchivo.single('fileUsuario'), validarUsuario, asy
       NOT EXISTS (SELECT 1 FROM usuarios WHERE cedula = $12) AS cedulaUsuarioNoExiste
   )
   INSERT INTO usuarios (
-    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica, telefono, cedula, correo
+    nombre_usuario, id_sededepar, id_tipousuario, nombre, apellido, pregunta, respuesta, clave, foto_usuario, extension_telefonica, telefono, cedula, correo,frase_encriptada
   )
   SELECT
-    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13 
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
   FROM validaciones
   WHERE existeSedeDepartamento = true AND existeTipoUsuario = true AND nombreUsuarioNoExiste AND cedulaUsuarioNoExiste
   RETURNING *;
@@ -54,14 +54,12 @@ routerUsuarios.post('/', CargaArchivo.single('fileUsuario'), validarUsuario, asy
     const respuestaSegura = await bcrypt.hash(respuesta + fraseEncriptacion, 12);
 
     const errores = validationResult(req);
-
+    
     if (errores.isEmpty()) {
-
-      
       const crearUsuario = await pool.query(consulta, [
         nombre_usuario, id_sededepar, id_tipousuario, camposMayus.nombre, camposMayus.apellido,
         camposMayus.pregunta, respuestaSegura, claveSegura, imagenUsuario, extension_telefonica,
-        telefono, cedula, correo
+        telefono, cedula, correo, fraseEncriptacion
       ]);
       if (crearUsuario.rows.length > 0) {
         auditar(operacion, id_usuarioAuditoria);
