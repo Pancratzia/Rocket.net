@@ -36,7 +36,7 @@ const validarDocumento = [
 
   check('id_usuario')
     .exists()
-    .isString()
+    .isNumeric()
     .not().isEmpty(),
 ]
 

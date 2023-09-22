@@ -87,16 +87,16 @@ routerClientes.put('/:id_cliente', validaClientes, validaidClientes, async (req,
     const camposAmayusculas = ['nombre'];
     const camposMayus = convertirMayusculas(camposAmayusculas, req.body);
 
-  const actualizarUsuario = await pool.query(query,[
+  const actualizarCliente = await pool.query(query,[
     camposMayus.nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario, id_cliente
   ]);
 
-  if (actualizarUsuario.rowCount > 0) {
+  if (actualizarCliente.rowCount > 0) {
   return res.status(200).json({ mensaje: 'Cliente actualizado exitosamente' });
     } 
   } catch (error) {
-    console.error('Error al actualizar el usuario:', error);
-    res.status(500).json({ error: 'Error al actualizar el ' });
+    console.error('Error al actualizar el cliente:', error);
+    res.status(500).json({ error: 'Datos incorrectos' });
   }
 });
 
@@ -111,7 +111,7 @@ routerClientes.patch('/:id_cliente', validaidClientes, async (req, res) => {
     const clienteExistente = await pool.query('SELECT * FROM clientes WHERE id_cliente = $1 AND borrado = false', [id_cliente]);
 
     if (clienteExistente.rowCount === 0) {
-      return res.status(404).json({ error: 'Cliente no encontrado' });
+      return res.status(404).json({ error: 'Datos incorrectos' });
     }
 
     // Actualiza el cliente y marca como borrado
@@ -127,7 +127,7 @@ routerClientes.patch('/:id_cliente', validaidClientes, async (req, res) => {
     res.json({ mensaje: 'Cliente eliminado correctamente' });
   } catch (error) {
     console.error('Error al marcar cliente como borrado:', error);
-    res.status(500).json({ error: 'Error al marcar cliente como borrado' });
+    res.status(500).json({ error: 'Datos incorrectos' });
   }
 });
 
@@ -149,7 +149,7 @@ routerClientes.get('/:id_cliente', async (req, res) => {
       const { id_cliente } = req.params;
       const clientes = await pool.query('SELECT id_cliente, nombre, ubicacion, telefono, correo, id_plan, id_usuario, estado_usuario FROM clientes WHERE id_cliente = $1 AND borrado = false', [id_cliente]);
       if (clientes.rowCount === 0) {
-        return res.status(404).json({ error: 'Cliente no encontrado' });
+        return res.status(404).json({ error: 'Datos incorrectos' });
       }
       res.json(clientes.rows[0]);
   
