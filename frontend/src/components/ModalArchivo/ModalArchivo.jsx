@@ -9,7 +9,9 @@ const [formData, setFormData] = useState({});
 const fileInputRef = useRef(null);
 const [file, setFile] = useState();
 const [titulo, setTitulo] = useState("");
-const [descripcion, setDescripcion] = useState("")
+const [filas, setFilas] = useState([]);
+const [descripcion, setDescripcion] = useState("");
+const [opcion, setOpcion] = useState();
 
 const handleFile=(event)=> {
     setFile(event.target.files[0])
@@ -22,15 +24,22 @@ const handleSubmit = (e) => {
     e.preventDefault();
   
     const newFormData = { ...formData, id: uuidv4(), tituloarchivo: titulo,  
-    descripcionarchivo: descripcion,  idusuario: "id_usuario",
+    descripcionarchivo: descripcion,  idusuario: "id_usuario", permiso: opcion,
     }; 
     
     subir(newFormData); 
+    setOpcion(e.target.value);
+    setFilas([...filas, newFormData]);
     setDescripcion("");
     setTitulo("");
     cambiarEstado(false);
     console.log('prueba de almacenamiento', newFormData); // para ver si se estan almacenando los datos
     
+}
+
+const handleChange = (e) =>{
+    const selectedValue = e.target.value;
+    setOpcion(selectedValue);
 }
 
 const handleFileInputClick = () =>{
@@ -75,6 +84,14 @@ const handleFileInputClick = () =>{
             <input className="input-archivo" id="nombre" onChange={(e) => setTitulo(e.target.value)} value={titulo}></input>
             <label className = "descripcion-archivo">Descripcion del archivo</label>
             <input className="input-archivo" onChange={(e) => setDescripcion(e.target.value)}></input>
+            <label className = "permiso-archivo">Permiso a otorgar</label>
+            <select onChange= {(e) => setOpcion(e.target.value)} className="select-archivo"> 
+            <option value="">Seleccione un permiso</option> 
+            <option value="0">Usuario 0</option>
+            <option value="1">Usuario 1</option>
+            <option value="2">Usuario 2</option>
+            <option value="3">Usuario 3</option>
+            </select>
             </form>
         </div>
         <div className="contenedor-botones-archivos">

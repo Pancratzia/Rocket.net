@@ -89,6 +89,20 @@ justify-content: center;
 align-items: left;
 }
 
+.select-archivo{
+height: 40px;
+background-color: #299E6A;
+font-size: 19px;
+color:#fff;
+font-family:'Poppins';
+padding-left: 6px;
+width: 100%;
+}
+
+.select-archivo:focus{
+border-color:#299E6A;
+}
+
 .input-archivo{
 height: 40px;
 border-radius: 20px;
@@ -110,6 +124,11 @@ font-size: 15px;
 }
 
 .descripcion-archivo{
+text-align: left;
+font-size: 15px;
+}
+
+.permiso-archivo{
 text-align: left;
 font-size: 15px;
 }

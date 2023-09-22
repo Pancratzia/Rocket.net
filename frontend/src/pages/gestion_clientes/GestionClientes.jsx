@@ -320,6 +320,7 @@ useEffect(() => {
         handleEditClick={handleEditRow}
         handleDeleteRow = {handleDeleteRow}
         handleEditClient={handleEditClient}
+        
         />
 
       <Add
