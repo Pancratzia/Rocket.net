@@ -321,6 +321,7 @@ if(response.isConfirmed){
         handleEditClick={handleEditRow}
         handleDeleteRow = {handleDeleteRow}
         handleEditClient={handleEditClient}
+        
         />
 
       <Add
