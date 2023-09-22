@@ -63,6 +63,38 @@ console.error('Error al obtener las opciones de usuarios:', error);
 useEffect(() => {
   obtenerUsuariosOptions();
 }, []);
+
+const agregarCliente = (nuevoCliente) => {
+  swalWithBootstrapButtons.fire({
+  text: "Estas seguro de que deseas crear el cliente?",
+  icon: 'question',
+  showCancelButton: true,
+  confirmButtonText: 'Si',
+  cancelButtonText: 'No',
+}).then(response => {
+if(response.isConfirmed){
+    nuevoCliente.id_plan = nuevoCliente.plan;
+    nuevoCliente.id_usuario = nuevoCliente.usuario;
+    nuevoCliente.estado_usuario = nuevoCliente.estadousuario;
+        axios.post('http://localhost:3000/api/clientes', nuevoCliente)
+        .then(response => {
+          console.log('Respuesta a la solicitud:', response);
+          if(response.status === 200){
+            cambiarEstadoModal1(false);
+            MySwal.fire('Exito', 'has creado el cliente', 'success')
+          } else{
+            MySwal.fire('Error', 'error al crear el cliente', 'error');
+          }
+        })
+        .catch(error => {
+          MySwal.fire('Error', 'error al crear el cliente', 'error');
+          if(error.response) {
+            console.log('Respuesta de error:', error.response.data);
+          }
+        });
+    }
+  });
+};
     const columnas = [
       { field: "id", headerName: "ID", width: 40, editable: false },
       {
@@ -122,11 +154,11 @@ useEffect(() => {
           width: 160,
           type: 'select',
           options: [{
-            value: 0,
+            value: 1,
             label: "Cliente Activo",
           },
           {
-            value: 1,
+            value: 2,
             label: "Cliente Inactivo",
           },
         ],
@@ -137,7 +169,7 @@ useEffect(() => {
     ];
 
     
-      const [filas, setFilas] = useState({})
+      const [filas, setFilas] = useState([])
       const [estadoModal1, cambiarEstadoModal1] = useState(false); //estado para el modal de agregar 
       const [showModal, setShowModal] = useState(false);   //estado para el modal de editar
     
@@ -161,45 +193,14 @@ useEffect(() => {
           console.error('Error al obtener clientes', error);
         });
       };
-    
 
-      const agregarCliente = (nuevoCliente) => {
-          swalWithBootstrapButtons.fire({
-    text: "Estas seguro de que deseas crear el cliente?",
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Si',
-    cancelButtonText: 'No',
-}).then(response => {
-  if(response.isConfirmed){
-        nuevoCliente.id_plan = nuevoCliente.plan;
-      nuevoCliente.id_usuario = nuevoCliente.usuario;
-       nuevoCliente.estado_usuario = nuevoCliente.estadousuario;
-          axios.post('http://localhost:3000/api/clientes', nuevoCliente)
-          .then(response => {
-            console.log('Respuesta a la solicitud:', response);
-            if(response.status === 200){
-              const clienteCreado = response.data.cliente;
-              cambiarEstadoModal1(false);
-              console.log('Cliente creado', clienteCreado);
-              setFilas([...filas, clienteCreado]);
-              MySwal.fire('Exito', 'has creado el cliente', 'success')
-            } else{
-              MySwal.fire('Error', 'error al crear el cliente', 'error');
-            }
-          })
-          .catch(error => {
-            MySwal.fire('Error', 'error al crear el cliente', 'error');
-            if(error.response) {
-              console.log('Respuesta de error:', error.response.data);
-            }
-          });
-      }
-    });
-  };
+  useEffect(() => {
+    obtenerClientes();
+  }, []);
 
   const handleEditRow = (id) => {
-    console.log("selecciono la fila con" + id + "en gestion de usuarios");
+    console.log("selecciono la fila con" + id + "en gestion de clientes");
+    console.error("Aqui ta el peo", error);
     setCamposEditados(filas.id);
     setShowModal(true); 
    };
@@ -262,13 +263,6 @@ useEffect(() => {
         obtenerClientes();
       }, []);
 
-    const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
- 
-    const handleChange = (event) => {
-    const {id, value} = event.target;
-    setCamposEditados({...camposEditados, [id]: value})
-  } 
-
   const handleDeleteClick = (idCliente) =>{
     axios.patch(`http://localhost:3000/api/clientes/${idCliente}`)
       .then(response => {
@@ -304,6 +298,13 @@ useEffect(() => {
    })
     
   }
+
+  const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
+ 
+    const handleChange = (event) => {
+    const {id, value} = event.target;
+    setCamposEditados({...camposEditados, [id]: value})
+  } 
     return(
         <div className="contenedor-gestion">
         <div className="titulo-clientes">
