@@ -22,7 +22,6 @@ function GestionCobertura() {
   const obtenerPoligonos = () => {
     axios.get('http://localhost:3000/api/poligonos')
       .then((response) => {
-        console.log('Datos de poligonos obtenidos de la API:', response.data);
   
         const poligonosConId = response.data.map((poligono) => ({
           id: poligono.id_poligono,
@@ -30,7 +29,6 @@ function GestionCobertura() {
           id_usuario: poligono.id_usuario,
         }));
   
-        console.log('Poligonos después del mapeo:', poligonosConId);
   
         setPoligonos(poligonosConId);
         setFilasPoligono(poligonosConId);
@@ -44,11 +42,9 @@ function GestionCobertura() {
     axios
       .get('http://localhost:3000/api/poligonos')
       .then((response) => {
-        console.log('Datos de poligonos obtenidos de la API:', response.data);
   
         const nombresPoligonos = response.data.map((poligono) => poligono.nombre_poligono);
   
-        console.log('Nombres de poligonos obtenidos:', nombresPoligonos);
   
         setNombresPoligonos(nombresPoligonos); // Actualiza el estado con los nombres
       })
@@ -58,12 +54,10 @@ function GestionCobertura() {
   };
   
   useEffect(() => {
-    console.log('Efecto useEffect para obtener poligonos ejecutado');
     obtenerPoligonos();
   }, []);
   
   useEffect(() => {
-    console.log('Efecto useEffect para obtener nombres de poligonos ejecutado');
     obtenerNombresPoligonos();
   }, []);
 
@@ -86,7 +80,6 @@ function GestionCobertura() {
     };
   
     // Enviar el objeto al servidor para crear el poligono
-    console.log('Datos del nuevo poligono:', nuevoPoligono);
     axios.post('http://localhost:3000/api/poligonos', nuevoPoligono)
   .then((response) => {
     if (response.status === 200) {
@@ -301,8 +294,7 @@ function GestionCobertura() {
         longitud: longitudNum,
         id_poligono: idPoligonoSeleccionado, 
       };
-    // Enviar el objeto al servidor para crear el punto
-    console.log('Datos del nuevo punto:', nuevoPunto);
+
       
     // Realizar la solicitud POST a la API de puntos
     axios.post('http://localhost:3000/api/puntos', nuevoPunto)
@@ -367,7 +359,6 @@ function GestionCobertura() {
   
 
   const handleEditPunto = (editedPunto) => {
-    console.log('Valores en editedPunto:', editedPunto);
   
     // Separar la cadena "121 - 131" en latitud y longitud
     const [latitudStr, longitudStr] = editedPunto.punto.split(' - ');
