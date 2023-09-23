@@ -11,10 +11,10 @@ const routerClientes = require('./routers/clientes.js');
 app.use('/api/clientes', routerClientes);
 
 const routerPoligonos = require('./routers/poligonos.js');
-app.use('/api/poligonos',verificarJWT,routerPoligonos); 
+app.use('/api/poligonos',routerPoligonos); 
 
 const routerPuntos = require('./routers/puntos.js');
-app.use('/api/puntos',verificarJWT,routerPuntos); 
+app.use('/api/puntos',routerPuntos); 
 
 const routerPoligonosPuntos = require('./routers/poligonopuntos.js');
 app.use('/api/poligonospuntos',routerPoligonosPuntos);
@@ -37,8 +37,8 @@ app.use('/api/documentos', routerDocumentos);
 const routerLogin = require('./routers/login.js');
 app.use('/api/login', routerLogin);
 
-const routerContrasena2 = require('./routers/contrasena2.js');
-app.use('/api/contrasena2', routerContrasena2);
+const routerRecuperarClave = require('./routers/recuperar_clave.js');
+app.use('/api/recuperar-clave', routerRecuperarClave);
 
 //Prueba de funcionamiento
 app.get('/', (req, res)=>{

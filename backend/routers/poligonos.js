@@ -38,7 +38,7 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
       
       auditar(operacion,id_usuarioAuditoria);
 
-      return res.status(200).json({ mensaje: 'Poligono creado exitosamente', id_poligono: idPoligonoGenerado });
+      return res.status(200).json({ mensaje: 'Poligono creado exitosamente'});
     } catch (err) {
         console.error(err.message);
     }
@@ -126,7 +126,7 @@ routerPoligonos.delete('/:id_poligono', validaIdPoligono, async (req, res) => {
 
       auditar(operacion, id_usuarioAuditoria);
 
-      res.json('Polígono eliminado');
+      res.status(200).json({mensaje:"Polígono eliminado"});
   } catch (error) {
       console.log(error);
       res.status(500).json({ error: 'Error al eliminar el polígono' });

@@ -1,13 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js'); 
-const routerContrasena2 = express.Router();
+const routerRecuperarClave = express.Router();
 
-routerContrasena2.use(express.json());
-routerContrasena2.use(cors());
+routerRecuperarClave.use(express.json());
+routerRecuperarClave.use(cors());
 
 // Ruta para actualizar la clave por usuario
-routerContrasena2.put('/', async (req, res) => {
+routerRecuperarClave.put('/', async (req, res) => {
   let usuarioEncontrado; // Declarar la variable fuera del bloque try
   try {
     const { usuario, nueva_clave, respuesta } = req.body;
@@ -52,5 +52,5 @@ routerContrasena2.put('/', async (req, res) => {
   }
 });
 
-module.exports = routerContrasena2;
+module.exports = routerRecuperarClave;
 
