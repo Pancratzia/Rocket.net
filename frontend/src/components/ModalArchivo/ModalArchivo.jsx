@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { FaFileUpload } from "react-icons/fa";
 import "./ModalArchivo.css";
+import axios from "axios";
 
 function ModalArchivo({estado, cambiarEstado, subir}) {
 const [formData, setFormData] = useState({});
@@ -23,19 +24,46 @@ const handleFile=(event)=> {
 const handleSubmit = (e) => {
     e.preventDefault();
   
-    const newFormData = { ...formData, id: uuidv4(), tituloarchivo: titulo,  
-    descripcionarchivo: descripcion,  idusuario: "id_usuario", permiso: opcion,
-    }; 
-    
-    subir(newFormData); 
-    setOpcion(e.target.value);
-    setFilas([...filas, newFormData]);
-    setDescripcion("");
-    setTitulo("");
+    if (!file) {
+      console.error('No se ha seleccionado un archivo');
+      return;
+    }
+  
+    // Crear un objeto FormData para enviar el archivo y otros datos al servidor
+    const formData = new FormData();
+    formData.append('documento', file);
+    formData.append('titulo', titulo);
+    formData.append('descripcion', descripcion);
+    formData.append('id_usuario', "1"); 
+    formData.append('permiso', opcion);
+  
+    // Realizar la solicitud POST para subir el archivo
+    axios
+      .post('http://localhost:3000/api/documentos', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log('Archivo subido exitosamente', response);
+        } else {
+          console.error('Error al subir el archivo:', response);
+        }
+      })
+      .catch((error) => {
+        console.error('Error al subir el archivo:', error);
+      });
+  
+    // Restablecer los campos después de la subida
+    setDescripcion('');
+    setTitulo('');
+    setOpcion('');
+    setFilas([...filas, formData]);
     cambiarEstado(false);
-    console.log('prueba de almacenamiento', newFormData); // para ver si se estan almacenando los datos
-    
-}
+    console.log('Archivo subido');
+  };
+  
 
 const handleChange = (e) =>{
     const selectedValue = e.target.value;
