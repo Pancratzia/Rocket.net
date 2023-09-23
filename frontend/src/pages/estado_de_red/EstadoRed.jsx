@@ -34,56 +34,72 @@ function  EstadoRed(){
         field: 'estado_conexion',
         headerName: 'Estado de Conexion',
         width: 250,
-         }
+
+        cellClassName: (params) => {
+          if (params.value === 'Conexión') { //aqui se evalua las opciones que son seleccionadas del select
+            return 'estado-activo';
+          } else if (params.value === 'Sin conexión') {
+            return 'estado-inactivo'; // a los return les aplicamos los estilos css en tabla.scss
+          }
+        }
+      }
     ]
 
-  function pingServer(ip) {
-      axios.get('http://${this.state.ipAddress}')
-        .then((response) => {
-          if (response.status === 200) {
-            this.setState({ isOnline: true });
-            console.log(this.state.isOnline);
-          } else {
-            this.setState({ isOnline: false });
-          }
-        })
-        .catch((error) => {
-          this.setState({ isOnline: false });
-        });
-
-    };
-
-    function useFetchData() {
-    
-      async function fetchData() {
-        const response = await fetch("http://localhost:3000/api/sedes");
-    
-        if (response.status === 200) {
-          const data = await response.json();
-          let id = 0;
-          const filas = data.map((sede) => ({
-            id: id++,
-            nombre_sede: sede.nombre_sede,
-            latitud: sede.latitud,
-            longitud: sede.longitud,
-            ip: sede.ip,
-            estado_conexion: "Con conexión"
-          }));
-          return filas;
-        } else {
-          throw new Error("Error al obtener los datos de la API");
-        }
-      };
-    
-      return fetchData();
+async function checkConnection(ip) {
+  try {
+    const response = await axios.get(`http://ip-api.com/json/${ip}`);
+    if (response.data.status === 'success') {
+      return 'Conexión';
+    } else {
+      return 'Sin conexión';
     }
-    const [filas, setFilas] = useState([]);
-    const fetchData = useFetchData();
-    useEffect(() => {
-      fetchData.then((data) => {
-        setFilas(data);
-      });
-    }, [fetchData]);
+  } catch (error) {
+    return 'Sin conexión';
+  }
+}
+
+const estadoColor = (conexion) => {
+  if (conexion === 'Conexion'){
+    return 'green';
+  }else {
+    return 'red';
+  }
+}
+
+  const [filas, setFilas] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+  try {
+    const response = await axios.get("http://localhost:3000/api/sedes");
+
+    if (response.status === 200) {
+      const data = response.data;
+      let id = 0;
+      const filas = await Promise.all(data.map(async (sede) => {
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundo entre solicitudes
+        const estadoConexion = await checkConnection(sede.ip);
+        return {
+          id: id++,
+          nombre_sede: sede.nombre_sede,
+          latitud: sede.latitud,
+          longitud: sede.longitud,
+          ip: sede.ip,
+          estado_conexion: estadoConexion 
+        };
+      }));
+      setFilas(filas);
+    } else {
+      throw new Error("Error al obtener los datos de la API");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+    fetchData();
+  }, []);
 
     return( 
         <div className='contenedor-red'> 

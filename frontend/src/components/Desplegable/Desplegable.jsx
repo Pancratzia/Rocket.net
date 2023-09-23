@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import User from '../../assets/img/user.png'
 import './Desplegable.css'
-
+import {Link} from 'react-router-dom'
 
 
 const Desplegable = () => {
@@ -39,10 +39,10 @@ const Desplegable = () => {
         {
           open && 
           (<div className={`dropdown-menu ${open? 'active' : 'inactive'}`}>
-           <ul>
+           <ul className = 'dropdown-ul'>
              {
                desplegableMenu.map((menu)=>( 
-                <li className='menu' key = { menu }> {menu} </li> ))
+                <Link to = {menu === 'Ajustes' ? '/ajustes' : '/login'} style={{ textDecoration: 'none', color:'white' }} className='menu' key = { menu }> {menu} </Link> ))
              }
            </ul>
           </div>)
