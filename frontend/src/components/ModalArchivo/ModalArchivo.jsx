@@ -58,7 +58,7 @@ const handleSubmit = (e) => {
     // Restablecer los campos después de la subida
     setDescripcion('');
     setTitulo('');
-    setOpcion('');
+    setOpcion(e.target.value);
     setFilas([...filas, formData]);
     cambiarEstado(false);
     console.log('Archivo subido');
