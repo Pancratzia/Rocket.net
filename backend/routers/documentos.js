@@ -161,14 +161,16 @@ routerDocumentos.patch('/edit/:id_documento', validarIdDocumento, validarActDocu
         return res.status(404).json({ error: 'Documento no encontrado' });
       }
 
-      const extDocumento = path.extname(nombreDocumentoActual);
-      const nuevoNombreDocumento = `${titulo}-${Date.now()}${extDocumento}`;
-
-      // Renombrar el archivo en la carpeta cargas
-      const pathDocumentoActual = path.join(__dirname, '../cargas', nombreDocumentoActual);
-      const pathNuevoDocumento = path.join(__dirname, '../cargas', nuevoNombreDocumento);
-
-      fs.renameSync(pathDocumentoActual, pathNuevoDocumento);
+      // Si el título actual es igual al nuevo título, no realiza cambios en el nombre del archivo
+      let nuevoNombreDocumento = nombreDocumentoActual;
+      if (nombreDocumentoActual !== titulo) {
+        const extDocumento = path.extname(nombreDocumentoActual);
+        nuevoNombreDocumento = `${titulo}-${Date.now()}${extDocumento}`;
+        // Renombrar el archivo en la carpeta cargas
+        const pathDocumentoActual = path.join(__dirname, '../cargas', nombreDocumentoActual);
+        const pathNuevoDocumento = path.join(__dirname, '../cargas', nuevoNombreDocumento);
+        fs.renameSync(pathDocumentoActual, pathNuevoDocumento);
+      }
 
       // Query SQL para actualizar el documento
       const query = `
@@ -212,6 +214,7 @@ routerDocumentos.patch('/edit/:id_documento', validarIdDocumento, validarActDocu
     res.status(500).json({ error: 'Error al actualizar el documento' });
   }
 });
+
 
 
 routerDocumentos.use(errorHandler);
