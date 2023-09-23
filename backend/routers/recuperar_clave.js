@@ -2,22 +2,34 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('../database/db.js'); 
 const routerRecuperarClave = express.Router();
+const bcrypt = require('bcryptjs');
 
 routerRecuperarClave.use(express.json());
 routerRecuperarClave.use(cors());
 
+// Función para encriptar una cadena con bcrypt
+async function encriptarCadena(cadena) {
+  try {
+    const saltRounds = 10; // Número de rondas de sal
+    const cadenaEncriptada = await bcrypt.hash(cadena, saltRounds);
+    return cadenaEncriptada;
+  } catch (error) {
+    console.error('Error al encriptar la cadena:', error);
+    throw error;
+  }
+}
+
 // Ruta para actualizar la clave por usuario
 routerRecuperarClave.put('/', async (req, res) => {
-  let usuarioEncontrado; // Declarar la variable fuera del bloque try
   try {
-    const { usuario, nueva_clave, respuesta } = req.body;
+    const { usuario, nueva_clave, pregunta, respuesta } = req.body;
 
-    if (!usuario || !nueva_clave || !respuesta) {
+    if (!usuario || !nueva_clave || !pregunta || !respuesta) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    // Consulta para obtener la pregunta y respuesta almacenada en la base de datos
-    const selectQuery = 'SELECT pregunta, respuesta FROM usuarios WHERE "nombre_usuario" = $1';
+    // Consulta para obtener la pregunta, respuesta y clave almacenada en la base de datos
+    const selectQuery = 'SELECT pregunta, respuesta, clave FROM usuarios WHERE "nombre_usuario" = $1';
     const selectValues = [usuario];
 
     const result = await pool.query(selectQuery, selectValues);
@@ -26,18 +38,26 @@ routerRecuperarClave.put('/', async (req, res) => {
       return res.status(404).json({ error: 'No se encontró el usuario' });
     }
 
-    usuarioEncontrado = result.rows[0]; // Asignar el valor a la variable
+    const usuarioEncontrado = result.rows[0];
     const preguntaAlmacenada = usuarioEncontrado.pregunta;
     const respuestaAlmacenada = usuarioEncontrado.respuesta;
 
-    // Comprobar si la respuesta proporcionada coincide con la respuesta almacenada
+    // Comprobar si la pregunta proporcionada coincide con la pregunta almacenada en la base de datos
+    if (pregunta !== preguntaAlmacenada) {
+      return res.status(401).json({ error: 'Pregunta incorrecta' });
+    }
+
+    // Comprobar si la respuesta proporcionada por el usuario coincide con la respuesta almacenada en la base de datos sin encriptar
     if (respuesta !== respuestaAlmacenada) {
       return res.status(401).json({ error: 'Respuesta incorrecta' });
     }
 
-    // Realiza la actualización en la base de datos
+    // Encripta la nueva contraseña antes de almacenarla en la base de datos
+    const hashedPassword = await encriptarCadena(nueva_clave);
+
+    // Actualiza la contraseña en la base de datos con la versión encriptada
     const updateQuery = 'UPDATE usuarios SET clave = $1 WHERE "nombre_usuario" = $2';
-    const updateValues = [nueva_clave, usuario];
+    const updateValues = [hashedPassword, usuario];
 
     const updateResult = await pool.query(updateQuery, updateValues);
 
@@ -53,4 +73,3 @@ routerRecuperarClave.put('/', async (req, res) => {
 });
 
 module.exports = routerRecuperarClave;
-
