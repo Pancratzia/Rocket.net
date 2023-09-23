@@ -27,6 +27,7 @@ function Add({ estado, cambiarEstado, titulo, campos, onGuardar, filaExistente})
     onGuardar(newFormData);
     setFilas([...filas, newFormData]);
     setFormData({});
+    window.location.reload();
     cambiarEstado(false);
   };
 

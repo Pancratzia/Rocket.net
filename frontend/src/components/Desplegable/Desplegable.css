@@ -5,8 +5,6 @@
     cursor: pointer;
     margin-top:5px;   
     margin-right: 50px;
-    
-     
 }
 
 
@@ -15,10 +13,7 @@
     box-shadow: 2px 1px #C6C6C6;
     position: absolute;
     margin-left: -45px;
-    
 }
-
-
 
 ul{
     list-style: none;
@@ -26,7 +21,11 @@ ul{
     padding:3px;
     cursor: pointer;
     color: white; 
- 
+}
+
+.dropdown-ul{
+    display: flex;
+    flex-direction: column;
 }
 
 .menu{
