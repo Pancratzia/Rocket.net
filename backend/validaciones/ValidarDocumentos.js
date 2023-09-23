@@ -27,6 +27,9 @@ const validarIdDocumento = [
   ]
 
 const validarDocumento = [
+  check('titulo')
+    .exists()
+    .isLength({ max: 50 }),
 
   check('descripcion')
     .exists()
