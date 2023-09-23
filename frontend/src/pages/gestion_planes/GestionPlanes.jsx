@@ -135,15 +135,14 @@ function GestionPlanes() {
             },
   
           ],
-            /*//cellclassname es una  funcion que devuelve una cadena de clase CSS 
             cellClassName: (params) => {
-              if (params.value === 'Activo') { //aqui se evalua las opciones que son seleccionadas del select
+              if (params.value === 1) { //aqui se evalua las opciones que son seleccionadas del select
                 return 'estado-activo';
-              } else if (params.value === 'Inactivo') {
+              } else if (params.value === 2) {
                 return 'estado-inactivo'; // a los return les aplicamos los estilos css en tabla.scss
               }
               return '';
-            }, */     
+            }, 
         }      
   ];
     
@@ -191,6 +190,7 @@ function GestionPlanes() {
                 if (response.status === 200) {
                   obtenerPlanes(); // Vuelve a cargar la lista de planes después de editar
                   setShowModal(false); // Cierra el modal de edición
+                  window.location.reload();
                 } else {
                   console.error("Error al editar el plan:", response);
                 }
