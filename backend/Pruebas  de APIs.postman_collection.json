@@ -1,14 +1,13 @@
 {
 	"info": {
-		"_postman_id": "d0755917-f9e2-404d-ac51-cacf1dc918c8",
+		"_postman_id": "b0a58b93-ddab-490d-94cd-265f5c4b3b80",
 		"name": "Pruebas  de APIs",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "29047754",
-		"_collection_link": "https://interstellar-spaceship-404941.postman.co/workspace/My-Workspace~0e3bb313-61b9-4eaa-8c82-33b803f11983/collection/29047754-d0755917-f9e2-404d-ac51-cacf1dc918c8?action=share&source=collection_link&creator=29047754"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29687426"
 	},
 	"item": [
 		{
-			"name": "S1 JV puntos",
+			"name": "S3 JV puntos",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {}
 			},
@@ -23,19 +22,30 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id_poligono\" : ,\r\n    \"latitud\" : 10.9981,\r\n    \"longitud\" : -69.9994\r\n}",
+					"raw": "{\r\n    \"id_poligono\" :1 ,\r\n    \"latitud\" : 10.9981,\r\n    \"longitud\" : -69.9994\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:3000/api/puntos"
+				"url": {
+					"raw": "http://localhost:3000/api/puntos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"puntos"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S1  JP puntos",
+			"name": "S3  JP puntos",
 			"event": [
 				{
 					"listen": "test",
@@ -99,12 +109,24 @@
 						}
 					}
 				},
-				"url": "http://localhost:3000/api/puntos/1"
+				"url": {
+					"raw": "http://localhost:3000/api/puntos/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"puntos",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S1  MT puntos",
+			"name": "S3  MT puntos",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -114,21 +136,45 @@
 						"type": "text"
 					}
 				],
-				"url": "http://localhost:3000/api/puntos/87"
+				"url": {
+					"raw": "http://localhost:3000/api/puntos/7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"puntos",
+						"7"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S1  CE puntos",
+			"name": "S3  CE puntos",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:3000/api/puntos/"
+				"url": {
+					"raw": "http://localhost:3000/api/puntos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"puntos",
+						""
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S1  MT Poligono",
+			"name": "S3  MT Poligono",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -136,23 +182,41 @@
 						"key": "id_usuario",
 						"value": "1",
 						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nombre_poligono\":\"Florencio Gimenez\" ,\r\n    \"id_usuario\": 1\r\n}",
+					"raw": "{\r\n    \"nombre_poligono\":\"Florencio Gimenez\" ,\r\n    \"id_usuario\": 13\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:3000/api/poligonos/"
+				"url": {
+					"raw": "http://localhost:3000/api/poligonos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"poligonos",
+						""
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S1  GE  poligonos",
+			"name": "S3  GE  poligonos",
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -160,23 +224,41 @@
 						"key": "id_usuario",
 						"value": "1",
 						"type": "text"
+					},
+					{
+						"key": "authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nombre_poligono\": \"Nucleo Obelisco Oeste\"\r\n}\r\n",
+					"raw": "{\r\n    \"nombre_poligono\": \"Nucleo\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:3000/api/poligonos/1"
+				"url": {
+					"raw": "http://localhost:3000/api/poligonos/16",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"poligonos",
+						"16"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S1  CE poligono",
+			"name": "S3 CE poligono",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -186,21 +268,52 @@
 						"type": "text"
 					}
 				],
-				"url": "http://localhost:3000/api/poligonos/3"
+				"url": {
+					"raw": "http://localhost:3000/api/poligonos/15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"poligonos",
+						"15"
+					],
+					"query": [
+						{
+							"key": "authorization",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S1  CE poligonos",
+			"name": "S3  CE poligonos",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:3000/api/poligonos/"
+				"url": {
+					"raw": "http://localhost:3000/api/poligonos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"poligonos",
+						""
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S1  JP puntos y poligonos",
+			"name": "S3  JP puntos y poligonos",
 			"event": [
 				{
 					"listen": "test",
@@ -256,21 +369,49 @@
 					"mode": "raw",
 					"raw": ""
 				},
-				"url": "http://localhost:3000/api/poligonospuntos"
+				"url": {
+					"raw": "http://localhost:3000/api/poligonospuntos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"poligonospuntos"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S1  GE auditoria",
+			"name": "S3  GE auditoria",
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": "localhost:3000/api/auditoria/"
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjE1LCJpYXQiOjE2OTUzOTkxNTMsImV4cCI6MTY5NTQwMjc1M30.vrxelHWYrum7eY2loA5wooyoJQQTINnNPlV_Y2DhWfQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/api/auditoria/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auditoria",
+						""
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S2 JV usuario",
+			"name": "S4 JV usuario",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -291,7 +432,7 @@
 					"formdata": [
 						{
 							"key": "nombre_usuario",
-							"value": "adminUser",
+							"value": "mipapa1",
 							"type": "text"
 						},
 						{
@@ -341,12 +482,12 @@
 						},
 						{
 							"key": "telefono",
-							"value": "041432800",
+							"value": "19738246500",
 							"type": "text"
 						},
 						{
 							"key": "cedula",
-							"value": "22211198",
+							"value": "32165487",
 							"type": "text"
 						},
 						{
@@ -356,12 +497,60 @@
 						}
 					]
 				},
-				"url": "http://localhost:3000/api/usuarios"
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S2 CE Usuarios",
+			"name": "S4 CE usuario",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre_usuario\": \"calowo\",\r\n  \"id_sededepar\": \"1\",\r\n  \"id_tipousuario\": 1,\r\n  \"nombre\": \"Carlito\",\r\n  \"apellido\": \"ecalona\",\r\n  \"pregunta\": \"chao\",\r\n  \"extension_telefonica\": \"0412\",\r\n  \"telefono\": \"1590586\",\r\n  \"cedula\": \"27617489\",\r\n  \"correo\": \"nuevo_email@example.com\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/edit/ ",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"edit",
+						" "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S4 CE Usuarios",
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -441,12 +630,24 @@
 						}
 					]
 				},
-				"url": "http://localhost:3000/api/usuarios/2"
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"2"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S2 JP Eliminar usuario",
+			"name": "S4 JP Eliminar usuario",
 			"request": {
 				"method": "PATCH",
 				"header": [
@@ -456,12 +657,24 @@
 						"type": "text"
 					}
 				],
-				"url": "http://localhost:3000/api/usuarios/3"
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"9"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S2 MT Usuarios",
+			"name": "S4 MT Usuarios",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -471,43 +684,578 @@
 						"type": "text"
 					}
 				],
-				"url": "http://localhost:3000/api/usuarios"
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S2 MT Usuario",
+			"name": "S4 MT Usuario",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:3000/api/usuarios/1"
+				"url": {
+					"raw": "http://localhost:3000/api/usuarios/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"usuarios",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S2 GE sedes",
+			"name": "S4 GE sedes",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "localhost:3000/api/sedes"
+				"url": {
+					"raw": "localhost:3000/api/sedes",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"sedes"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S2 GE sede",
+			"name": "S4 GE sede",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "localhost:3000/api/sedes/2"
+				"url": {
+					"raw": "localhost:3000/api/sedes/2",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"sedes",
+						"2"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "S2 JV sedes_departamentos",
+			"name": "S4 JV sedes_departamentos",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "localhost:3000/api/sedesdepartamentos"
+				"url": {
+					"raw": "localhost:3000/api/sedesdepartamentos",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"sedesdepartamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5  MT clientes",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\":\"Julian\",\r\n    \"ubicacion\":\"Barquisimeto\",\r\n    \"telefono\":\"986383565\",\r\n    \"correo\":\"ouhgf@gmail.com\",\r\n    \"id_plan\":1,\r\n    \"id_usuario\":1,\r\n    \"estado_usuario\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/clientes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5  MT clientes",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\":\"Marco\",\r\n    \"ubicacion\":\"Barquisimeto\",\r\n    \"telefono\":\"9863+83565\",\r\n    \"correo\":\"ouhgf@gmail.com\",\r\n    \"id_plan\":1,\r\n    \"id_usuario\":1,\r\n    \"estado_usuario\":1\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/clientes/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"clientes",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5  MT clientes",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/clientes/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"clientes",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 MT cliente",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/clientes/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"clientes",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 MT clientes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/clientes/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"clientes",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 planes",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre_plan\": \"Velocito\",\r\n    \"descripcion\": \"Muy velocito\",\r\n    \"precio\": \"99.99\",\r\n    \"estado_plan\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/planes/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"planes",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 CE planes",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre_plan\": \"Velocito\",\r\n    \"descripcion\": \"Muy velocito\",\r\n    \"precio\": \"99.99\",\r\n    \"estado_plan\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/planes/ ?id_usuario=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"planes",
+						" "
+					],
+					"query": [
+						{
+							"key": "id_usuario",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 CE planes",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/planes/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"planes",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 CE planes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/planes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"planes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 CE Subir Documentos",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "documento",
+							"type": "file",
+							"src": "/C:/Users/jerus/OneDrive/Escritorio/bases legales/TEG-García M., Jesellys K..pdf"
+						},
+						{
+							"key": "titulo",
+							"value": "Caso de estuido",
+							"type": "text"
+						},
+						{
+							"key": "descripcion",
+							"value": "Caso de estudio",
+							"type": "text"
+						},
+						{
+							"key": "permiso",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/api/documentos?id_usuario=1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"documentos"
+					],
+					"query": [
+						{
+							"key": "id_usuario",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 modificar documento",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"titulo\": \"Pankradoc\",\r\n  \"descripcion\": \"documento de pankra\",\r\n  \"id_usuario\": \"1a\",\r\n  \"permiso\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/documentos/edit/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"documentos",
+						"edit",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 GE Eliminar Documentos",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "id_usuario",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/api/documentos/7",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"documentos",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 GE Obtener un Documento",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/api/documentos/6",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"documentos",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S5 GE Obtener Documentos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/documentos",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"documentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S6 JV login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre_usuario\": \"pruebate100\" ,\r\n    \"clave\" : \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S6 JP Cambiar contraseña",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usuario\": \"narutokun\",\r\n    \"nueva_clave\": \"1234568\",\r\n    \"respuesta\": \"obvio\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/recuperar-clave",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"recuperar-clave"
+					]
+				}
 			},
 			"response": []
 		}
