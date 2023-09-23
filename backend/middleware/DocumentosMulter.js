@@ -2,7 +2,14 @@ const multer = require('multer');
 const { extname, join } = require('path');
 
 const CURRENT_DIR = __dirname;
-const MIMETYPES = ['application/pdf', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint'];
+const MIMETYPES = ['application/pdf',          // PDF
+'application/msword',       // Doc
+'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Docx
+'application/vnd.ms-powerpoint', // PPT
+'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PPTX
+'application/vnd.ms-excel', // XLS
+'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // XLSX 
+];
 
 const CargaDocumento = multer({
   storage: multer.diskStorage({
