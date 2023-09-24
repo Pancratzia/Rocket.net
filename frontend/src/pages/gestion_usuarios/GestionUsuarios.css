@@ -79,13 +79,11 @@
   }
 
   .boton-usuarios {
-    width: 35%;
+    width: max-content;
     height: 60%;
 
   }
 
-  .contenedor-busqueda {
-
-  }
+ 
 
 }

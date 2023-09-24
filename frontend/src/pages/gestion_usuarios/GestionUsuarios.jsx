@@ -59,20 +59,20 @@ function GestionUsuarios() {
     {
       field: "nombre",
       headerName: "Nombre",
-      width: 150,
+      width: 130,
       editable: true,
     },
     {
       field: "apellido",
       headerName: "Apellido",
-      width: 110,
+      width: 130,
       editable: true,
     },
     {
       field: "sedepartamento",
       headerName: "Sede - Departamento",
       description: "Esta es la pregunta de seguridad",
-      width: 160,
+      width: 200,
       type: "select",
       options: sedeDepartamentoOptions,
       editable: true,
@@ -80,7 +80,7 @@ function GestionUsuarios() {
     {
       field: "extensiontelefonica",
       headerName: "Extension telefonica",
-      width: 160,
+      width: 180,
       editable: true,
     },
     {
@@ -100,7 +100,7 @@ function GestionUsuarios() {
     {
       field: "correo",
       headerName: "Correo",
-      width: 160,
+      width: 180,
       editable: true,
     },
 
