@@ -41,7 +41,7 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
       
       auditar(operacion,id_usuarioAuditoria);
 
-      return res.status(200).json({ mensaje: 'Poligono creado exitosamente'});
+      res.status(200).json({ mensaje: 'Poligono creado exitosamente', id_poligono: nuevoPoligono.rows[0].id_poligono });
     } catch (err) {
         console.error(err.message);
     }
