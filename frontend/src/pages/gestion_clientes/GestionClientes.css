@@ -33,7 +33,7 @@
 
 
 
-@media (max-width: 1200px) {s
+@media (max-width: 1200px) {
   
   .boton-clientes {
     width: 25%
@@ -78,7 +78,7 @@
   }
 
   .boton-clientes {
-    width: 35%;
+    width: max-content;
     height: 60%;
 
   }

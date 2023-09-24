@@ -35,7 +35,7 @@
 
 
 
-@media (max-width: 1200px) {s
+@media (max-width: 1200px) {
   
   .boton-planes {
     width: 25%
@@ -80,7 +80,7 @@
   }
 
   .boton-planes {
-    width: 35%;
+    width: max-content;
     height: 60%;
 
   }

@@ -32,7 +32,7 @@
 
 
 
-@media (max-width: 1200px) {s
+@media (max-width: 1200px) {
   
   .boton-sedes {
     width: 25%
@@ -77,7 +77,7 @@
   }
 
   .boton-sedes {
-    width: 35%;
+    width: max-content;
     height: 60%;
 
   }
