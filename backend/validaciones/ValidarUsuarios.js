@@ -44,13 +44,13 @@ const validarUsuario = [
   check('nombre')
     .exists()
     .isLength({ max: 50 })
-    .isAlpha('es-ES')
+    .matches(/^[A-Za-z\s]+$/)
     .not()
     .isEmpty(),
   check('apellido')
     .exists()
     .isLength({ max: 50 })
-    .isAlpha('es-ES')
+    .matches(/^[A-Za-z\s]+$/)
     .not()
     .isEmpty(),
   check('pregunta')
