@@ -5,7 +5,7 @@ const pool = require('../database/db.js');
 const { validationResult } = require('express-validator');
 const { convertirMayusculas } = require('../funciones/funciones.js');
 
-const { validaClientes, validaidClientes, validarActCliente } = require('../validaciones/ValidarClientes.js');
+const { validaClientes, validaidClientes} = require('../validaciones/ValidarClientes.js');
 //const { auditar } = require('../funciones/funciones.js')
 
 const routerClientes = express.Router();
@@ -20,7 +20,6 @@ routerClientes.post('/', validaClientes, async (req, res) => {
   WITH validaciones AS (
     SELECT
       EXISTS (SELECT 1 FROM planes WHERE id_plan = $5) AS existePlan,
-      EXISTS (SELECT 1 FROM usuarios WHERE id_usuario = $6) AS existeUsuario,
       NOT EXISTS (SELECT 1 FROM clientes WHERE correo = $4) AS correoNoExiste
       )
   INSERT INTO clientes (
@@ -29,7 +28,7 @@ routerClientes.post('/', validaClientes, async (req, res) => {
   SELECT
     $1, $2, $3, $4, $5, $6, $7
   FROM validaciones
-  WHERE existePlan = true AND existeUsuario = true AND correoNoExiste
+  WHERE existePlan = true AND correoNoExiste
   RETURNING *;
 `;
 try {
@@ -45,6 +44,8 @@ try {
   ]);
   if (crearCliente.rows.length > 0) {
     return res.status(200).json({ mensaje: 'Cliente creado exitosamente' });
+  } else{
+    return res.status(400).json({ error: 'Error al crear el cliente' });
   }
   } else{
     return res.status(400).json({ error: 'Datos incorrectos' });
