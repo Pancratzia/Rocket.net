@@ -21,9 +21,6 @@ function GestionPlanes() {
   const obtenerPlanes = () => {
     axios.get('http://localhost:3000/api/planes')
       .then((response) => {
-        console.log('Datos de planes obtenidos de la API:', response.data);
-
-        
         const planesConId = response.data.map((plan) => ({
           id: plan.id_plan,
           nombre_plan: plan.nombre_plan,
@@ -31,7 +28,6 @@ function GestionPlanes() {
           precio: plan.precio,
           estado: plan.estado_plan,
         }));
-        console.log('Planes después del mapeo:', planesConId);
 
         setPlanes(planesConId);
         setFilas(planesConId);
@@ -44,11 +40,8 @@ function GestionPlanes() {
   const obtenerNombresPlanes = () => {
     axios.get('http://localhost:3000/api/planes')
       .then((response) => {
-        console.log('Datos de planes obtenidos de la API:', response.data);
   
         const nombresPlan = response.data.map((planes) => planes.nombre_plan);
-  
-        console.log('Nombres de planess obtenidos:', nombresPlan);
   
         setNombresPlan(nombresPlan);
       })
@@ -61,11 +54,9 @@ function GestionPlanes() {
     nuevoPlan.estado_plan = nuevoPlan.estado; // Ajusta esto según tu estructura de datos
     axios.post('http://localhost:3000/api/planes', nuevoPlan)
       .then(response => {
-        console.log('Respuesta de la solicitud:', response);
         if (response.status === 200) {
           const planCreado = response.data.plan;
           cambiarEstadoModal1(false);
-          console.log('Plan creado:', planCreado);
           // Agregar el plan creado a las filas
           setFilas([...filas, planCreado]);
         } else {
@@ -81,7 +72,6 @@ function GestionPlanes() {
   };
 
   useEffect(() => {
-    console.log('Efecto useEffect para obtener nombres de planes ejecutado');
     obtenerNombresPlanes();
   }, []);
 

@@ -1,10 +1,11 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const {verificarJWT} = require('./middleware/verificarToken')
 
 //  Router
 const routerAuditoria = require('./routers/auditoria.js');
-app.use('/api/auditoria',routerAuditoria); 
+app.use('/api/auditoria',verificarJWT,routerAuditoria); 
 
 const routerClientes = require('./routers/clientes.js');
 app.use('/api/clientes', routerClientes);
@@ -34,7 +35,10 @@ const routerDocumentos = require('./routers/documentos.js');
 app.use('/api/documentos', routerDocumentos);
 
 const routerLogin = require('./routers/login.js');
-app.use('api/login', routerLogin);
+app.use('/api/login', routerLogin);
+
+const routerRecuperarClave = require('./routers/recuperar_clave.js');
+app.use('/api/recuperar-clave', routerRecuperarClave);
 
 //Prueba de funcionamiento
 app.get('/', (req, res)=>{
