@@ -20,6 +20,7 @@ routerClientes.post('/', validaClientes, async (req, res) => {
   WITH validaciones AS (
     SELECT
       EXISTS (SELECT 1 FROM planes WHERE id_plan = $5) AS existePlan,
+      EXISTS (SELECT 1 FROM usuarios WHERE id_usuario = $6) AS existeUsuario,
       NOT EXISTS (SELECT 1 FROM clientes WHERE correo = $4) AS correoNoExiste
       )
   INSERT INTO clientes (
@@ -28,7 +29,7 @@ routerClientes.post('/', validaClientes, async (req, res) => {
   SELECT
     $1, $2, $3, $4, $5, $6, $7
   FROM validaciones
-  WHERE existePlan = true AND correoNoExiste
+  WHERE existePlan = true AND existeUsuario = true AND correoNoExiste
   RETURNING *;
 `;
 try {
@@ -94,7 +95,9 @@ routerClientes.put('/:id_cliente', validaClientes, validaidClientes, async (req,
 
   if (actualizarCliente.rowCount > 0) {
   return res.status(200).json({ mensaje: 'Cliente actualizado exitosamente' });
-    } 
+} else{
+  return res.status(400).json({ error: 'Datos incorrectos' });
+}
   } catch (error) {
     console.error('Error al actualizar el cliente:', error);
     res.status(500).json({ error: 'Datos incorrectos' });
