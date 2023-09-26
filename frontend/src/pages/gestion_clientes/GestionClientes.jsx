@@ -135,17 +135,6 @@ if(response.isConfirmed){
         editable: true,
         
       },
-
-      {
-        field: 'usuario',
-        headerName: 'Usuario',
-        description: '',
-        width: 150,
-        options: usuariosOptions,
-        editable: false,
-        
-      },
-
       {
           field: 'estadousuario',
           headerName: 'Estado',
