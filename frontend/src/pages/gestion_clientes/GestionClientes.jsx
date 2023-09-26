@@ -66,7 +66,7 @@ useEffect(() => {
 
 const agregarCliente = (nuevoCliente) => {
   swalWithBootstrapButtons.fire({
-  text: "Estas seguro de que deseas crear el cliente?",
+  text: "¿Estas seguro de que deseas crear el cliente?",
   icon: 'question',
   showCancelButton: true,
   confirmButtonText: 'Si',
@@ -81,16 +81,14 @@ if(response.isConfirmed){
           console.log('Respuesta a la solicitud:', response);
           if(response.status === 200){
             cambiarEstadoModal1(false);
-            MySwal.fire('Exito', 'has creado el cliente', 'success')
+            MySwal.fire('¡Exito!', 'Has creado el cliente', 'success');
+            window.location.reload();
           } else{
-            MySwal.fire('Error', 'error al crear el cliente', 'error');
+            MySwal.fire('Error', 'Error al crear el cliente', 'error');
           }
         })
         .catch(error => {
-          MySwal.fire('Error', 'error al crear el cliente', 'error');
-          if(error.response) {
-            console.log('Respuesta de error:', error.response.data);
-          }
+          MySwal.fire('Error', 'Error al crear el cliente', error);
         });
     }
   });
@@ -162,11 +160,17 @@ if(response.isConfirmed){
             label: "Cliente Inactivo",
           },
         ],
+        cellClassName: (params) => {
+          if (params.value === 1) { //aqui se evalua las opciones que son seleccionadas del select
+            return 'estado-activo';
+          } else if (params.value === 2) {
+            return 'estado-inactivo'; // a los return les aplicamos los estilos css en tabla.scss
+          }
+          return '';
+        },
         
-      },
-
-       
-    ];
+      },    
+];
 
     
       const [filas, setFilas] = useState([])
@@ -207,7 +211,7 @@ if(response.isConfirmed){
 
   const handleEditClient = (editedClient) => {
         swalWithBootstrapButtons.fire({
-          text: "Estas seguro de que deseas editar el cliente?",
+          text: "¿Estas seguro de que deseas editar el cliente?",
           icon: 'question',
           showCancelButton: true,
           confirmButtonText: 'Si',
@@ -240,21 +244,20 @@ if(response.isConfirmed){
       if(response.status === 200){
         obtenerClientes();
         setShowModal(false);
+        Swal.fire('¡Exito!', 'Has editado el cliente correctamente', 'success')
+        window.location.reload();
       } else {
-        console.error("Error al editar cliente:", response);
+        Swal.fire('Error', 'Error al editar el cliente', 'error')
       }
     })
     .catch((error) => {
-      console.error("Error al editar el cliente:", error);
+      Swal.fire('Error', 'Error al editar el cliente', error)
     });
         }else{
-          Swal.fire('Error', 'Error al editar el cliente', 'error')
           response.dismiss === Swal.DismissReason.cancel;
         }
-        
-      })
-
-      };
+  })
+};
       const handleEditClick = (row) => {
         props.handleEditClient(row);
         handleEditClient(row);
@@ -268,7 +271,8 @@ if(response.isConfirmed){
       .then(response => {
         if (response.status === 200) {
           obtenerClientes();
-          MySwal.fire('Success', 'Cliente eliminado correctamente', 'success')
+          MySwal.fire('¡Exito!', 'Cliente eliminado correctamente', 'success')
+          window.location.reload();
         } else {
           Swal.fire('Error','Error al eliminar el cliente','error');
         }
@@ -280,7 +284,7 @@ if(response.isConfirmed){
     
     const handleDeleteRow = (id) => {
       swalWithBootstrapButtons.fire({
-        text: "Estas seguro de que deseas eliminar el cliente?",
+        text: "¿Estas seguro de que deseas eliminar el cliente?",
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Si',
