@@ -25,3 +25,41 @@
     align-items: right;
   
 }
+
+
+@media (max-width: 1200px) {
+  
+  .boton-archivos {
+    width: 25%
+    
+  }
+}
+
+@media (max-width: 768px) {
+    .titulo-archivos h1 {
+      align-items: left;
+      font-size: 30px;
+    }
+  
+    .boton-archivos {
+      width: 30%;
+    }
+  
+  
+  }
+  
+  
+  @media (max-width: 480px) {
+    .titulo-archivos h1 {
+      font-size: 20px;
+  
+    }
+  
+    .boton-archivos {
+      width: max-content;
+      height: 60%;
+  
+    }
+  
+  
+  }

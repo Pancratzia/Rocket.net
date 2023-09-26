@@ -28,7 +28,7 @@ const Desplegable = () => {
 
 //Arreglo para las diferentes opciones del menu desplegable
 
-  const desplegableMenu = [ 'Ajustes', 'Cerrar sesion']
+  const desplegableMenu = [ 'Cerrar sesion']
 
   return (
     <div className='menu-contenedor' ref = {menuRef}>
