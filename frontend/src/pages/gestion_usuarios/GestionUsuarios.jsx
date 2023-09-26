@@ -263,7 +263,6 @@ function GestionUsuarios() {
       .then(response => {
         if (response.status === 200) {
           obtenerUsuarios();
-          MySwal.fire('Success', 'Usuario eliminado correctamente', 'success')
         } else {
           Swal.fire('Error','Error al eliminar el usuario','error');
         }
@@ -276,7 +275,7 @@ function GestionUsuarios() {
 
   const handleDeleteRow = (id) => {
      swalWithBootstrapButtons.fire({
-      text: "Estas seguro de que deseas eliminar el usuario?",
+      text: "¿Estas seguro de que deseas eliminar el usuario?",
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Si',
@@ -287,6 +286,8 @@ function GestionUsuarios() {
         const nuevasFilas = filas.filter((fila) => fila.id !== id);
         setFilas(nuevasFilas);
         handleDeleteClick(id);
+        MySwal.fire('Success', 'Usuario eliminado correctamente', 'success')
+        window.location.reload();
         }else {
         response.dismiss === Swal.DismissReason.cancel
         setFilas(filas);
@@ -305,7 +306,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
   const agregarUsuario = (nuevoUsuario) => {
 
   swalWithBootstrapButtons.fire({
-      text: "Estas seguro de que deseas crear el usuario?",
+      text: "¿Estas seguro de que deseas crear el usuario?",
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Si',
@@ -336,6 +337,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
       if (response.status === 200) {
         cambiarEstadoModal1(false); 
         MySwal.fire('Exito','Has creado el usuario','success')
+        window.location.reload();
       } else {
         MySwal.fire('Error','Error al crear el usuario', 'error');
       }
