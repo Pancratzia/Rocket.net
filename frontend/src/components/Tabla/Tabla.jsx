@@ -125,7 +125,9 @@ export default function Tabla(props) {
         pageSizeOptions={[5, 10]}
         slots={{toolbar: GridToolbar }}
         slotProps={{
-          toolbar:{
+          toolbar:{ 
+            printOptions: { disableToolbarButton: true },
+            csvOptions: { disableToolbarButton: true },
             showQuickFilter: true,
           },
         }}

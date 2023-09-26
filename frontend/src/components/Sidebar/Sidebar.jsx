@@ -67,14 +67,16 @@ function Sidebar() {
             <span>Gestion de Cobertura</span>
           </Link> 
           </li>
-          <hr />
+         {/*  GESTION DE SEDES
+         <hr />
           <li>
           <Link style={{ textDecoration: 'none' }} to="/gestion_de_sedes">  
             <FaBuilding className="icon" />
             <span>Gestion de Sedes</span>
             </Link> 
-          </li>
+          </li> */}
           <hr />
+
           <li>
           <Link style={{ textDecoration: 'none' }} to="/gestion_de_planes">  
             <FaDiceD6 className="icon" />
@@ -120,15 +122,17 @@ function Sidebar() {
           </li>
 
           <p className="title-dashboard">USUARIO</p>
+          {/* CHAT
           <li>
             <FaComments className="icon" />
             <span>Chat</span>
           </li>
+         AJUSTES
           <hr />
           <li>
             <FaCog className="icon" />
             <span>Ajustes</span>
-          </li>
+          </li> */}
           <hr />
           <li>
 

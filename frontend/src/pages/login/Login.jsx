@@ -30,9 +30,8 @@ function Login() {
   };
 
   return (
-    <>
       <div className="contenedor-login">
-        <div className="contenedor-formulario">
+        <div className="contenedor-form">
           <div className="titulo">
             <h1>Bienvenido</h1>
             <h2>Inicia sesión para continuar</h2>
@@ -58,12 +57,12 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <button className="btn" onClick={manejarIniciarSesion}>Iniciar sesión</button>
+            
           </form>
         </div>
-
+       
         <Link to="/recuperar_password" className="link">¿Olvidaste la contraseña?</Link>
       </div>
-    </>
   );
 }
 
