@@ -13,23 +13,38 @@ function Recuperar_Password() {
   const [contraseña, setContraseña] = useState("");
   const [confirmarContraseña, setConfirmarContraseña] = useState("");
 
-  const manejarFormulario = (event) => {
-    event.preventDefault();
-
-    if (usuario.trim() === "" || respuesta.trim() === "" || contraseña.trim() === "" || confirmarContraseña.trim() === "") {
+  const buscarUsuario = (e) => {
+    e.preventDefault();
+    if (usuario.trim === ""){
       MySwal.fire({
-        title: <strong>Oops! Lo siento. No pudimos procesar tu solicitud</strong>,
-        html: <i>Por favor intentar nuevamente al seleccionar "Olvidaste tu contraseña"</i>,
-        icon: "error",
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ingresa un usuario',
       });
-    } else {
-      MySwal.fire({
-        title: <strong>¡Haz creado una nueva contraseña exitosamente!</strong>,
-        html: <i>Puedes intentar iniciar sesión con tu nueva contraseña</i>,
-        icon: "success",
-      });
+    }else {
+      
     }
-  };
+  }
+
+  const manejarRecuperar = (e) => {
+
+    swalWithBootstrapButtons.fire({
+      text: "Estas seguro de que deseas modificar la contraseña?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+      }).then (response =>{
+    if (response.isConfirmed){
+    //Aca colocas el codigo para la integracion
+    //respuesta del axios
+    Swal.fire('Exito', 'La contraseña se ha modificado', 'success');
+    } else {
+    Swal.fire('Oops!', 'No se pudo modificar tu contraseña', 'error')
+    }
+    response.dismiss === Swal.DismissReason.cancel;
+  })
+};
 
   return (
     <div className="contenedor-recuperar">
@@ -54,7 +69,7 @@ function Recuperar_Password() {
                 value={usuario}
                 onChange={(e) => setUsuario(e.target.value)}
               />
-              <FaMagnifyingGlass className="busqueda-icon" />
+              <FaMagnifyingGlass className="busqueda-icon" OnClick = {""}/>
             </div>
           </div>
 
@@ -118,7 +133,7 @@ function Recuperar_Password() {
           </div>
         </div>
 
-        <button className="btn" type="submit">
+        <button className="btn" type="submit" onClick={manejarRecuperar}>
           Guardar cambios
         </button>
       </form>
