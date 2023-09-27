@@ -96,11 +96,10 @@ routerClientes.put('/:id_cliente', validaClientes, validaidClientes, async (req,
   if (actualizarCliente.rowCount > 0) {
   return res.status(200).json({ mensaje: 'Cliente actualizado exitosamente' });
 } else{
-  return res.status(400).json({ error: 'Datos incorrectos' });
+  return res.status(400).json({ error: 'Error al crear el cliente' });
 }
   } catch (error) {
     console.error('Error al actualizar el cliente:', error);
-    res.status(500).json({ error: 'Datos incorrectos' });
   }
 });
 
