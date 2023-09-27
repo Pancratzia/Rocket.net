@@ -45,7 +45,7 @@ const validarDocumento = [
     check('permiso')
     .exists()
     .isNumeric()
-    .isInt({ min: 0, max: 4 }),
+    .isInt({ min: 0, max: 3 }),
 ]
 
 const validarActDocumento = [
