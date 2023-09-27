@@ -11,11 +11,9 @@ const MySwal = withReactContent(Swal);
 
 function GestionCobertura() {
 
-  const [poligonosedit, setpoligonosedit] = useState([])
   const [poligonos, setPoligonos] = useState([]);
   const [puntos, setPuntos] = useState([]);
-  const [campos, setCampos] = useState(false);
-  const [nombresPoligonos, setNombresPoligonos] = useState([]); // Agrega este estado
+  const [nombresPoligonos, setNombresPoligonos] = useState([]);
 
 
 
@@ -154,52 +152,8 @@ function GestionCobertura() {
 };
 
 
-  const [poligono, setPoligono] = useState('');   
-  const crearPoligonos = (event) => {
-    event.preventDefault(); 
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-          },
-          buttonsStyling: false
-          })
-          if (poligono.trim() !== '') {
-            swalWithBootstrapButtons.fire({
-              text: "Estas seguro de que deseas crear el poligono?",
-              icon: 'question',
-              showCancelButton: true,
-              confirmButtonText: 'Si',
-              cancelButtonText: 'No',
-                    
-              }).then((result) => {
-                    if (result.isConfirmed) {
-                      setFilasPoligono([...filasPoligono, { id: filasPoligono.length + 1, poligono }]);
-                      swalWithBootstrapButtons.fire(
-                      'Se ha agregado con exito', 
-                      'el poligono',
-                      'success'
-                     )
-                    } else if (
-                     
-                      result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                      swalWithBootstrapButtons.fire(
-                      'Vaya! Hubo un error',
-                      'en tu solicitud de crear el poligono, vuelve a intentar mas tarde',
-                      'error'
-                     )
-                    }
-                  })
-             
-              } else {
-              MySwal.fire({
-                  title: <strong>Error</strong>,
-                  html: <i>Por favor, complete el campo</i>,
-                  icon: 'error'
-               });
-              }
-            };
+          const [poligono, setPoligono] = useState('');   
+
           const [latitud, setLatitud ] = useState('');   
           const [longitud, setLongitud ] = useState('');   
           const swalWithBootstrapButtons = Swal.mixin({
@@ -210,54 +164,11 @@ function GestionCobertura() {
                 buttonsStyling: false
               })
 
-          const crearCoordenadas = (event) => {
-            event.preventDefault(); 
-            //condicional para los campos de latitud y longitud
-           if (latitud.trim() !== "" && longitud.trim() !== "") {
-                swalWithBootstrapButtons.fire({
-                    text: "Estas seguro de que deseas agregar la latitud y longitud?",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Si',
-                    cancelButtonText: 'No',
-                 
-                    
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                     swalWithBootstrapButtons.fire(
-                      'Se ha agregado con exito el', 
-                      'la latitud y longitud',
-                      'success'
-                      )
-                    } else if (
-                      result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                      swalWithBootstrapButtons.fire(
-                 
-                      'Vaya! Hubo un error',
-                      'en tu solicitud de agregar la latitud y longitud, vuelve a intentar mas tarde',
-                      'error'
-                       
-                      )
-                    }
-                  })
-              } else {
-                // Mostrar mensaje de error si los campos están vacios
-                MySwal.fire({
-                  title: <strong>Error</strong>,
-                  html: <i>Por favor, complete todos los campos</i>,
-                  icon: 'error'
-                });
-              }
-            };
-
-
-
             const obtenerPuntos = () => {
               axios.get('http://localhost:3000/api/puntos')
                 .then((response) => {
                   const puntos = response.data.map((punto) => ({
-                    id: punto.id_punto, // Utiliza el id_punto proporcionado por la base de datos
+                    id: punto.id_punto,
                     punto: `${punto.latitud} - ${punto.longitud}`,
                     poligono: punto.id_poligono,
                   }));
@@ -409,7 +320,7 @@ function GestionCobertura() {
   })
 };
 
-  const [camposEditados, setCamposEditados] = useState({});  // aca estaba definiendo para la actualizacion de la fila de la tabla 
+  const [camposEditados, setCamposEditados] = useState({}); 
  
   const handleChange = (event) => {
     const {id, value} = event.target;
@@ -495,8 +406,8 @@ function GestionCobertura() {
             field: 'poligono',
             headerName: 'Poligono',
             width: 100,
-            type: 'select', //para el tipo de input
-            options: ['Poligono 1', 'Poligono 2', ' Poligono 3'], //esto es para los que son tipo select se deben añadir estos campos con las opciones
+            type: 'select',
+            options: ['Poligono 1', 'Poligono 2', ' Poligono 3'], 
             editable: true,
           }
             
