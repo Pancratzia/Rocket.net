@@ -74,7 +74,7 @@ const agregarCliente = (nuevoCliente) => {
 }).then(response => {
 if(response.isConfirmed){
     nuevoCliente.id_plan = nuevoCliente.plan;
-    nuevoCliente.id_usuario = nuevoCliente.usuario;
+    nuevoCliente.id_usuario = '1';
     nuevoCliente.estado_usuario = nuevoCliente.estadousuario;
         axios.post('http://localhost:3000/api/clientes', nuevoCliente)
         .then(response => {
@@ -133,18 +133,6 @@ if(response.isConfirmed){
         editable: true,
         
       },
-
-      {
-        field: 'usuario',
-        headerName: 'Usuario',
-        description: '',
-        width: 150,
-        type: 'select',
-        options: usuariosOptions,
-        editable: true,
-        
-      },
-
       {
           field: 'estadousuario',
           headerName: 'Estado',
@@ -204,7 +192,6 @@ if(response.isConfirmed){
 
   const handleEditRow = (id) => {
     console.log("selecciono la fila con" + id + "en gestion de clientes");
-    console.error("Aqui ta el peo", error);
     setCamposEditados(filas.id);
     setShowModal(true); 
    };

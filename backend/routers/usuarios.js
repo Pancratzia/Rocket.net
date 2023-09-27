@@ -77,8 +77,6 @@ routerUsuarios.post('/', CargaArchivo.single('fileUsuario'), validarUsuario, asy
   }
 });
 
-
-
 // Modificar Usuario
 
 routerUsuarios.put('/:id_usuario', CargaArchivo.single('fileUsuario'), validarIdUsuario, validarActUsuario, validarUsuario, async (req, res) => {

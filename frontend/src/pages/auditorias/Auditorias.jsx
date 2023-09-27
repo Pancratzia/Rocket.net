@@ -1,14 +1,39 @@
 import React from 'react';
 import "./Auditorias.css";
 import Tabla from '../../components/Tabla/Tabla';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 function Auditorias() {
+  const [auditorias, setAuditorias] = useState([]);
+    useEffect(() => {
+        obtenerAuditorias();
+    }, []);
+
+    const obtenerAuditorias = () => {
+    axios.get('http://localhost:3000/api/auditoria')
+        .then((response) => {
+
+        const auditorias = response.data.map((auditoria) => ({
+            id: auditoria.id_auditoria,
+            operacion: auditoria.operacion,
+            usuario: "Gabriela Echeverria", // FIXME: Colocar el current user
+            fecha: auditoria.fecha,
+            hora: auditoria.hora
+        }));
+
+        setAuditorias(auditorias);
+        })
+        .catch((error) => {
+        console.error('Error al obtener auditorias:', error);
+        });
+    };
 
     const columnas = [
         { field: "operacion", headerName: "Operacion", width: 300},
     
         {
-          field: "usuarioau",
+          field: "usuario",
           headerName: "Usuario",
           width: 180,
           editable: true,
@@ -26,7 +51,6 @@ function Auditorias() {
             editable: true,
         }
     ]
-    const filas = []
 
     return(
         <div className="contenedor-gestion">
@@ -34,7 +58,7 @@ function Auditorias() {
             <h1>Auditorias</h1>
             <hr/>
         </div>
-        <Tabla columns={columnas} rows={filas}/>
+        <Tabla columns={columnas} rows={auditorias}/>
         </div>
     )
 }
