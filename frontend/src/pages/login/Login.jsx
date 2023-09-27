@@ -10,24 +10,35 @@ function Login() {
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
 
-  const manejarIniciarSesion = (event) => {
-    event.preventDefault(); // Evita el comportamiento predeterminado del botón
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+  })
 
-    if (usuario.trim() !== "" && password.trim() !== "") {
-      MySwal.fire({
-        title: <strong>¡CORRECTO!</strong>,
-        html: <i>¡Sesión Iniciada!</i>,
-        icon: 'success'
-      });
+  const manejarLogin = (e) => {
+
+    swalWithBootstrapButtons.fire({
+      text: "Estas seguro de que deseas editar el usuario?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+      }).then (response =>{
+    if (response.isConfirmed){
+    //Aca colocas el codigo para la integracion
+    //respuesta del axios
+    Swal.fire('Exito', 'Inicio de sesion exitoso', 'success');
     } else {
-      // Mostrar mensaje de error si los campos están vacíos
-      MySwal.fire({
-        title: <strong>Error</strong>,
-        html: <i>Por favor, complete todos los campos</i>,
-        icon: 'error'
-      });
+    Swal.fire('Oops!', 'Hubo un error en el inicio de sesion', 'error')
     }
-  };
+    response.dismiss === Swal.DismissReason.cancel;
+  })
+};
+
+
 
   return (
       <div className="contenedor-login">
@@ -56,7 +67,7 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button className="btn" onClick={manejarIniciarSesion}>Iniciar sesión</button>
+            <button className="btn" onClick={manejarLogin}>Iniciar sesión</button>
             
           </form>
         </div>
