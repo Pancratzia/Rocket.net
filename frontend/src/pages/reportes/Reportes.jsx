@@ -1,6 +1,7 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./Reportes.css";
+import axios from 'axios';
 import Tabla from '../../components/Tabla/Tabla';
 
 function Reportes() {
@@ -12,25 +13,70 @@ function Reportes() {
       // FILAS ESTATICAS PARA CADA TABLA
 
   //Filas para el reporte de clientes
-    const [filasClientes, setFilasClientes] = useState([
-    { id:1, nombre: "cliente 01", ubicacion: "Ubicación 1", telefono: "1234", correo: "cliente1@gmail.com", plan: "Plan 1", estado: "Activo" },
-    { id:2, nombre: "cliente 02", ubicacion: "Ubicación 2", telefono: "5678", correo: "cliente2@gmail.com", plan: "Plan 2", estado: "Inactivo" }
-   
-  ]);
+    const [filasClientes, setFilasClientes] = useState([]);
 
   //Filas para el reporte de planes
-    const [filasPlanes, setFilasPlanes] = useState([
-    {id: 1, nombre: "Plan 1", descripcion: "50 mbps", precio: "50$", estado: "Activo" },
-    {id: 2, nombre: "Plan 2", descripcion: "100 mbps", precio: "80$", estado: "Inactivo" }
-
-  ]);
+  const [filasPlanes, setFilasPlanes] = useState([]);
   
   //Filas para el reporte de usuarios
-    const [filasUsuarios, setFilasUsuarios] = useState([
+  const [filasUsuarios, setFilasUsuarios] = useState([
     {id: 1, nombre:"Pepito", usuario: "usuario 01", tipoUsuario: "Usuario tipo 1", sedeDepar: "Barquisimeto - RRHH", correo: "pepito@gmail.com" , telefono: "1234"},
     {id: 2, nombre:"Pepita", usuario: "usuario 02", tipoUsuario: "Usuario tipo 2", sedeDepar: "Barquisimeto - Ventas", correo: "pepita@gmail.com" , telefono: "5678"}
 
   ]);
+
+
+  useEffect(() => {
+    rellenarFilasPlanes();
+    rellenarFilasClientes();
+  }, []);
+
+
+  const rellenarFilasPlanes = () => {
+    axios.get('http://localhost:3000/api/planes')
+         .then((response) => {
+
+          const planes = response.data.map((plan) => ({
+              id: plan.id_plan,
+              nombre: plan.nombre_plan,
+              descripcion: plan.descripcion,
+              precio: plan.precio,
+              estado: plan.estado_plan
+          }));
+
+          setFilasPlanes(planes);
+          })
+        .catch((error) => {
+        console.error('Error al obtener los planes:', error);
+        });
+  };
+
+  const rellenarFilasClientes = () => {
+    axios.get('http://localhost:3000/api/clientes')
+         .then((response) => {
+          const clientes = response.data.map((cliente) => (
+            {
+              id: cliente.id_cliente,
+              nombre: cliente.nombre,
+              ubicacion: cliente.ubicacion,
+              telefono: cliente.telefono,
+              correo: cliente.correo,
+              plan: cliente.id_plan,
+              estado:cliente.estado_usuario ? "Activo" : "Inactivo" ,
+           }
+          ));
+          return clientes;
+          }).then(async (clientes) => {
+            clientes.forEach(async (cliente) => {
+              const plan_info = await axios.get(`http://localhost:3000/api/planes/${cliente.plan}`)
+              cliente.plan = plan_info.data.nombre_plan
+            });
+            setFilasClientes(clientes);
+          })
+        .catch((error) => {
+        console.error('Error al obtener los Clientes:', error);
+        });
+  };
 
     //funcion para la seleccion de las opciones del select y que campos deben aparecen en la tabla
     const handleSelect = (e) => {
