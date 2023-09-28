@@ -29,7 +29,6 @@ const handleSubmit = (e) => {
       return;
     }
   
-    // Crear un objeto FormData para enviar el archivo y otros datos al servidor
     const formData = new FormData();
     formData.append('documento', file);
     formData.append('titulo', titulo);
@@ -37,7 +36,6 @@ const handleSubmit = (e) => {
     formData.append('id_usuario', "1"); 
     formData.append('permiso', opcion);
   
-    // Realizar la solicitud POST para subir el archivo
     axios
       .post('http://localhost:3000/api/documentos', formData, {
         headers: {
@@ -55,7 +53,6 @@ const handleSubmit = (e) => {
         console.error('Error al subir el archivo:', error);
       });
   
-    // Restablecer los campos después de la subida
     setDescripcion('');
     setTitulo('');
     setOpcion(e.target.value);

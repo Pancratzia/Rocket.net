@@ -18,15 +18,7 @@ function Login() {
       buttonsStyling: false
   })
 
-  const manejarLogin = (e) => {
-
-    swalWithBootstrapButtons.fire({
-      text: "Estas seguro de que deseas editar el usuario?",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Si',
-      cancelButtonText: 'No',
-      }).then (response =>{
+  const manejarLogin = (e) => {     
     if (response.isConfirmed){
     //Aca colocas el codigo para la integracion
     //respuesta del axios
@@ -35,8 +27,7 @@ function Login() {
     Swal.fire('Oops!', 'Hubo un error en el inicio de sesion', 'error')
     }
     response.dismiss === Swal.DismissReason.cancel;
-  })
-};
+  };
 
 
 

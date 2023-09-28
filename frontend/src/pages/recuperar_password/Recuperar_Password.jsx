@@ -48,7 +48,7 @@ function Recuperar_Password() {
 
   return (
     <div className="contenedor-recuperar">
-      <form className="formulario-recuperar" onSubmit={manejarFormulario}>
+      <form className="formulario-recuperar" onSubmit={manejarRecuperar}>
         <div className="titulo-recuperar">
           <h1>¿Has olvidado tu contraseña?</h1>
           <p>Ingresa la información correspondiente en los campos de abajo</p>
