@@ -3,6 +3,7 @@ import "../login/Login.css";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import axios from 'axios';
 
 const MySwal = withReactContent(Swal);
 
@@ -39,7 +40,7 @@ function Login() {
             <h2>Inicia sesión para continuar</h2>
           </div>
 
-          <form className="form">
+          <form className="form" method="post">
             <label className="label" htmlFor="usuario">Usuario</label>
             <input
               name="usuario"
