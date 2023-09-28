@@ -104,25 +104,6 @@ function Archivos() {
         cancelButtonText: 'No',
       }).then(response => {
         if (response.isConfirmed) {
-          /*const formData = new FormData();
-          formData.append('documento', newFormData.archivo);
-          formData.append('titulo', newFormData.tituloarchivo);
-          formData.append('descripcion', newFormData.descripcionarchivo);
-          formData.append('idusuario', newFormData.idusuario);
-          formData.append('permiso', newFormData.permiso);
-    
-          axios.post('http://localhost:3000/api/documentos?id_usuario=1', formData)
-            .then(response => {
-              if (response.status === 200) {
-                obtenerDocumentos();
-              } else {
-                console.error('Error al agregar el archivo:', response);
-              }
-            })
-            .catch(error => {
-              console.error('Error al agregar el archivo:', error);
-            });*/
-    
           setFilas([...filas, newFormData]);
           cambiarEstadoModal1(false);
         } else {
