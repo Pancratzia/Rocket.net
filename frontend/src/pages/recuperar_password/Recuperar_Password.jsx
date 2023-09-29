@@ -4,6 +4,7 @@ import "./Recuperar_Password.css";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import axios from "axios";
 
 const MySwal = withReactContent(Swal);
 
@@ -36,6 +37,13 @@ function Recuperar_Password() {
       cancelButtonText: 'No',
       }).then (response =>{
     if (response.isConfirmed){
+
+      axios.put('http://localhost:3000/api/recuperar-clave', {
+        usuario: usuario,
+        nueva_clave: contraseña,
+        respuesta: respuesta,
+      });
+
     //Aca colocas el codigo para la integracion
     //respuesta del axios
     Swal.fire('Exito', 'La contraseña se ha modificado', 'success');
