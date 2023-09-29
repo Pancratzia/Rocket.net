@@ -51,23 +51,37 @@ function GestionPlanes() {
   };
 
   const agregarFila = (nuevoPlan) => {
+    swalWithBootstrapButtons.fire({
+      text: "¿Estas seguro de que deseas crear el plan?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+    }).then(response => {
+      if (response.isConfirmed){
     nuevoPlan.estado_plan = nuevoPlan.estado;
     axios.post('http://localhost:3000/api/planes', nuevoPlan)
       .then(response => {
         if (response.status === 200) {
-          const planCreado = response.data.plan;
-          cambiarEstadoModal1(false);
-          setFilas([...filas, planCreado]);
+        const planCreado = response.data.plan;
+        cambiarEstadoModal1(false);
+        setFilas([...filas, planCreado]);
+        MySwal.fire('¡Exito!', 'Plan creado correctamente', 'success');
         } else {
-          console.error('Error al crear el plan:', response);
+          Swal.fire('Error', 'Error al crear el plan', 'error');
         }
       })
       .catch(error => {
-        console.error('Error al crear el plan:', error);
+        Swal.fire('Error', 'Error al crear el plan', error);
         if (error.response) {
           console.log('Respuesta de error:', error.response.data);
         }
       });
+      } else {
+        response.dimiss== Swal.DismissReason.cancel;
+        window.location.reload();
+      }
+    });
   };
 
   useEffect(() => {
@@ -189,6 +203,7 @@ function GestionPlanes() {
               });
         }else{
               response.dismiss === Swal.DismissReason.cancel
+              window.location.reload();
         }
         
       })
