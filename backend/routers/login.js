@@ -46,31 +46,4 @@ routerLogin.post('/', async (req, res) => {
     }
 })
 
-// routerLogin.get("/profile/", async (req, res) => {
-//     const { authorization } = req.headers;
-
-//     if (!authorization) return res.sendStatus(401);
-
-//     try {
-//         const encoder = new TextEncoder();
-//         const { payload } = await jwtVerify(
-//             authorization,
-//             encoder.encode(process.env.JWT_PRIVATE_KEY)
-//         );
-
-//         const query = 'SELECT * FROM usuarios WHERE id_usuario = $1';
-//         const user = await pool.query(query, [payload.idUser]);
-
-//         if (user.rowCount === 0) return res.sendStatus(401);
-
-//         delete user.rows[0].clave;
-//         delete user.rows[0].respuesta
-
-//         return res.send({mensaje: "Autorizado",user});
-
-//     } catch (err) {
-//         return res.status(401).json({ mensaje: 'No Autorizado' });
-//     }
-// });
-
 module.exports = routerLogin  
