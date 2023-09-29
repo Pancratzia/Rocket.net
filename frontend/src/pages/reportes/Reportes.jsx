@@ -51,6 +51,17 @@ function Reportes() {
         });
   };
 
+  const parsearEstadoUsuario = (int_estado) => {
+   if (int_estado == 1) {
+    return "Activo"
+   } else if (int_estado == 2) {
+    return "Inactivo"
+   } else  {
+    return "Estado Desconocido"
+   }
+
+  }
+
   const rellenarFilasClientes = () => {
     axios.get('http://localhost:3000/api/clientes')
          .then((response) => {
@@ -62,7 +73,7 @@ function Reportes() {
               telefono: cliente.telefono,
               correo: cliente.correo,
               plan: cliente.id_plan,
-              estado:cliente.estado_usuario ? "Activo" : "Inactivo" ,
+              estado: parsearEstadoUsuario(cliente.estado_usuario),
            }
           ));
           return clientes;
