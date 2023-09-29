@@ -19,15 +19,27 @@ function Login() {
       buttonsStyling: false
   })
 
-  const manejarLogin = (e) => {     
-    if (response.isConfirmed){
-    //Aca colocas el codigo para la integracion
-    //respuesta del axios
-    Swal.fire('Exito', 'Inicio de sesion exitoso', 'success');
-    } else {
-    Swal.fire('Oops!', 'Hubo un error en el inicio de sesion', 'error')
-    }
-    response.dismiss === Swal.DismissReason.cancel;
+  const manejarLogin = (e) => {
+    e.preventDefault();
+
+    const data = {
+      nombre_usuario: usuario,
+      clave: password,
+    };
+
+    axios
+      .post("http://localhost:3000/api/login", data)
+      .then((response) => {
+        if (response.data.jwt) {
+          localStorage.setItem("jwt", response.data.jwt);
+          Swal.fire("Éxito", "Inicio de sesión exitoso", "success");
+          window.location.href = '/';
+        }
+      })
+      .catch((error) => {
+        Swal.fire("Error", "Hubo un error en el inicio de sesión", "error");
+        console.log(error);
+      });
   };
 
 
