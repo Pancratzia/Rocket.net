@@ -90,6 +90,9 @@ if(response.isConfirmed){
         .catch(error => {
           MySwal.fire('Error', 'Error al crear el cliente', error);
         });
+    } else {
+      response.dismiss== Swal.DismissReason.cancel;
+      window.location.reload();
     }
   });
 };
@@ -139,6 +142,7 @@ if(response.isConfirmed){
           description:'Usuario activo o inactivo',
           width: 160,
           type: 'select',
+          editable: true,
           options: [{
             value: 1,
             label: "Cliente Activo",
@@ -240,9 +244,10 @@ if(response.isConfirmed){
     .catch((error) => {
       Swal.fire('Error', 'Error al editar el cliente', error)
     });
-        }else{
+      }else{
           response.dismiss === Swal.DismissReason.cancel;
-        }
+          window.location.reload();
+      }
   })
 };
       const handleEditClick = (row) => {

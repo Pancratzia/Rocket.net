@@ -222,22 +222,23 @@ function GestionUsuarios() {
         requestBody[key] = editedUser[key];
       }
     }
-    
     axios
       .patch(`http://localhost:3000/api/usuarios/edit/${editedUser.id}`, requestBody)
       .then((response) => {
         if (response.status === 200) {
           obtenerUsuarios();
           setShowModal(false);
+          Swal.fire('¡Exito!', 'Usuario editado correctamente', 'success')
         } else {
-          console.error("Error al editar el usuario:", response);
+          Swal.fire('Error', 'Error al editar el usuario', 'error')
         }
       })
       .catch((error) => {
-        console.error("Error al editar el usuario:", error);
+        Swal.fire('Error', 'Error al editar el usuario', error)
       });
       } else {
         response.dismiss === Swal.DismissReason.cancel;
+        window.location.reload();
       }
     })
   };
@@ -337,7 +338,6 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
       if (response.status === 200) {
         cambiarEstadoModal1(false); 
         MySwal.fire('Exito','Has creado el usuario','success')
-        window.location.reload();
       } else {
         MySwal.fire('Error','Error al crear el usuario', 'error');
       }
@@ -350,7 +350,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
     });
     } else {
       response.dimiss== Swal.DismissReason.cancel;
-      
+      window.location.reload();
     }
   })
 };
