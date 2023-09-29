@@ -3,6 +3,7 @@ import "./Auditorias.css";
 import Tabla from '../../components/Tabla/Tabla';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import jwtDecode from 'jwt-decode';
 
 function Auditorias() {
     const [auditorias, setAuditorias] = useState([]);
@@ -14,18 +15,21 @@ function Auditorias() {
 
         const token = localStorage.getItem("jwt");
 
+        const payload = jwtDecode(token);
+        const idUsuario = payload.idUser;
+
         const config = {
             headers: {
-                authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
-          };
+        };
 
-        axios.get('http://localhost:3000/api/auditoria', config)
+        axios.get(`http://localhost:3000/api/auditoria/${idUsuario}`, config)
             .then((response) => {
                 const auditorias = response.data.map((auditoria) => ({
                     id: auditoria.id_auditoria,
                     operacion: auditoria.operacion,
-                    usuario: "Gabriela Echeverria", // FIXME: Colocar el current user
+                    usuario: auditoria.id_usuario, 
                     fecha: auditoria.fecha,
                     hora: auditoria.hora
                 }));

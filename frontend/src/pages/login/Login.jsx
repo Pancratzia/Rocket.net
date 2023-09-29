@@ -32,9 +32,15 @@ function Login() {
       .then((response) => {
         if (response.data.jwt) {
           localStorage.setItem("jwt", response.data.jwt);
-          Swal.fire("Éxito", "Inicio de sesión exitoso", "success");
-          window.location.href = '/';
+          // localStorage.setItem("usuarioenSesion", response.data.idUser)
+          // setTimeout(() => {
+          //   Swal.fire("Éxito", "Inicio de sesión exitoso", "success");
+          //   window.location.href = '/';
+          // }, 60000);
+            Swal.fire("Éxito", "Inicio de sesión exitoso", "success");
+            window.location.href = '/';
         }
+        // console.log(response)
       })
       .catch((error) => {
         Swal.fire("Error", "Hubo un error en el inicio de sesión", "error");
@@ -71,7 +77,7 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button className="btn" onClick={manejarLogin}>Iniciar sesión</button>
+            <button type="button" className="btn" onClick={manejarLogin}>Iniciar sesión</button>
             
           </form>
         </div>
