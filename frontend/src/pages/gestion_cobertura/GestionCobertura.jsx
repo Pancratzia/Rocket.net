@@ -87,7 +87,6 @@ function GestionCobertura() {
       setFilasPoligono([...filasPoligono, { id: nuevoIdPoligono, ...poligonoCreado }]);
       setPoligono('');
       MySwal.fire('Poligono creado', 'El poligono se ha creado correctamente', 'success');   
-      window.location.reload();
     } else {
       Swal.fire('Error', 'No se pudo crear el poligono', 'error');
     }
@@ -97,6 +96,7 @@ function GestionCobertura() {
   });
     } else {
       response.dismiss === Swal.DismissReason.cancel
+      window.location.reload();
     }	
   })
 };
@@ -137,7 +137,6 @@ function GestionCobertura() {
           obtenerPoligonos();
           setPoligono('');
           MySwal.fire('¡Exito!', 'El poligono se ha modificado correctamente', 'success');
-          window.location.reload();
         } else {
           MySwal.fire('Error', 'No se pudo modificar el poligono', 'error');
         }
@@ -147,6 +146,7 @@ function GestionCobertura() {
       });
     } else {
       response.dismiss === Swal.DismissReason.cancel
+      window.location.reload();
     }
   })
 };
@@ -238,6 +238,7 @@ function GestionCobertura() {
     } 
     } else {
       response.dismiss === Swal.DismissReason.cancel
+      window.location.reload();
     }
   })
 };
@@ -268,6 +269,7 @@ function GestionCobertura() {
       });
     } else {
       response.dismiss === Swal.DismissReason.cancel
+      window.location.reload();s
     }	
   })
 };
@@ -316,6 +318,7 @@ function GestionCobertura() {
     }
     } else {
       response.dismiss === Swal.DismissReason.cancel
+      window.location.reload();
     }
   })
 };

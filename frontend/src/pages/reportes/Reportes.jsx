@@ -256,7 +256,6 @@ function Reportes() {
         <div className='contenedor-busqueda'>
         <select className='opcion-reportes' name="Selecciona la opcion" onChange={handleSelect}>
        
-        <option value=""></option>
         <option value="opcion-clientes"> Clientes </option>
         <option value="opcion-planes"> Planes </option>
         <option value="opcion-usuarios"> Usuarios </option>
