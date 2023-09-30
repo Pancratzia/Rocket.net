@@ -16,10 +16,10 @@ const routerClientes = require('./routers/clientes.js');
 app.use('/api/clientes', routerClientes);
 
 const routerPoligonos = require('./routers/poligonos.js');
-app.use('/api/poligonos',routerPoligonos); 
+app.use('/api/poligonos',verificarJWT,routerPoligonos); 
 
 const routerPuntos = require('./routers/puntos.js');
-app.use('/api/puntos',routerPuntos); 
+app.use('/api/puntos',verificarJWT, routerPuntos); 
 
 const routerPoligonosPuntos = require('./routers/poligonopuntos.js');
 app.use('/api/poligonospuntos',routerPoligonosPuntos);
