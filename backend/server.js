@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const {verificarJWT} = require('./middleware/verificarToken')
+const cors = require('cors');
+
+app.use(cors({
+    credentials: true, 
+  }));
 
 //  Router
 const routerAuditoria = require('./routers/auditoria.js');
@@ -39,6 +44,8 @@ app.use('/api/login', routerLogin);
 
 const routerRecuperarClave = require('./routers/recuperar_clave.js');
 app.use('/api/recuperar-clave', routerRecuperarClave);
+
+
 
 //Prueba de funcionamiento
 app.get('/', (req, res)=>{

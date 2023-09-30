@@ -39,7 +39,7 @@ routerLogin.post('/', async (req, res) => {
             .setExpirationTime("1h")
             .sign(encoder.encode(process.env.JWT_PRIVATE_KEY));
 
-        res.status(200).json({ mensaje: 'Inicio de Sesión exitoso', jwt });
+        res.status(200).json({ jwt,idUser });
 
     } catch (error) {
         res.status(500).json({ error: 'Error interno del servidor' });

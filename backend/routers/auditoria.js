@@ -20,12 +20,12 @@ routerAuditoria.get('/', async (req, res) => {
 
 
 // get by id
-routerAuditoria.get('/:id', async (req, res) => {
+routerAuditoria.get('/:id_usuario', async (req, res) => {
   try {
 
-    const params = req.params
-    const result = await pool.query(`SELECT * FROM auditorias  WHERE id_auditoria=${params.id} LIMIT 1 `)
-    res.json(result.rows[0]);
+    const {id_usuario} = req.params;
+    const result = await pool.query('SELECT * FROM auditorias  WHERE id_usuario = $1', [id_usuario])
+    res.json(result.rows);
   } catch (error) {
     res.status(500).json({ message: "Ha ocurrido un error" });
   }
