@@ -93,8 +93,8 @@ function Reportes() {
         id: usuario.id_usuario,
         nombre: usuario.nombre,
         usuario: usuario.nombre_usuario,
-        tipousuario: usuario.id_tipousuario,
-        sedepartamento: usuario.id_sededepar,
+        tipoUsuario: usuario.id_tipousuario,
+        sedeDepar: usuario.id_sededepar,
         correo: usuario.correo,
         telefono: usuario.telefono,
       }));
