@@ -19,16 +19,13 @@ function Reportes() {
   const [filasPlanes, setFilasPlanes] = useState([]);
   
   //Filas para el reporte de usuarios
-  const [filasUsuarios, setFilasUsuarios] = useState([
-    {id: 1, nombre:"Pepito", usuario: "usuario 01", tipoUsuario: "Usuario tipo 1", sedeDepar: "Barquisimeto - RRHH", correo: "pepito@gmail.com" , telefono: "1234"},
-    {id: 2, nombre:"Pepita", usuario: "usuario 02", tipoUsuario: "Usuario tipo 2", sedeDepar: "Barquisimeto - Ventas", correo: "pepita@gmail.com" , telefono: "5678"}
-
-  ]);
+  const [filasUsuarios, setFilasUsuarios] = useState([]);
 
 
   useEffect(() => {
     rellenarFilasPlanes();
     rellenarFilasClientes();
+    rellenarFilasUsuarios();
   }, []);
 
 
@@ -89,6 +86,31 @@ function Reportes() {
         });
   };
 
+  const rellenarFilasUsuarios = () => {
+    axios.get('http://localhost:3000/api/usuarios')
+    .then(response => {
+      const usuarios = response.data.map(usuario => ({
+        id: usuario.id_usuario,
+        nombre: usuario.nombre,
+        usuario: usuario.nombre_usuario,
+        tipousuario: usuario.id_tipousuario,
+        sedepartamento: usuario.id_sededepar,
+        correo: usuario.correo,
+        telefono: usuario.telefono,
+      }));
+      return usuarios;
+    }).then(async (usuarios) => {
+      usuarios.forEach(async (usuario) => {
+        const sedeDepar = await 
+        axios.get(`http://localhost:3000/api/sedesdepartamentos/${usuario.sedepartamento}`)
+        usuario.sedepartamento = sedeDepar.data.sede_departamento
+      });
+      setFilasUsuarios(usuarios);
+    })
+    .catch((error)=> {
+      console.error('error al obtener los usuarios:', error);
+    });
+  };
     //funcion para la seleccion de las opciones del select y que campos deben aparecen en la tabla
     const handleSelect = (e) => {
         const opcion = e.target.value;
