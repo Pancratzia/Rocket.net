@@ -28,7 +28,7 @@ const routerUsuarios = require('./routers/usuarios.js');
 app.use('/api/usuarios',verificarJWT,routerUsuarios);
 
 const routerSedes = require('./routers/sedes.js');
-app.use('/api/sedes',routerSedes);
+app.use('/api/sedes',verificarJWT,routerSedes);
 
 const routerSedesDepartamento = require('./routers/sedesdepartamentos.js');
 app.use('/api/sedesdepartamentos',verificarJWT,routerSedesDepartamento);
