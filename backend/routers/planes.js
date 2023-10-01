@@ -4,6 +4,7 @@ const pool = require('../database/db.js');
 const routerPlanes = express.Router();
 const { validaIdPlan, validarPlan } = require('../validaciones/ValidarPlanes.js');
 const { validationResult } = require('express-validator')
+const { auditar } = require('../funciones/funciones.js')
 
 routerPlanes.use(express.json());
 routerPlanes.use(cors());
@@ -101,6 +102,8 @@ routerPlanes.get('/:id_plan', validaIdPlan, async (req, res) => {
 // eliminar plan
 routerPlanes.patch('/:id_plan', validaIdPlan, async (req, res) => {
     try {
+        const operacion = req.method;
+        const id_usuarioAuditoria = req.headers['id_usuario'];
         const { id_plan } = req.params;
         const errores = validationResult(req);
 
@@ -116,6 +119,7 @@ routerPlanes.patch('/:id_plan', validaIdPlan, async (req, res) => {
             const updatedPlan = await pool.query(updateQuery, [id_plan]);
 
             if (updatedPlan.rowCount === 1) {
+                auditar(operacion, id_usuarioAuditoria);
                 return res.status(200).json({ mensaje: 'Plan eliminado correctamente' });
             } else {
                 return res.status(404).json({ error: 'Plan no encontrado' });
@@ -134,7 +138,8 @@ routerPlanes.patch('/:id_plan', validaIdPlan, async (req, res) => {
 routerPlanes.put('/:id_plan', validaIdPlan, validarPlan, async (req, res) => {
 
     const { id_plan } = req.params;
-   
+    const operacion = req.method;
+    const id_usuarioAuditoria = req.headers['id_usuario'];
     const { nombre_plan, descripcion, precio, estado_plan } = req.body;
 
     try {
@@ -154,6 +159,7 @@ routerPlanes.put('/:id_plan', validaIdPlan, validarPlan, async (req, res) => {
         const actualizarPlan = await pool.query(query, values);
 
         if (actualizarPlan.rowCount > 0) {
+            auditar(operacion, id_usuarioAuditoria);
             return res.status(200).json({ mensaje: 'Plan actualizado exitosamente' });
         } else {
             return res.status(404).json({ error: 'Error al modificar plan' });

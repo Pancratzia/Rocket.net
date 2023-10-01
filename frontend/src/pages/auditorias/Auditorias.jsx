@@ -17,6 +17,7 @@ function Auditorias() {
             const token = localStorage.getItem("jwt");
             const payload = jwtDecode(token);
             const idUsuario = payload.idUser;
+            const fechaExpiracion = new Date(payload.exp * 1000);
 
             const config = {
                 headers: {
@@ -24,6 +25,11 @@ function Auditorias() {
                 },
             };
 
+            if (fechaExpiracion <= new Date()) {
+                setTokenValido(false);
+                localStorage.removeItem("jwt"); 
+                window.location.href = '/login';
+            }
             axios.get(`http://localhost:3000/api/auditoria/${idUsuario}`, config)
                 .then((response) => {
                     const auditorias = response.data.map((auditoria) => ({

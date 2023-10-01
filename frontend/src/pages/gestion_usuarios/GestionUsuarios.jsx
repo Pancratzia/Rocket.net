@@ -6,11 +6,30 @@ import Swal from "sweetalert2";
 import { useState, useEffect } from 'react';
 import withReactContent from "sweetalert2-react-content";
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
+
 
 const MySwal = withReactContent(Swal);
 
 
 function GestionUsuarios() {
+
+  const token = localStorage.getItem("jwt");
+
+  if (!token) {
+    window.location.href = '/login';
+    return null;
+}
+
+  const payload = jwtDecode(token);
+  const idUsuario = payload.idUser;
+  
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      id_usuario: idUsuario
+    },
+  };
 
   const [sedeDepartamentoOptions, setSedeDepartamentoOptions] = useState([]);
 
@@ -25,7 +44,7 @@ function GestionUsuarios() {
   })
 
   const obtenerSedepartamentoOptions = () => {
-    axios.get('http://localhost:3000/api/sedesdepartamentos')
+    axios.get('http://localhost:3000/api/sedesdepartamentos',config)
       .then(response => {
         if (response.status === 200) {
           const opciones = response.data.map(opcion => ({
@@ -161,7 +180,7 @@ function GestionUsuarios() {
 
   // Función para obtener los usuarios desde la API
  const obtenerUsuarios = () => {
-  axios.get('http://localhost:3000/api/usuarios')
+  axios.get('http://localhost:3000/api/usuarios',config)
     .then(response => {
       const usuariosConId = response.data.map(usuario => ({
         id: usuario.id_usuario,
@@ -223,7 +242,7 @@ function GestionUsuarios() {
       }
     }
     axios
-      .patch(`http://localhost:3000/api/usuarios/edit/${editedUser.id}`, requestBody)
+      .patch(`http://localhost:3000/api/usuarios/edit/${editedUser.id}`, requestBody,config)
       .then((response) => {
         if (response.status === 200) {
           obtenerUsuarios();
@@ -260,7 +279,7 @@ function GestionUsuarios() {
 
   const handleDeleteClick = (idUsuario) => {
     // Realiza la solicitud PATCH para eliminar el usuario
-    axios.patch(`http://localhost:3000/api/usuarios/${idUsuario}`)
+    axios.patch(`http://localhost:3000/api/usuarios/${idUsuario}`,config)
       .then(response => {
         if (response.status === 200) {
           obtenerUsuarios();
@@ -332,7 +351,7 @@ const [camposEditados, setCamposEditados] = useState({});  // aca estaba definie
       formData.append('id_tipousuario', nuevoUsuario.tipousuario);
       formData.append('fileUsuario', nuevaImagen);
     
-    axios.post('http://localhost:3000/api/usuarios', formData)
+    axios.post('http://localhost:3000/api/usuarios', formData,config)
     .then(response => {
       console.log('Respuesta de la solicitud:', response);
       if (response.status === 200) {

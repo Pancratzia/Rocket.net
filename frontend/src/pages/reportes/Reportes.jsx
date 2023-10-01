@@ -52,6 +52,8 @@ function Reportes() {
    if (int_estado == 1) {
     return "Activo"
    } else if (int_estado == 2) {
+
+    
     return "Inactivo"
    } else  {
     return "Estado Desconocido"

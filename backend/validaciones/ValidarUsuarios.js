@@ -131,7 +131,7 @@ const validarActUsuario = [
 
 ];
 
-validarpathusuario = [
+const validarpathusuario = [
   check('nombre_usuario')
     .exists()
     .isLength({ max: 50 })
