@@ -2,13 +2,16 @@ const { jwtVerify } = require('jose');
 const pool = require('../database/db.js');
 
 const verificarJWT = async (req, res, next) => {
+
     const { authorization } = req.headers;
     if (!authorization) return res.status(401).json({ mensaje: 'No hay token' });;
 
+    const token = authorization.split(' ')[1];
+    
     try {
         const encoder = new TextEncoder();
         const { payload } = await jwtVerify(
-            authorization,
+            token,
             encoder.encode(process.env.JWT_PRIVATE_KEY)
         );
 
@@ -21,6 +24,7 @@ const verificarJWT = async (req, res, next) => {
         delete user.rows[0].respuesta
 
         req.usuario = user.rows[0]; 
+        // console.log(user)
         next();
     } catch (err) {
         return res.status(401).json({ mensaje: 'No Autorizado' });

@@ -19,16 +19,13 @@ function Reportes() {
   const [filasPlanes, setFilasPlanes] = useState([]);
   
   //Filas para el reporte de usuarios
-  const [filasUsuarios, setFilasUsuarios] = useState([
-    {id: 1, nombre:"Pepito", usuario: "usuario 01", tipoUsuario: "Usuario tipo 1", sedeDepar: "Barquisimeto - RRHH", correo: "pepito@gmail.com" , telefono: "1234"},
-    {id: 2, nombre:"Pepita", usuario: "usuario 02", tipoUsuario: "Usuario tipo 2", sedeDepar: "Barquisimeto - Ventas", correo: "pepita@gmail.com" , telefono: "5678"}
-
-  ]);
+  const [filasUsuarios, setFilasUsuarios] = useState([]);
 
 
   useEffect(() => {
     rellenarFilasPlanes();
     rellenarFilasClientes();
+    rellenarFilasUsuarios();
   }, []);
 
 
@@ -62,22 +59,41 @@ function Reportes() {
               telefono: cliente.telefono,
               correo: cliente.correo,
               plan: cliente.id_plan,
-              estado:cliente.estado_usuario ? "Activo" : "Inactivo" ,
+              estado: cliente.estado_usuario,
            }
           ));
-          return clientes;
-          }).then(async (clientes) => {
-            clientes.forEach(async (cliente) => {
-              const plan_info = await axios.get(`http://localhost:3000/api/planes/${cliente.plan}`)
-              cliente.plan = plan_info.data.nombre_plan
-            });
-            setFilasClientes(clientes);
+          setFilasClientes(clientes);
           })
         .catch((error) => {
         console.error('Error al obtener los Clientes:', error);
         });
   };
 
+  const rellenarFilasUsuarios = () => {
+    axios.get('http://localhost:3000/api/usuarios')
+    .then(response => {
+      const usuarios = response.data.map(usuario => ({
+        id: usuario.id_usuario,
+        nombre: usuario.nombre,
+        usuario: usuario.nombre_usuario,
+        tipoUsuario: usuario.id_tipousuario,
+        sedeDepar: usuario.id_sededepar,
+        correo: usuario.correo,
+        telefono: usuario.telefono,
+      }));
+      return usuarios;
+    }).then(async (usuarios) => {
+      usuarios.forEach(async (usuario) => {
+        const sedeDepar = await 
+        axios.get(`http://localhost:3000/api/sedesdepartamentos/${usuario.sedepartamento}`)
+        usuario.sedepartamento = sedeDepar.data.sede_departamento
+      });
+      setFilasUsuarios(usuarios);
+    })
+    .catch((error)=> {
+      console.error('error al obtener los usuarios:', error);
+    });
+  };
     //funcion para la seleccion de las opciones del select y que campos deben aparecen en la tabla
     const handleSelect = (e) => {
         const opcion = e.target.value;
@@ -124,9 +140,9 @@ function Reportes() {
                   headerName: "Estado de Servicio",
                   width: 200,
                   cellClassName: (params) => {
-                    if (params.value === "Activo") { 
+                    if (params.value === 1) { 
                       return 'estado-activo';
-                    } else if (params.value === "Inactivo") {
+                    } else if (params.value === 2) {
                       return 'estado-inactivo'; 
                     }
                     return '';

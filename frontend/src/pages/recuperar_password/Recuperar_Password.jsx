@@ -4,6 +4,7 @@ import "./Recuperar_Password.css";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import axios from "axios";
 
 const MySwal = withReactContent(Swal);
 
@@ -12,21 +13,44 @@ function Recuperar_Password() {
   const [respuesta, setRespuesta] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [confirmarContraseña, setConfirmarContraseña] = useState("");
+  const [pregunta, setPregunta] = useState("");
 
-  const buscarUsuario = (e) => {
-    e.preventDefault();
-    if (usuario.trim === ""){
+
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn btn-success',
+      cancelButton: 'btn btn-danger'
+    },
+    buttonsStyling: false
+  });
+  
+  const buscarUsuario = () => {
+    if (usuario.trim() === "") {
       MySwal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'Ingresa un usuario',
       });
-    }else {
-      
+    } else {
+      axios.get(`http://localhost:3000/api/recuperar-clave/?nombreUsuario=${usuario}`)
+        .then((response) => {
+          const preguntaObtenida = response.data.pregunta;
+          setPregunta(preguntaObtenida);
+        })
+        .catch((error) => {
+          console.error("Error al buscar la pregunta:", error);
+          MySwal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Error al buscar la pregunta',
+          });
+        });
     }
-  }
+  };
 
   const manejarRecuperar = (e) => {
+
+    e.preventDefault(); 
 
     swalWithBootstrapButtons.fire({
       text: "Estas seguro de que deseas modificar la contraseña?",
@@ -36,6 +60,13 @@ function Recuperar_Password() {
       cancelButtonText: 'No',
       }).then (response =>{
     if (response.isConfirmed){
+
+      axios.put('http://localhost:3000/api/recuperar-clave', {
+        usuario: usuario,
+        nueva_clave: contraseña,
+        respuesta: respuesta,
+      });
+
     //Aca colocas el codigo para la integracion
     //respuesta del axios
     Swal.fire('Exito', 'La contraseña se ha modificado', 'success');
@@ -69,14 +100,14 @@ function Recuperar_Password() {
                 value={usuario}
                 onChange={(e) => setUsuario(e.target.value)}
               />
-              <FaMagnifyingGlass className="busqueda-icon" OnClick = {""}/>
+              <FaMagnifyingGlass className="busqueda-icon" onClick = {buscarUsuario}/>
             </div>
           </div>
 
           <div className="campo">
-            <label className="label" id="pregunta" htmlFor="respuesta">
-              Pregunta de seguridad
-            </label>
+          <label className="label" id="pregunta" htmlFor="respuesta">
+          {pregunta !== null && pregunta !== "" ? pregunta : "Pregunta de seguridad"}
+          </label>
 
             <div className="field">
               <input

@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const {verificarJWT} = require('./middleware/verificarToken')
+const cors = require('cors');
+
+app.use(cors({
+    credentials: true, 
+  }));
 
 //  Router
 const routerAuditoria = require('./routers/auditoria.js');
@@ -11,10 +16,10 @@ const routerClientes = require('./routers/clientes.js');
 app.use('/api/clientes', routerClientes);
 
 const routerPoligonos = require('./routers/poligonos.js');
-app.use('/api/poligonos',routerPoligonos); 
+app.use('/api/poligonos',verificarJWT,routerPoligonos); 
 
 const routerPuntos = require('./routers/puntos.js');
-app.use('/api/puntos',routerPuntos); 
+app.use('/api/puntos',verificarJWT, routerPuntos); 
 
 const routerPoligonosPuntos = require('./routers/poligonopuntos.js');
 app.use('/api/poligonospuntos',routerPoligonosPuntos);
@@ -39,6 +44,8 @@ app.use('/api/login', routerLogin);
 
 const routerRecuperarClave = require('./routers/recuperar_clave.js');
 app.use('/api/recuperar-clave', routerRecuperarClave);
+
+
 
 //Prueba de funcionamiento
 app.get('/', (req, res)=>{
