@@ -141,8 +141,10 @@ function GestionPlanes() {
         {
           field: 'estado',
           headerName: 'Estado',
+          description: 'Plan activo o inactivo',
           width: 150,
           type: 'select' ,
+          editable: true,
           options: [
             
 
