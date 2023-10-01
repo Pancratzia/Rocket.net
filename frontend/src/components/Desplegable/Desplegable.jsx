@@ -30,6 +30,10 @@ const Desplegable = () => {
 
   const desplegableMenu = [ 'Cerrar sesion']
 
+  function LimpiarStorege(){
+    localStorage.clear();
+  }
+
   return (
     <div className='menu-contenedor' ref = {menuRef}>
       <div className='menu-trigger'>
@@ -42,7 +46,7 @@ const Desplegable = () => {
            <ul className = 'dropdown-ul'>
              {
                desplegableMenu.map((menu)=>( 
-                <Link to = {menu === 'Ajustes' ? '/ajustes' : '/login'} style={{ textDecoration: 'none', color:'white' }} className='menu' key = { menu }> {menu} </Link> ))
+                <Link to = {menu === 'Ajustes' ? '/ajustes' : '/login'} style={{ textDecoration: 'none', color:'white' }} className='menu' key = { menu } onClick={() => {LimpiarStorege();}}> {menu} </Link> ))
              }
            </ul>
           </div>)

@@ -18,6 +18,9 @@ import { FaShuttleSpace } from "react-icons/fa6";
 import RocketAltLogo from "../../assets/img/rocket-alt.png";
 import { Link } from "react-router-dom";
 
+function LimpiarStorege(){
+  localStorage.clear();
+}
 
 function Sidebar() {
   return (
@@ -136,7 +139,7 @@ function Sidebar() {
           <hr />
           <li>
 
-            <Link style={{ textDecoration: 'none' }} to='/login' title='Cerrar Sesion'>
+            <Link style={{ textDecoration: 'none' }} to='/login' title='Cerrar Sesion' onClick={() => {LimpiarStorege();}}>
               <FaDoorOpen className="icon" />
               <span>Cerrar Sesion</span>
             </Link>
