@@ -47,4 +47,27 @@ routerRecuperarClave.put('/', async (req, res) => {
   }
 });
 
+routerRecuperarClave.get('/', async (req, res) => {
+  try {
+    const { nombreUsuario } = req.query;
+
+    const selectQuery = 'SELECT pregunta FROM usuarios WHERE "nombre_usuario" = $1';
+    const selectValues = [nombreUsuario];
+    const result = await pool.query(selectQuery, selectValues);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'No se encontró el usuario' });
+    }
+
+    const preguntaUsuario = result.rows[0].pregunta;
+
+    res.json({ pregunta: preguntaUsuario });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Ha ocurrido un error' });
+  }
+});
+
+
+
 module.exports = routerRecuperarClave;
