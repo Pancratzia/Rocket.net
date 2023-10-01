@@ -3,8 +3,27 @@ import { useState, useEffect } from 'react';
 import "./Reportes.css";
 import axios from 'axios';
 import Tabla from '../../components/Tabla/Tabla';
+import jwtDecode from 'jwt-decode';
 
 function Reportes() {
+
+  const token = localStorage.getItem("jwt");
+
+  if (!token) {
+    window.location.href = '/login';
+    return null;
+}
+
+  const payload = jwtDecode(token);
+  const idUsuario = payload.idUser;
+  
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      id_usuario: idUsuario
+    },
+  };
+
 
     const [opcionSeleccionada, setOpcionSeleccionada] = useState(); //para manejar los estados del select
     const [columnas, setColumnas] = useState([]); //para manejar los estados de las columnas de lasnpm tablas
@@ -30,7 +49,7 @@ function Reportes() {
 
 
   const rellenarFilasPlanes = () => {
-    axios.get('http://localhost:3000/api/planes')
+    axios.get('http://localhost:3000/api/planes',config)
          .then((response) => {
 
           const planes = response.data.map((plan) => ({
@@ -49,7 +68,7 @@ function Reportes() {
   };
 
   const rellenarFilasClientes = () => {
-    axios.get('http://localhost:3000/api/clientes')
+    axios.get('http://localhost:3000/api/clientes',config)
          .then((response) => {
           const clientes = response.data.map((cliente) => (
             {
@@ -70,7 +89,7 @@ function Reportes() {
   };
 
   const rellenarFilasUsuarios = () => {
-    axios.get('http://localhost:3000/api/usuarios')
+    axios.get('http://localhost:3000/api/usuarios',config)
     .then(response => {
       const usuarios = response.data.map(usuario => ({
         id: usuario.id_usuario,

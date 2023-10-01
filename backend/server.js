@@ -5,7 +5,7 @@ const {verificarJWT} = require('./middleware/verificarToken')
 const cors = require('cors');
 
 app.use(cors({
-    credentials: true, 
+    credentials: true,
   }));
 
 //  Router
@@ -13,7 +13,7 @@ const routerAuditoria = require('./routers/auditoria.js');
 app.use('/api/auditoria',verificarJWT,routerAuditoria); 
 
 const routerClientes = require('./routers/clientes.js');
-app.use('/api/clientes', routerClientes);
+app.use('/api/clientes', verificarJWT, routerClientes);
 
 const routerPoligonos = require('./routers/poligonos.js');
 app.use('/api/poligonos',verificarJWT,routerPoligonos); 
@@ -25,16 +25,16 @@ const routerPoligonosPuntos = require('./routers/poligonopuntos.js');
 app.use('/api/poligonospuntos',routerPoligonosPuntos);
 
 const routerUsuarios = require('./routers/usuarios.js');
-app.use('/api/usuarios',routerUsuarios);
+app.use('/api/usuarios',verificarJWT,routerUsuarios);
 
 const routerSedes = require('./routers/sedes.js');
-app.use('/api/sedes',routerSedes);
+app.use('/api/sedes',verificarJWT,routerSedes);
 
 const routerSedesDepartamento = require('./routers/sedesdepartamentos.js');
-app.use('/api/sedesdepartamentos',routerSedesDepartamento);
+app.use('/api/sedesdepartamentos',verificarJWT,routerSedesDepartamento);
 
 const routerPlanes = require('./routers/planes.js');
-app.use('/api/planes',routerPlanes);
+app.use('/api/planes',verificarJWT, routerPlanes);
  
 const routerDocumentos = require('./routers/documentos.js');
 app.use('/api/documentos', routerDocumentos);

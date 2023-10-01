@@ -14,20 +14,24 @@ function GestionCobertura() {
 
   const token = localStorage.getItem("jwt");
 
+  if (!token) {
+    window.location.href = '/login';
+    return null;
+}
+
   const payload = jwtDecode(token);
   const idUsuario = payload.idUser;
-
+  
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
+      id_usuario: idUsuario
     },
   };
 
   const [poligonos, setPoligonos] = useState([]);
   const [puntos, setPuntos] = useState([]);
   const [nombresPoligonos, setNombresPoligonos] = useState([]);
-
-
 
   const obtenerPoligonos = () => {
     axios.get('http://localhost:3000/api/poligonos', config)
@@ -59,12 +63,8 @@ function GestionCobertura() {
 
   useEffect(() => {
     obtenerPoligonos();
-  }, []);
-
-  useEffect(() => {
     obtenerNombresPoligonos();
   }, []);
-
 
   const crearPoligono = () => {
     if (poligono.trim() === '') {
@@ -87,7 +87,7 @@ function GestionCobertura() {
 
         const nuevoPoligono = {
           nombre_poligono: poligono,
-          id_usuario: '1'
+          id_usuario: idUsuario
         };
 
         axios.post('http://localhost:3000/api/poligonos', nuevoPoligono, config)
@@ -141,6 +141,8 @@ function GestionCobertura() {
         const nuevoNombrePoligono = editPoligono.nombre_poligono;
         const modificacionesPoligono = {
           nombre_poligono: nuevoNombrePoligono,
+          id_usuario: idUsuario
+
         };
 
         axios.put(`http://localhost:3000/api/poligonos/${idPoligonoAModificar}`, modificacionesPoligono, config)

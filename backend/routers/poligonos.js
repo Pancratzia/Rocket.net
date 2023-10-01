@@ -27,13 +27,13 @@ routerPoligonos.post('/', validaPoligono, async(req, res) => {
   RETURNING *;`
     try {
         
-      const {nombre_poligono, id_usuario} = req.body;
+      const {nombre_poligono} = req.body;
 
       // parametros para auditoria
       const  operacion  = req.method;
       const  id_usuarioAuditoria =req.headers['id_usuario'];
 
-        const nuevoPoligono = await pool.query(consulta, [nombre_poligono, id_usuario]);
+        const nuevoPoligono = await pool.query(consulta, [nombre_poligono, id_usuarioAuditoria]);
 
         if (nuevoPoligono.rowCount === 0) {
           return res.status(404).json({ error: 'Error al crear el Poligono' });

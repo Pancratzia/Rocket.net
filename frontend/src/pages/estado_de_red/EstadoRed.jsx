@@ -2,9 +2,23 @@ import React, { useState, useEffect }  from 'react';
 import Tabla  from '../../components/Tabla/Tabla';
 import "../estado_de_red/EstadoRed.css";
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 function  EstadoRed(){
 
+  const token = localStorage.getItem("jwt");
+
+  if (!token) {
+    window.location.href = '/login';
+    return null;
+}
+  const payload = jwtDecode(token); 
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  
     const columnas  = [
         {
         field: 'nombre_sede', //campo
@@ -71,7 +85,7 @@ const estadoColor = (conexion) => {
   useEffect(() => {
     async function fetchData() {
   try {
-    const response = await axios.get("http://localhost:3000/api/sedes");
+    const response = await axios.get("http://localhost:3000/api/sedes",config);
 
     if (response.status === 200) {
       const data = response.data;
