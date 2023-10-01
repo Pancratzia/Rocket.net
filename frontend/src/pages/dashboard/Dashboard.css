@@ -1,0 +1,13 @@
+
+.dashboard{
+margin:0 auto;
+width: min(100%, 1200px);
+min-height: 90%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.video-dashboard {
+max-width: min(100%, 900px);
+}

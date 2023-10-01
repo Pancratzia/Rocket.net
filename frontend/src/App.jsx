@@ -16,6 +16,7 @@ import ConsultaCobertura from './pages/consulta_cobertura/ConsultaCobertura';
 import Auditorias from './pages/auditorias/Auditorias';
 import Archivos from './pages/archivos/Archivos';
 import Reportes from './pages/reportes/Reportes';
+import Dashboard from './pages/dashboard/Dashboard';
 
 
 
@@ -58,7 +59,7 @@ function App() {
       element: <LayoutSidebar />,
       children: [
         {
-          element: <div className="div">Hola</div>,
+          element: <Dashboard/>,
           path: '/',
         }
         ,
