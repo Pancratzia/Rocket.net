@@ -48,19 +48,6 @@ function Reportes() {
         });
   };
 
-  const parsearEstadoUsuario = (int_estado) => {
-   if (int_estado == 1) {
-    return "Activo"
-   } else if (int_estado == 2) {
-
-    
-    return "Inactivo"
-   } else  {
-    return "Estado Desconocido"
-   }
-
-  }
-
   const rellenarFilasClientes = () => {
     axios.get('http://localhost:3000/api/clientes')
          .then((response) => {
@@ -72,16 +59,10 @@ function Reportes() {
               telefono: cliente.telefono,
               correo: cliente.correo,
               plan: cliente.id_plan,
-              estado: parsearEstadoUsuario(cliente.estado_usuario),
+              estado: cliente.estado_usuario,
            }
           ));
-          return clientes;
-          }).then(async (clientes) => {
-            clientes.forEach(async (cliente) => {
-              const plan_info = await axios.get(`http://localhost:3000/api/planes/${cliente.plan}`)
-              cliente.plan = plan_info.data.nombre_plan
-            });
-            setFilasClientes(clientes);
+          setFilasClientes(clientes);
           })
         .catch((error) => {
         console.error('Error al obtener los Clientes:', error);
@@ -159,9 +140,9 @@ function Reportes() {
                   headerName: "Estado de Servicio",
                   width: 200,
                   cellClassName: (params) => {
-                    if (params.value === "Activo") { 
+                    if (params.value === 1) { 
                       return 'estado-activo';
-                    } else if (params.value === "Inactivo") {
+                    } else if (params.value === 2) {
                       return 'estado-inactivo'; 
                     }
                     return '';
